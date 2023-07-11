@@ -181,7 +181,9 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public ICfg2HbmTool newCfg2HbmTool() {
-		return newFacadeFactory.createCfg2HbmTool();
+		return (ICfg2HbmTool)GenericFacadeFactory.createFacade(
+				ICfg2HbmTool.class,
+				WrapperFactory.createCfg2HbmWrapper());
 	}
 
 	@Override

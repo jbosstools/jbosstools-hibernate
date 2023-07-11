@@ -7,6 +7,8 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
+import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
+import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.AbstractPropertyFacade;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
@@ -23,7 +25,9 @@ public class ICfg2HbmToolTest {
 	
 	@BeforeEach
 	public void beforeEach() {
-		facade = FACADE_FACTORY.createCfg2HbmTool();
+		facade = (ICfg2HbmTool)GenericFacadeFactory.createFacade(
+				ICfg2HbmTool.class,
+				WrapperFactory.createCfg2HbmWrapper());;
 	}
 
 	@Test

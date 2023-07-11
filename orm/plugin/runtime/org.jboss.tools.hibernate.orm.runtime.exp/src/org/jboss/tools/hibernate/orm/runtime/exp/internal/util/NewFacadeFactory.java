@@ -43,12 +43,6 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 		throw new RuntimeException("Use 'NewFacadeFactory#createCfg2HbmTool()");
 	}
 	
-	public ICfg2HbmTool createCfg2HbmTool() {
-		return (ICfg2HbmTool)GenericFacadeFactory.createFacade(
-				ICfg2HbmTool.class,
-				WrapperFactory.createCfg2HbmWrapper());
-	}
-	
 	@Override
 	public INamingStrategy createNamingStrategy(Object target) {
 		throw new RuntimeException("Use 'NewFacadeFactory#createNamingStrategy(String)");
