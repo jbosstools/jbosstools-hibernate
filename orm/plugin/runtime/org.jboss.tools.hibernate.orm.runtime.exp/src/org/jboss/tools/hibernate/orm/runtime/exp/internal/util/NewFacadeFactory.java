@@ -8,7 +8,6 @@ import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
-import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
@@ -58,12 +57,6 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 	}
 	
 	
-	public IColumn createColumn(String name) {
-		return (IColumn)GenericFacadeFactory.createFacade(
-				IColumn.class, 
-				WrapperFactory.createColumnWrapper(name));
-	}
-
 	public IConfiguration createNativeConfiguration() {
 		return (IConfiguration)GenericFacadeFactory.createFacade(
 				IConfiguration.class, 

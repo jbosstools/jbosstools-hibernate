@@ -205,8 +205,10 @@ public class ServiceImpl extends AbstractService {
 	}
 
 	@Override
-	public IColumn newColumn(String string) {
-		return newFacadeFactory.createColumn(string);
+	public IColumn newColumn(String name) {
+		return (IColumn)GenericFacadeFactory.createFacade(
+				IColumn.class, 
+				WrapperFactory.createColumnWrapper(name));
 	}
 
 	@Override

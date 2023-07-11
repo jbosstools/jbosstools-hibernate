@@ -21,6 +21,8 @@ import org.hibernate.tool.orm.jbt.util.MockDialect;
 import org.hibernate.tool.orm.jbt.wrp.ColumnWrapper;
 import org.hibernate.tool.orm.jbt.wrp.DelegatingColumnWrapperImpl;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
+import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
+import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
@@ -38,7 +40,9 @@ public class IColumnTest {
 	
 	@BeforeEach
 	public void beforeEach() throws Exception {
-		columnFacade = FACADE_FACTORY.createColumn(null);
+		columnFacade = (IColumn)GenericFacadeFactory.createFacade(
+				IColumn.class, 
+				WrapperFactory.createColumnWrapper(null));
 		columnTarget = ((ColumnWrapper)((IFacade)columnFacade).getTarget()).getWrappedObject();
 	}
 	
@@ -69,7 +73,9 @@ public class IColumnTest {
 		columnTarget.setSqlType("foobar");
 		assertEquals("foobar", columnFacade.getSqlType());
 		// IColumn#getSqlType(IConfiguration)
-		columnFacade = FACADE_FACTORY.createColumn(null);
+		columnFacade = (IColumn)GenericFacadeFactory.createFacade(
+				IColumn.class, 
+				WrapperFactory.createColumnWrapper(null));
 		columnTarget = ((ColumnWrapper)((IFacade)columnFacade).getTarget()).getWrappedObject();
 		columnTarget.setValue(createValue());
 		IConfiguration configurationFacade = FACADE_FACTORY.createNativeConfiguration();

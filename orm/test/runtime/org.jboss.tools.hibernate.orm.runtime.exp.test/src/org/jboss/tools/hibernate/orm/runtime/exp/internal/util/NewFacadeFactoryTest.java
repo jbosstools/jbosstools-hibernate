@@ -35,7 +35,6 @@ import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
 import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
-import org.hibernate.tool.orm.jbt.wrp.ColumnWrapper;
 import org.hibernate.tool.orm.jbt.wrp.EnvironmentWrapper;
 import org.hibernate.tool.orm.jbt.wrp.HbmExporterWrapper;
 import org.hibernate.tool.orm.jbt.wrp.HqlCodeAssistWrapper;
@@ -44,7 +43,6 @@ import org.hibernate.tool.orm.jbt.wrp.SchemaExportWrapper;
 import org.hibernate.tool.orm.jbt.wrp.TypeFactoryWrapper;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
-import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
@@ -95,15 +93,6 @@ public class NewFacadeFactoryTest {
 		Object jpaConfigurationTarget = ((IFacade)jpaConfigurationFacade).getTarget();
 		assertNotNull(jpaConfigurationTarget);
 		assertTrue(jpaConfigurationTarget instanceof JpaConfiguration);
-	}
-	
-	@Test
-	public void testCreateColumn() {
-		IColumn columnFacade = facadeFactory.createColumn(null);
-		assertNotNull(columnFacade);
-		Object columnTarget = ((IFacade)columnFacade).getTarget();
-		assertNotNull(columnTarget);
-		assertTrue(columnTarget instanceof ColumnWrapper);
 	}
 	
 	@Test

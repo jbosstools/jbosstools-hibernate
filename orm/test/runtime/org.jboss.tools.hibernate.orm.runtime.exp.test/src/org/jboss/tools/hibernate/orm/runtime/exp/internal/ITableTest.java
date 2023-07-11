@@ -19,6 +19,8 @@ import org.hibernate.mapping.Table;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.wrp.ColumnWrapper;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
+import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
+import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
@@ -56,7 +58,9 @@ public class ITableTest {
 	
 	@Test
 	public void testAddColumn() {
-		IColumn columnFacade = NewFacadeFactory.INSTANCE.createColumn("foo");
+		IColumn columnFacade = (IColumn)GenericFacadeFactory.createFacade(
+				IColumn.class, 
+				WrapperFactory.createColumnWrapper("foo"));
 		Column columnTarget = ((ColumnWrapper)((IFacade)columnFacade).getTarget()).getWrappedObject();
 		assertNull(tableTarget.getColumn(columnTarget));
 		tableFacade.addColumn(columnFacade);
@@ -91,7 +95,9 @@ public class ITableTest {
 	public void testGetColumnIterator() {
 		Iterator<IColumn> columnIterator = tableFacade.getColumnIterator();
 		assertFalse(columnIterator.hasNext());
-		IColumn columnFacade1 = NewFacadeFactory.INSTANCE.createColumn("bar");
+		IColumn columnFacade1 = (IColumn)GenericFacadeFactory.createFacade(
+				IColumn.class, 
+				WrapperFactory.createColumnWrapper("bar"));
 		tableFacade.addColumn(columnFacade1);
 		columnIterator = tableFacade.getColumnIterator();
 		IColumn columnFacade2 = columnIterator.next();
