@@ -104,7 +104,9 @@ public class IExporterTest {
 	
 	@Test
 	public void testSetArtifactCollector() {
-		IArtifactCollector artifactCollectorFacade = NewFacadeFactory.INSTANCE.createArtifactCollector();
+		IArtifactCollector artifactCollectorFacade = (IArtifactCollector)GenericFacadeFactory.createFacade(
+				IArtifactCollector.class, 
+				WrapperFactory.createArtifactCollectorWrapper());
 		Object artifactCollectorTarget = ((IFacade)artifactCollectorFacade).getTarget();
 		assertNotSame(artifactCollectorTarget, exporterTarget.getProperties().get(ExporterConstants.ARTIFACT_COLLECTOR));
 		exporterFacade.setArtifactCollector(artifactCollectorFacade);

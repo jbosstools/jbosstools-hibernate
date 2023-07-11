@@ -38,12 +38,6 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 		throw new RuntimeException("Use 'NewFacadeFactory#createArtifactCollector()");
 	}
 	
-	public IArtifactCollector createArtifactCollector() {
-		return (IArtifactCollector)GenericFacadeFactory.createFacade(
-				IArtifactCollector.class, 
-				WrapperFactory.createArtifactCollectorWrapper());
-	}
-
 	@Override
 	public ICfg2HbmTool createCfg2HbmTool(Object target) {
 		throw new RuntimeException("Use 'NewFacadeFactory#createCfg2HbmTool()");

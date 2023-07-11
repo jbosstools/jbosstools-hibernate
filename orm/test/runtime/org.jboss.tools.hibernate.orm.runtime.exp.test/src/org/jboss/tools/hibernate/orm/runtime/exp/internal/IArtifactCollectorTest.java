@@ -14,7 +14,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
+import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
+import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,7 +38,10 @@ public class IArtifactCollectorTest {
 	@SuppressWarnings("unchecked")
 	@BeforeEach
 	public void beforeEach() throws Exception {
-		facade = NewFacadeFactory.INSTANCE.createArtifactCollector();
+		facade = (IArtifactCollector)GenericFacadeFactory.createFacade(
+				IArtifactCollector.class, 
+				WrapperFactory.createArtifactCollectorWrapper());
+
 		target = ((IFacade)facade).getTarget();
 		Field filesField = target.getClass().getDeclaredField("files");
 		filesField.setAccessible(true);

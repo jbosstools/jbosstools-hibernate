@@ -109,7 +109,9 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IArtifactCollector newArtifactCollector() {
-		return newFacadeFactory.createArtifactCollector();
+		return (IArtifactCollector)GenericFacadeFactory.createFacade(
+				IArtifactCollector.class, 
+				WrapperFactory.createArtifactCollectorWrapper());
 	}
 
 	@Override
