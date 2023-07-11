@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 
-import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.List;
@@ -58,23 +57,6 @@ public class NewFacadeFactoryTest {
 		facadeFactory = NewFacadeFactory.INSTANCE;
 	}
 		
-	@Test
-	public void testCreateArray() {
-		IPersistentClass rootClassFacade = (IPersistentClass)GenericFacadeFactory.createFacade(
-				IPersistentClass.class, 
-				WrapperFactory.createRootClassWrapper());
-		PersistentClass rootClass = (PersistentClass)((Wrapper)((IFacade)rootClassFacade).getTarget()).getWrappedObject();
-		IValue arrayFacade = 
-				facadeFactory.createArray(rootClassFacade);
-		Object arrayWrapper = ((IFacade)arrayFacade).getTarget();
-		assertNotNull(arrayWrapper);
-		assertTrue(arrayWrapper instanceof Wrapper);
-		Object wrappedArray = ((Wrapper)arrayWrapper).getWrappedObject();
-		assertNotNull(wrappedArray);
-		assertTrue(wrappedArray instanceof Array);
-		assertSame(rootClass, ((Array)wrappedArray).getOwner());
-	}
-	
 	@Test
 	public void testCreateBag() {
 		IPersistentClass rootClassFacade = (IPersistentClass)GenericFacadeFactory.createFacade(

@@ -59,12 +59,6 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 		return null;
 	}
 
-	public IValue createArray(IPersistentClass persistentClass) {
-		return (IValue)GenericFacadeFactory.createFacade(
-				IValue.class, 
-				WrapperFactory.createArrayWrapper(((IFacade)persistentClass).getTarget()));
-	}
-
 	public IValue createBag(IPersistentClass persistentClass) {
 		return (IValue)GenericFacadeFactory.createFacade(
 				IValue.class, 
