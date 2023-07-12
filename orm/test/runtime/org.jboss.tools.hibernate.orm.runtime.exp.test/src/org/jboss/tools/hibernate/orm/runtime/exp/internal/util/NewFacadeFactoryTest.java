@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.File;
 
 import org.hibernate.mapping.Component;
-import org.hibernate.mapping.Map;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PersistentClass;
@@ -64,22 +63,6 @@ public class NewFacadeFactoryTest {
 		Table tableTarget = (Table)tableWrapper;
 		assertEquals("foo", tableTarget.getName());
 		assertSame(((Wrapper)tableTarget).getWrappedObject(), tableTarget.getPrimaryKey().getTable());
-	}
-	
-	@Test
-	public void testCreateMap() {
-		IPersistentClass rootClassFacade = (IPersistentClass)GenericFacadeFactory.createFacade(
-				IPersistentClass.class, 
-				WrapperFactory.createRootClassWrapper());
-		PersistentClass rootClass = (PersistentClass)((Wrapper)((IFacade)rootClassFacade).getTarget()).getWrappedObject();
-		IValue mapFacade = 
-				facadeFactory.createMap(rootClassFacade);
-		Object mapWrapper = ((IFacade)mapFacade).getTarget();
-		assertNotNull(mapWrapper);
-		assertTrue(mapWrapper instanceof Wrapper);
-		Object wrappedMap = ((Wrapper)mapWrapper).getWrappedObject();
-		assertTrue(wrappedMap instanceof Map);
-		assertSame(rootClass, ((Map)wrappedMap).getOwner());
 	}
 	
 	@Test

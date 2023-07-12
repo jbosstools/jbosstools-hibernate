@@ -286,7 +286,9 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IValue newMap(IPersistentClass persistentClass) {
-		return newFacadeFactory.createMap(persistentClass);
+		return (IValue)GenericFacadeFactory.createFacade(
+				IValue.class, 
+				WrapperFactory.createMapWrapper(((IFacade)persistentClass).getTarget()));
 	}
 
 	@Override
