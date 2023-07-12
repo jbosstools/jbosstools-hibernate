@@ -272,7 +272,9 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IValue newBag(IPersistentClass persistentClass) {
-		return newFacadeFactory.createBag(persistentClass);
+		return (IValue)GenericFacadeFactory.createFacade(
+				IValue.class, 
+				WrapperFactory.createBagWrapper(((IFacade)persistentClass).getTarget()));
 	}
 	
 	@Override

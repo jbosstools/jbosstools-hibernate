@@ -58,22 +58,6 @@ public class NewFacadeFactoryTest {
 	}
 		
 	@Test
-	public void testCreateBag() {
-		IPersistentClass rootClassFacade = (IPersistentClass)GenericFacadeFactory.createFacade(
-				IPersistentClass.class, 
-				WrapperFactory.createRootClassWrapper());
-		PersistentClass rootClass = (PersistentClass)((Wrapper)((IFacade)rootClassFacade).getTarget()).getWrappedObject();
-		IValue bagFacade = 
-				facadeFactory.createBag(rootClassFacade);
-		Object bagWrapper = ((IFacade)bagFacade).getTarget();
-		assertNotNull(bagWrapper);
-		assertTrue(bagWrapper instanceof Wrapper);
-		Object wrappedBag = ((Wrapper)bagWrapper).getWrappedObject();
-		assertTrue(wrappedBag instanceof Bag);
-		assertSame(rootClass, ((Bag)wrappedBag).getOwner());
-	}
-	
-	@Test
 	public void testCreateList() {
 		IPersistentClass rootClassFacade = (IPersistentClass)GenericFacadeFactory.createFacade(
 				IPersistentClass.class, 
