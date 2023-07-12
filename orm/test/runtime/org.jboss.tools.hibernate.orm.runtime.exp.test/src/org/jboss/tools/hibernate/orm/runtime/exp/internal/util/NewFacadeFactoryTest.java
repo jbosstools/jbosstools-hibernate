@@ -8,7 +8,6 @@ import java.io.File;
 
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.PersistentClass;
-import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
@@ -46,22 +45,6 @@ public class NewFacadeFactoryTest {
 		facadeFactory = NewFacadeFactory.INSTANCE;
 	}
 		
-	@Test
-	public void testCreateSet() {
-		IPersistentClass rootClassFacade = (IPersistentClass)GenericFacadeFactory.createFacade(
-				IPersistentClass.class, 
-				WrapperFactory.createRootClassWrapper());
-		PersistentClass rootClass = (PersistentClass)((Wrapper)((IFacade)rootClassFacade).getTarget()).getWrappedObject();
-		IValue setFacade = 
-				facadeFactory.createSet(rootClassFacade);
-		Object setWrapper = ((IFacade)setFacade).getTarget();
-		assertNotNull(setWrapper);
-		assertTrue(setWrapper instanceof Wrapper);
-		Object wrappedSet = ((Wrapper)setWrapper).getWrappedObject();
-		assertTrue(wrappedSet instanceof Set);
-		assertSame(rootClass, ((Set)wrappedSet).getOwner());
-	}
-	
 	@Test
 	public void testCreateSimpleValue() {
 		IValue simpleValueFacade = facadeFactory.createSimpleValue();
