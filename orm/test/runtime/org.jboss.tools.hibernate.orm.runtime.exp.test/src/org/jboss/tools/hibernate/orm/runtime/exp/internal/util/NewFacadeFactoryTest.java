@@ -8,7 +8,6 @@ import java.io.File;
 
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.PersistentClass;
-import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.tool.api.export.Exporter;
@@ -47,22 +46,6 @@ public class NewFacadeFactoryTest {
 		facadeFactory = NewFacadeFactory.INSTANCE;
 	}
 		
-	@Test
-	public void testCreatePrimitiveArray() {
-		IPersistentClass rootClassFacade = (IPersistentClass)GenericFacadeFactory.createFacade(
-				IPersistentClass.class, 
-				WrapperFactory.createRootClassWrapper());
-		PersistentClass rootClass = (PersistentClass)((Wrapper)((IFacade)rootClassFacade).getTarget()).getWrappedObject();
-		IValue primitiveArrayFacade = 
-				facadeFactory.createPrimitiveArray(rootClassFacade);
-		Object primitiveArrayWrapper = ((IFacade)primitiveArrayFacade).getTarget();
-		assertNotNull(primitiveArrayWrapper);
-		assertTrue(primitiveArrayWrapper instanceof Wrapper);
-		Object wrappedPrimitiveArray = ((Wrapper)primitiveArrayWrapper).getWrappedObject();
-		assertTrue(wrappedPrimitiveArray instanceof PrimitiveArray);
-		assertSame(rootClass, ((PrimitiveArray)wrappedPrimitiveArray).getOwner());
-	}
-	
 	@Test
 	public void testCreateSet() {
 		IPersistentClass rootClassFacade = (IPersistentClass)GenericFacadeFactory.createFacade(

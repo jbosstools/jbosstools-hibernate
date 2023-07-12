@@ -262,7 +262,9 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IValue newPrimitiveArray(IPersistentClass persistentClass) {
-		return newFacadeFactory.createPrimitiveArray(persistentClass);
+		return (IValue)GenericFacadeFactory.createFacade(
+				IValue.class, 
+				WrapperFactory.createPrimitiveArrayWrapper(((IFacade)persistentClass).getTarget()));
 	}
 
 	@Override

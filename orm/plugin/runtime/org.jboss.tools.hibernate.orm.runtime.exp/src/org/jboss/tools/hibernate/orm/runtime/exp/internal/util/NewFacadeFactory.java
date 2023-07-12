@@ -58,12 +58,6 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 		return null;
 	}
 
-	public IValue createPrimitiveArray(IPersistentClass persistentClass) {
-		return (IValue)GenericFacadeFactory.createFacade(
-				IValue.class, 
-				WrapperFactory.createPrimitiveArrayWrapper(((IFacade)persistentClass).getTarget()));
-	}
-
 	public IValue createSet(IPersistentClass persistentClass) {
 		return (IValue)GenericFacadeFactory.createFacade(
 				IValue.class, 
