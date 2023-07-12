@@ -6,8 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 
-import org.hibernate.mapping.Component;
-import org.hibernate.mapping.PersistentClass;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.reveng.RevengStrategy;
@@ -27,11 +25,9 @@ import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
-import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
-import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -44,21 +40,6 @@ public class NewFacadeFactoryTest {
 		facadeFactory = NewFacadeFactory.INSTANCE;
 	}
 		
-	@Test
-	public void testCreateComponentValue() {
-		IPersistentClass rootClassFacade = (IPersistentClass)GenericFacadeFactory.createFacade(
-				IPersistentClass.class, 
-				WrapperFactory.createRootClassWrapper());
-		PersistentClass rootClass = (PersistentClass)((Wrapper)((IFacade)rootClassFacade).getTarget()).getWrappedObject();
-		IValue componentFacade = facadeFactory.createComponent(rootClassFacade);
-		Object componentWrapper = ((IFacade)componentFacade).getTarget();
-		assertNotNull(componentWrapper);
-		assertTrue(componentWrapper instanceof Wrapper);
-		Object wrappedComponent = ((Wrapper)componentWrapper).getWrappedObject();
-		assertTrue(wrappedComponent instanceof Component);
-		assertSame(rootClass, ((Component)wrappedComponent).getOwner());
-	}
-	
 	@Test
 	public void testCreateTableFilter() {
 		ITableFilter tableFilterFacade = facadeFactory.createTableFilter();
