@@ -11,7 +11,6 @@ import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.export.common.GenericExporter;
 import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
-import org.hibernate.tool.internal.reveng.strategy.TableFilter;
 import org.hibernate.tool.orm.jbt.wrp.EnvironmentWrapper;
 import org.hibernate.tool.orm.jbt.wrp.HbmExporterWrapper;
 import org.hibernate.tool.orm.jbt.wrp.HqlCodeAssistWrapper;
@@ -26,7 +25,6 @@ import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
-import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,13 +38,6 @@ public class NewFacadeFactoryTest {
 		facadeFactory = NewFacadeFactory.INSTANCE;
 	}
 		
-	@Test
-	public void testCreateTableFilter() {
-		ITableFilter tableFilterFacade = facadeFactory.createTableFilter();
-		Object tableFilterWrapper = ((IFacade)tableFilterFacade).getTarget();
-		assertTrue(tableFilterWrapper instanceof TableFilter);
-	}
-	
 	@Test
 	public void testCreateTypeFactory() {
 		ITypeFactory typeFactoryFacade = facadeFactory.createTypeFactory();

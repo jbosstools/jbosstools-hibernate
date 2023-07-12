@@ -147,7 +147,9 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public ITableFilter newTableFilter() {
-		return newFacadeFactory.createTableFilter();
+		return (ITableFilter)GenericFacadeFactory.createFacade(
+				ITableFilter.class, 
+				WrapperFactory.createTableFilterWrapper());
 	}
 
 
