@@ -305,7 +305,9 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IValue newOneToMany(IPersistentClass persistentClass) {
-		return newFacadeFactory.createOneToMany(persistentClass);
+		return (IValue)GenericFacadeFactory.createFacade(
+				IValue.class, 
+				WrapperFactory.createOneToManyWrapper(((IFacade)persistentClass).getTarget()));
 	}
 
 	@Override

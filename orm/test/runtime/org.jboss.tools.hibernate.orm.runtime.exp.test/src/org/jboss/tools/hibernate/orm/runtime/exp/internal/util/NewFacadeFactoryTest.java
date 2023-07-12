@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.File;
 
 import org.hibernate.mapping.Component;
-import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimitiveArray;
@@ -63,24 +62,6 @@ public class NewFacadeFactoryTest {
 		Table tableTarget = (Table)tableWrapper;
 		assertEquals("foo", tableTarget.getName());
 		assertSame(((Wrapper)tableTarget).getWrappedObject(), tableTarget.getPrimaryKey().getTable());
-	}
-	
-	@Test
-	public void testCreateOneToMany() {
-		IPersistentClass rootClassFacade = (IPersistentClass)GenericFacadeFactory.createFacade(
-				IPersistentClass.class, 
-				WrapperFactory.createRootClassWrapper());
-		PersistentClass rootClass = (PersistentClass)((Wrapper)((IFacade)rootClassFacade).getTarget()).getWrappedObject();
-		Table table = new Table("", "foo");
-		((RootClass)rootClass).setTable(table);
-		IValue oneToManyFacade = 
-				facadeFactory.createOneToMany(rootClassFacade);
-		Object oneToManyWrapper = ((IFacade)oneToManyFacade).getTarget();
-		assertNotNull(oneToManyWrapper);
-		assertTrue(oneToManyWrapper instanceof Wrapper);
-		Object wrappedOneToMany = ((Wrapper)oneToManyWrapper).getWrappedObject();
-		assertTrue(wrappedOneToMany instanceof OneToMany);
-		assertSame(table, ((OneToMany)wrappedOneToMany).getTable());
 	}
 	
 	@Test
