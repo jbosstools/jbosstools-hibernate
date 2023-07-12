@@ -128,7 +128,9 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public ITypeFactory newTypeFactory() {
-		return newFacadeFactory.createTypeFactory();
+		return (ITypeFactory)GenericFacadeFactory.createFacade(
+				ITypeFactory.class, 
+				WrapperFactory.createTypeFactoryWrapper());
 	}
 
 	@Override

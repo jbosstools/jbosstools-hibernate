@@ -18,7 +18,6 @@ import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
-import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 
 public class NewFacadeFactory extends AbstractFacadeFactory {
 	
@@ -56,12 +55,6 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 		return null;
 	}
 
-	public ITypeFactory createTypeFactory() {
-		return (ITypeFactory)GenericFacadeFactory.createFacade(
-				ITypeFactory.class, 
-				WrapperFactory.createTypeFactoryWrapper());
-	}
-	
 	public IEnvironment createEnvironment() {
 		return (IEnvironment)GenericFacadeFactory.createFacade(
 				IEnvironment.class, 
