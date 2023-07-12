@@ -59,12 +59,6 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 		return null;
 	}
 
-	public IValue createOneToOne(IPersistentClass persistentClass) {
-		return (IValue)GenericFacadeFactory.createFacade(
-				IValue.class, 
-				WrapperFactory.createOneToOneWrapper(((IFacade)persistentClass).getTarget()));
-	}
-
 	public ITable createTable(String name) {
 		return (ITable)GenericFacadeFactory.createFacade(
 				ITable.class, 

@@ -8,10 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.File;
 
 import org.hibernate.mapping.Component;
-import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimitiveArray;
-import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
@@ -62,26 +60,6 @@ public class NewFacadeFactoryTest {
 		Table tableTarget = (Table)tableWrapper;
 		assertEquals("foo", tableTarget.getName());
 		assertSame(((Wrapper)tableTarget).getWrappedObject(), tableTarget.getPrimaryKey().getTable());
-	}
-	
-	@Test
-	public void testCreateOneToOne() {
-		IPersistentClass rootClassFacade = (IPersistentClass)GenericFacadeFactory.createFacade(
-				IPersistentClass.class, 
-				WrapperFactory.createRootClassWrapper());
-		PersistentClass rootClass = (PersistentClass)((Wrapper)((IFacade)rootClassFacade).getTarget()).getWrappedObject();
-		Table table = new Table("", "foo");
-		((RootClass)rootClass).setTable(table);
-		rootClass.setEntityName("bar");
-		IValue oneToOneFacade = 
-				facadeFactory.createOneToOne(rootClassFacade);
-		Object oneToOneWrapper = ((IFacade)oneToOneFacade).getTarget();
-		assertNotNull(oneToOneWrapper);
-		assertTrue(oneToOneWrapper instanceof Wrapper);
-		Object wrappedOneToOne = ((Wrapper)oneToOneWrapper).getWrappedObject();
-		assertTrue(wrappedOneToOne instanceof OneToOne);
-		assertSame("bar", ((OneToOne)wrappedOneToOne).getEntityName());
-		assertSame(table, ((OneToOne)wrappedOneToOne).getTable());
 	}
 	
 	@Test
