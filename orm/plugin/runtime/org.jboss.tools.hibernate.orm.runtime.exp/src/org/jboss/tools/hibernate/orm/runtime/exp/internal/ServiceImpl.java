@@ -296,7 +296,9 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IValue newManyToOne(ITable table) {
-		return newFacadeFactory.createManyToOne(table);
+		return (IValue)GenericFacadeFactory.createFacade(
+				IValue.class, 
+				WrapperFactory.createManyToOneWrapper(((IFacade)table).getTarget()));
 	}
 
 	@Override

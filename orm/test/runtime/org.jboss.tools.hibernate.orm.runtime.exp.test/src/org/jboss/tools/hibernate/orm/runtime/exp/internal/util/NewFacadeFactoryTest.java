@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.File;
 
 import org.hibernate.mapping.Component;
-import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
@@ -65,20 +64,6 @@ public class NewFacadeFactoryTest {
 		Table tableTarget = (Table)tableWrapper;
 		assertEquals("foo", tableTarget.getName());
 		assertSame(((Wrapper)tableTarget).getWrappedObject(), tableTarget.getPrimaryKey().getTable());
-	}
-	
-	@Test
-	public void testCreateManyToOne() {
-		ITable tableFacade = facadeFactory.createTable("foo");
-		Object tableTarget = ((IFacade)tableFacade).getTarget();
-		IValue manyToOneFacade = facadeFactory.createManyToOne(tableFacade);
-		assertNotNull(manyToOneFacade);
-		Object manyToOneWrapper = ((IFacade)manyToOneFacade).getTarget();
-		assertNotNull(manyToOneWrapper);
-		assertTrue(manyToOneWrapper instanceof Wrapper);
-		Object wrappedManyToOne = ((Wrapper)manyToOneWrapper).getWrappedObject();
-		assertTrue(wrappedManyToOne instanceof ManyToOne);
-		assertSame(((ManyToOne)wrappedManyToOne).getTable(), tableTarget);
 	}
 	
 	@Test
