@@ -209,7 +209,9 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public ITable newTable(String name) {
-		return newFacadeFactory.createTable(name);
+		return (ITable)GenericFacadeFactory.createFacade(
+				ITable.class, 
+				WrapperFactory.createTableWrapper(name));
 	}
 
 	@Override

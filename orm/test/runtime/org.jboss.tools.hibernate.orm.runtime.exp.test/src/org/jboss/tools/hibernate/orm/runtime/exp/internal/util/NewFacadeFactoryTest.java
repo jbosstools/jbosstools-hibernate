@@ -1,6 +1,5 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal.util;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -12,7 +11,6 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SimpleValue;
-import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.reveng.RevengStrategy;
@@ -34,7 +32,6 @@ import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
-import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
@@ -50,18 +47,6 @@ public class NewFacadeFactoryTest {
 		facadeFactory = NewFacadeFactory.INSTANCE;
 	}
 		
-	@Test
-	public void testCreateTable() {
-		ITable tableFacade = facadeFactory.createTable("foo");
-		assertNotNull(tableFacade);
-		Object tableWrapper = ((IFacade)tableFacade).getTarget();
-		assertNotNull(tableWrapper);
-		assertTrue(tableWrapper instanceof Table);
-		Table tableTarget = (Table)tableWrapper;
-		assertEquals("foo", tableTarget.getName());
-		assertSame(((Wrapper)tableTarget).getWrappedObject(), tableTarget.getPrimaryKey().getTable());
-	}
-	
 	@Test
 	public void testCreatePrimitiveArray() {
 		IPersistentClass rootClassFacade = (IPersistentClass)GenericFacadeFactory.createFacade(

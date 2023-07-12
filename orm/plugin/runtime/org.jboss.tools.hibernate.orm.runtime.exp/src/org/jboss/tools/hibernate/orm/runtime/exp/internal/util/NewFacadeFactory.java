@@ -18,7 +18,6 @@ import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
-import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
@@ -57,12 +56,6 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 	@Override
 	public IPersistentClass createSpecialRootClass(IProperty property) {
 		return null;
-	}
-
-	public ITable createTable(String name) {
-		return (ITable)GenericFacadeFactory.createFacade(
-				ITable.class, 
-				WrapperFactory.createTableWrapper(name));
 	}
 
 	public IValue createPrimitiveArray(IPersistentClass persistentClass) {
