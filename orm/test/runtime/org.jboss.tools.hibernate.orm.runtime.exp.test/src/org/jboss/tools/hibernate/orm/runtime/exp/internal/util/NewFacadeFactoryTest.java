@@ -7,9 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 
-import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.Component;
-import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
 import org.hibernate.mapping.OneToMany;
@@ -57,22 +55,6 @@ public class NewFacadeFactoryTest {
 		facadeFactory = NewFacadeFactory.INSTANCE;
 	}
 		
-	@Test
-	public void testCreateList() {
-		IPersistentClass rootClassFacade = (IPersistentClass)GenericFacadeFactory.createFacade(
-				IPersistentClass.class, 
-				WrapperFactory.createRootClassWrapper());
-		PersistentClass rootClass = (PersistentClass)((Wrapper)((IFacade)rootClassFacade).getTarget()).getWrappedObject();
-		IValue listFacade = 
-				facadeFactory.createList(rootClassFacade);
-		Object listWrapper = ((IFacade)listFacade).getTarget();
-		assertNotNull(listWrapper);
-		assertTrue(listWrapper instanceof Wrapper);
-		Object wrappedList = ((Wrapper)listWrapper).getWrappedObject();
-		assertTrue(wrappedList instanceof List);
-		assertSame(rootClass, ((List)wrappedList).getOwner());
-	}
-	
 	@Test
 	public void testCreateTable() {
 		ITable tableFacade = facadeFactory.createTable("foo");

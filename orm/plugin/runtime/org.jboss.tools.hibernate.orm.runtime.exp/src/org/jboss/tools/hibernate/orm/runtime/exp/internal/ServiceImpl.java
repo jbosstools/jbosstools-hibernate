@@ -279,7 +279,9 @@ public class ServiceImpl extends AbstractService {
 	
 	@Override
 	public IValue newList(IPersistentClass persistentClass) {
-		return newFacadeFactory.createList(persistentClass);
+		return (IValue)GenericFacadeFactory.createFacade(
+				IValue.class, 
+				WrapperFactory.createListWrapper(((IFacade)persistentClass).getTarget()));
 	}
 
 	@Override
