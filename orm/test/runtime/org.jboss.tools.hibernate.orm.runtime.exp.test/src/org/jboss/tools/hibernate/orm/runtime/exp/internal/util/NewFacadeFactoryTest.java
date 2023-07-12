@@ -8,7 +8,6 @@ import java.io.File;
 
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.PersistentClass;
-import org.hibernate.mapping.SimpleValue;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.reveng.RevengStrategy;
@@ -45,16 +44,6 @@ public class NewFacadeFactoryTest {
 		facadeFactory = NewFacadeFactory.INSTANCE;
 	}
 		
-	@Test
-	public void testCreateSimpleValue() {
-		IValue simpleValueFacade = facadeFactory.createSimpleValue();
-		Object simpleValueWrapper = ((IFacade)simpleValueFacade).getTarget();
-		assertNotNull(simpleValueWrapper);
-		assertTrue(simpleValueWrapper instanceof Wrapper);
-		Object wrappedSimpleValue = ((Wrapper)simpleValueWrapper).getWrappedObject();
-		assertTrue(wrappedSimpleValue instanceof SimpleValue);
-	}
-	
 	@Test
 	public void testCreateComponentValue() {
 		IPersistentClass rootClassFacade = (IPersistentClass)GenericFacadeFactory.createFacade(

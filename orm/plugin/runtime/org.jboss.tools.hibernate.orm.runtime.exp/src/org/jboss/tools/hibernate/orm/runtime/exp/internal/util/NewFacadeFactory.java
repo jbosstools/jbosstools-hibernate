@@ -58,12 +58,6 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 		return null;
 	}
 
-	public IValue createSimpleValue() {
-		return (IValue)GenericFacadeFactory.createFacade(
-				IValue.class, 
-				WrapperFactory.createSimpleValueWrapper());
-	}
-
 	public IValue createComponent(IPersistentClass persistentClass) {
 		return (IValue)GenericFacadeFactory.createFacade(
 				IValue.class, 

@@ -257,7 +257,9 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IValue newSimpleValue() {
-		return newFacadeFactory.createSimpleValue();
+		return (IValue)GenericFacadeFactory.createFacade(
+				IValue.class, 
+				WrapperFactory.createSimpleValueWrapper());
 	}
 
 	@Override
