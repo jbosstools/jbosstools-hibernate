@@ -24,7 +24,6 @@ import org.hibernate.tool.internal.export.cfg.CfgExporter;
 import org.hibernate.tool.orm.jbt.util.JpaMappingFileHelper;
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
-import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.AbstractService;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.HibernateException;
@@ -56,8 +55,6 @@ public class ServiceImpl extends AbstractService {
 
 	private static final String HIBERNATE_VERSION = "6.1";
 	
-	private NewFacadeFactory newFacadeFactory = NewFacadeFactory.INSTANCE;
-
 	@Override
 	public IConfiguration newAnnotationConfiguration() {
 		return newDefaultConfiguration();
@@ -97,10 +94,12 @@ public class ServiceImpl extends AbstractService {
 	}
 
 	@Override
-	public IHQLCodeAssist newHQLCodeAssist(IConfiguration hcfg) {
+	public IHQLCodeAssist newHQLCodeAssist(IConfiguration configuration) {
 		IHQLCodeAssist result = null;
-		if (hcfg instanceof IConfiguration) {
-			result = newFacadeFactory.createHQLCodeAssist(hcfg);
+		if (configuration instanceof IConfiguration) {
+			result = (IHQLCodeAssist)GenericFacadeFactory.createFacade(
+					IHQLCodeAssist.class, 
+					WrapperFactory.createHqlCodeAssistWrapper(((IFacade)configuration).getTarget()));
 		}
 		return result;
 	}

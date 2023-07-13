@@ -1,12 +1,8 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal.util;
 
-import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
-import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
-import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
-import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
@@ -47,12 +43,6 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 	@Override
 	public IPersistentClass createSpecialRootClass(IProperty property) {
 		return null;
-	}
-
-	public IHQLCodeAssist createHQLCodeAssist(IConfiguration configuration) {
-		return (IHQLCodeAssist)GenericFacadeFactory.createFacade(
-				IHQLCodeAssist.class, 
-				WrapperFactory.createHqlCodeAssistWrapper(((IFacade)configuration).getTarget()));
 	}
 
 	@Override

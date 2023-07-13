@@ -1,40 +1,10 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal.util;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
-import org.hibernate.tool.orm.jbt.wrp.HqlCodeAssistWrapper;
-import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
-import org.jboss.tools.hibernate.runtime.common.IFacade;
-import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
-import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 public class NewFacadeFactoryTest {
 
-	private NewFacadeFactory facadeFactory;
-
-	@BeforeEach
-	public void beforeEach() throws Exception {
-		facadeFactory = NewFacadeFactory.INSTANCE;
-	}
-		
-	@Test
-	public void testCreateHqlCodeAssist() {
-		IConfiguration configuration = (IConfiguration)GenericFacadeFactory.createFacade(
-				IConfiguration.class, 
-				WrapperFactory.createNativeConfigurationWrapper());
-		configuration.setProperty("hibernate.connection.url", "jdbc:h2:mem:test");
-		IHQLCodeAssist hqlCodeAssistFacade = facadeFactory.createHQLCodeAssist(configuration);
-		assertNotNull(hqlCodeAssistFacade);
-		Object hqlCodeAssistWrapper = ((IFacade)hqlCodeAssistFacade).getTarget();
-		assertNotNull(hqlCodeAssistWrapper);
-		assertTrue(hqlCodeAssistWrapper instanceof HqlCodeAssistWrapper);
-	}
-	
 	public static class TestRevengStrategy extends DelegatingStrategy {
 		public TestRevengStrategy(RevengStrategy delegate) {
 			super(delegate);
