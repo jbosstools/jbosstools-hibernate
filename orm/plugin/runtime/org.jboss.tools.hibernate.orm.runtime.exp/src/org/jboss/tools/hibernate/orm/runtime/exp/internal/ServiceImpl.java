@@ -256,7 +256,9 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IEnvironment getEnvironment() {
-		return newFacadeFactory.createEnvironment();
+		return (IEnvironment)GenericFacadeFactory.createFacade(
+				IEnvironment.class, 
+				WrapperFactory.createEnvironmentWrapper());
 	}
 
 	@Override

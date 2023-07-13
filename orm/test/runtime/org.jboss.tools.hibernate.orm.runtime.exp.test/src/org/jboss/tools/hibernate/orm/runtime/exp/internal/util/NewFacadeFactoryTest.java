@@ -11,7 +11,6 @@ import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.export.common.GenericExporter;
 import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
-import org.hibernate.tool.orm.jbt.wrp.EnvironmentWrapper;
 import org.hibernate.tool.orm.jbt.wrp.HbmExporterWrapper;
 import org.hibernate.tool.orm.jbt.wrp.HqlCodeAssistWrapper;
 import org.hibernate.tool.orm.jbt.wrp.SchemaExportWrapper;
@@ -19,7 +18,6 @@ import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
-import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
@@ -36,14 +34,6 @@ public class NewFacadeFactoryTest {
 		facadeFactory = NewFacadeFactory.INSTANCE;
 	}
 		
-	@Test
-	public void testCreateEnvironment() {
-		IEnvironment environmentFacade = facadeFactory.createEnvironment();
-		assertNotNull(environmentFacade);
-		Object environmentWrapper = ((IFacade)environmentFacade).getTarget();
-		assertTrue(environmentWrapper instanceof EnvironmentWrapper);
-	}
-	
 	@Test
 	public void testCreateSchemaExport() {
 		IConfiguration configurationFacade = (IConfiguration)GenericFacadeFactory.createFacade(
