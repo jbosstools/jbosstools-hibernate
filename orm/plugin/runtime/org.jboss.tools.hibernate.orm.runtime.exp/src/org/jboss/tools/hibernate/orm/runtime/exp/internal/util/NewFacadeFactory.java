@@ -1,7 +1,5 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal.util;
 
-import java.io.File;
-
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -10,7 +8,6 @@ import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
-import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
@@ -53,13 +50,6 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 		return null;
 	}
 
-	public IHibernateMappingExporter createHibernateMappingExporter(
-			IConfiguration configuration, File file) {
-		return (IHibernateMappingExporter)GenericFacadeFactory.createFacade(
-				IHibernateMappingExporter.class, 
-				WrapperFactory.createHbmExporterWrapper(((IFacade)configuration).getTarget(), file));
-	}
-	
 	public IExporter createExporter(String exporterClassName) {
 		return (IExporter)GenericFacadeFactory.createFacade(
 				IExporter.class, 
