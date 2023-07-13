@@ -13,7 +13,6 @@ import org.hibernate.tool.internal.export.common.GenericExporter;
 import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
 import org.hibernate.tool.orm.jbt.wrp.HbmExporterWrapper;
 import org.hibernate.tool.orm.jbt.wrp.HqlCodeAssistWrapper;
-import org.hibernate.tool.orm.jbt.wrp.SchemaExportWrapper;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -21,7 +20,6 @@ import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
-import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -34,16 +32,6 @@ public class NewFacadeFactoryTest {
 		facadeFactory = NewFacadeFactory.INSTANCE;
 	}
 		
-	@Test
-	public void testCreateSchemaExport() {
-		IConfiguration configurationFacade = (IConfiguration)GenericFacadeFactory.createFacade(
-				IConfiguration.class, 
-				WrapperFactory.createNativeConfigurationWrapper());
-		ISchemaExport schemaExportFacade = facadeFactory.createSchemaExport(configurationFacade);
-		Object schemaExportWrapper = ((IFacade)schemaExportFacade).getTarget();
-		assertTrue(schemaExportWrapper instanceof SchemaExportWrapper);
-	}
-	
 	@Test
 	public void testCreateHibernateMappingExporter() {
 		File file = new File("foo");

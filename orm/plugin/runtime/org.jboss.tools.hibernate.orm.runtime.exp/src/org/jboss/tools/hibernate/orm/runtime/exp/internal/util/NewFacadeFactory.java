@@ -16,7 +16,6 @@ import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
-import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 
 public class NewFacadeFactory extends AbstractFacadeFactory {
 	
@@ -54,12 +53,6 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 		return null;
 	}
 
-	public ISchemaExport createSchemaExport(IConfiguration configuration) {
-		return (ISchemaExport)GenericFacadeFactory.createFacade(
-				ISchemaExport.class, 
-				WrapperFactory.createSchemaExport(((IFacade)configuration).getTarget()));
-	}
-	
 	public IHibernateMappingExporter createHibernateMappingExporter(
 			IConfiguration configuration, File file) {
 		return (IHibernateMappingExporter)GenericFacadeFactory.createFacade(
