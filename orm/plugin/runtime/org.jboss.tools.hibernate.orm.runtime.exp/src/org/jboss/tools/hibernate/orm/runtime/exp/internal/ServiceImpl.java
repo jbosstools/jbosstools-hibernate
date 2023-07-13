@@ -114,7 +114,9 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IExporter createExporter(String exporterClassName) {
-		return newFacadeFactory.createExporter(exporterClassName);
+		return (IExporter)GenericFacadeFactory.createFacade(
+				IExporter.class, 
+				WrapperFactory.createExporterWrapper(exporterClassName));
 	}
 
 	@Override

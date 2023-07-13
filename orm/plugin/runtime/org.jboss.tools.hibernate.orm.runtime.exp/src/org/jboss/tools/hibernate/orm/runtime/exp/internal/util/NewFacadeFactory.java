@@ -6,7 +6,6 @@ import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
-import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
@@ -50,12 +49,6 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 		return null;
 	}
 
-	public IExporter createExporter(String exporterClassName) {
-		return (IExporter)GenericFacadeFactory.createFacade(
-				IExporter.class, 
-				WrapperFactory.createExporterWrapper(exporterClassName));
-	}
-	
 	public IHQLCodeAssist createHQLCodeAssist(IConfiguration configuration) {
 		return (IHQLCodeAssist)GenericFacadeFactory.createFacade(
 				IHQLCodeAssist.class, 
