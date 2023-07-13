@@ -195,7 +195,7 @@ public class ServiceImpl extends AbstractService {
 			IReverseEngineeringStrategy delegate) {
 		return (IReverseEngineeringStrategy)GenericFacadeFactory.createFacade(
 				IReverseEngineeringStrategy.class, 
-				WrapperFactory.createRevengStrategyWrapper(strategyName, delegate));
+				WrapperFactory.createRevengStrategyWrapper(strategyName, ((IFacade)delegate).getTarget()));
 	}
 
 	@Override
