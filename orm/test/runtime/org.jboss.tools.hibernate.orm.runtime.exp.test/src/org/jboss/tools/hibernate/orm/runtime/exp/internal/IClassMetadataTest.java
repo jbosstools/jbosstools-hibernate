@@ -60,8 +60,6 @@ public class IClassMetadataTest {
 		public Set<String> bars = new HashSet<String>();
 	}
 	
-	private static final NewFacadeFactory FACADE_FACTORY = NewFacadeFactory.INSTANCE;
-	
 	@TempDir
 	public File tempDir;
 	

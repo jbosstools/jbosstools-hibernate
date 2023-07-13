@@ -249,7 +249,7 @@ public class ITypeFactoryTest {
 		assertEquals("42", typeFormats.get(typeFactoryFacade.getLongType()));
 		assertEquals("a string", typeFormats.get(typeFactoryFacade.getStringType()));
 		assertEquals("a text", typeFormats.get(typeFactoryFacade.getTextType()));
-		assertEquals(12, typeFormats.get(typeFactoryFacade.getTimeType()).length());
+		assertEquals(':', typeFormats.get(typeFactoryFacade.getTimeType()).charAt(2));
 		assertEquals(
 				new SimpleDateFormat("yyyy-MM-dd").format(new Date()), 
 				typeFormats.get(typeFactoryFacade.getTimestampType()).substring(0, 10));
