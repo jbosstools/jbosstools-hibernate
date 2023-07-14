@@ -5,14 +5,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
-import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class INamingStrategyTest {
-
-	private static final NewFacadeFactory FACADE_FACTORY = NewFacadeFactory.INSTANCE;
 
 	private INamingStrategy namingStrategyFacade = null;
 	

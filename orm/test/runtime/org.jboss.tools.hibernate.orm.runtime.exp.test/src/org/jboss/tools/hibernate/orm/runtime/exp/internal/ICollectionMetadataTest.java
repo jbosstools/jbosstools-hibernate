@@ -15,7 +15,6 @@ import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
-import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
@@ -49,8 +48,6 @@ public class ICollectionMetadataTest {
 		public String id;
 		public Set<String> bars = new HashSet<String>();
 	}
-	
-	private static final NewFacadeFactory FACADE_FACTORY = NewFacadeFactory.INSTANCE;
 	
 	@TempDir
 	public File tempDir;

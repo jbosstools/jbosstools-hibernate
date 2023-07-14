@@ -23,7 +23,6 @@ import org.hibernate.tool.orm.jbt.wrp.DelegatingColumnWrapperImpl;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
-import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
@@ -32,8 +31,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class IColumnTest {
-	
-	private static final NewFacadeFactory FACADE_FACTORY = NewFacadeFactory.INSTANCE;
 	
 	private IColumn columnFacade = null; 
 	private Column columnTarget = null;
