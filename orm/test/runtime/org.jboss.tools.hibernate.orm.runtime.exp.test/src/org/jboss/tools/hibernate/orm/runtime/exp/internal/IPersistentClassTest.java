@@ -33,7 +33,6 @@ import org.hibernate.tool.orm.jbt.wrp.PersistentClassWrapper;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
-import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
@@ -45,8 +44,6 @@ import org.junit.jupiter.api.Test;
 
 public class IPersistentClassTest {
 
-	private static final NewFacadeFactory FACADE_FACTORY = NewFacadeFactory.INSTANCE;
-	
 	private IPersistentClass rootClassFacade = null;
 	private PersistentClass rootClassTarget = null;
 	private IPersistentClass singleTableSubclassFacade = null;
@@ -651,8 +648,10 @@ public class IPersistentClassTest {
 	
 	@Test
 	public void testSetTable() {
-		Table tableTarget = new Table("");
-		ITable tableFacade = FACADE_FACTORY.createTable(tableTarget);
+		ITable tableFacade = (ITable)GenericFacadeFactory.createFacade(
+				ITable.class, 
+				WrapperFactory.createTableWrapper(""));
+		Table tableTarget = (Table)((Wrapper)((IFacade)tableFacade).getTarget()).getWrappedObject();
 		assertNull(rootClassTarget.getTable());
 		assertNull(singleTableSubclassTarget.getTable());
 		rootClassFacade.setTable(tableFacade);
@@ -678,8 +677,10 @@ public class IPersistentClassTest {
 		assertNull(singleTableSubclassTarget.getKey());
 		assertNull(joinedSubclassTarget.getKey());
 		assertNull(specialRootClassTarget.getKey());
-		Value valueTarget = createValue();
-		IValue valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		IValue valueFacade = (IValue)GenericFacadeFactory.createFacade(
+				IValue.class, 
+				WrapperFactory.createSimpleValueWrapper());
+		Value valueTarget = (Value)((Wrapper)((IFacade)valueFacade).getTarget()).getWrappedObject();
 		try {
 			rootClassFacade.setKey(valueFacade);
 			fail();
@@ -731,11 +732,11 @@ public class IPersistentClassTest {
 			assertEquals("getParentProperty() is only allowed on SpecialRootClass", e.getMessage());
 		}
 		assertNull(specialRootClassFacade.getParentProperty());
-		Component component = new Component(
-				DummyMetadataBuildingContext.INSTANCE, 
-				rootClassTarget);
-		component.setParentProperty("foo");
-		IValue componentFacade = FACADE_FACTORY.createValue(component);
+		IValue componentFacade = (IValue)GenericFacadeFactory.createFacade(
+				IValue.class, 
+				WrapperFactory.createComponentWrapper(((IFacade)rootClassFacade).getTarget()));
+		Component componentTarget = (Component)((Wrapper)((IFacade)componentFacade).getTarget()).getWrappedObject();
+		componentTarget.setParentProperty("foo");
 		IProperty propertyFacade = (IProperty)GenericFacadeFactory.createFacade(
 				IProperty.class, 
 				WrapperFactory.createPropertyWrapper());
@@ -777,8 +778,10 @@ public class IPersistentClassTest {
 	
 	@Test
 	public void testSetIdentifier() {
-		Value valueTarget = createValue();
-		IValue valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		IValue valueFacade = (IValue)GenericFacadeFactory.createFacade(
+				IValue.class, 
+				WrapperFactory.createSimpleValueWrapper());
+		Value valueTarget = (Value)((Wrapper)((IFacade)valueFacade).getTarget()).getWrappedObject();
 		assertNull(rootClassTarget.getIdentifier());
 		assertNull(singleTableSubclassTarget.getIdentifier());
 		assertNull(joinedSubclassTarget.getIdentifier());
@@ -805,8 +808,10 @@ public class IPersistentClassTest {
 	
 	@Test
 	public void testSetDiscriminator() throws Exception {
-		Value valueTarget = createValue();
-		IValue valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		IValue valueFacade = (IValue)GenericFacadeFactory.createFacade(
+				IValue.class, 
+				WrapperFactory.createSimpleValueWrapper());
+		Value valueTarget = (Value)((Wrapper)((IFacade)valueFacade).getTarget()).getWrappedObject();
 		assertNull(rootClassTarget.getDiscriminator());
 		assertNull(singleTableSubclassTarget.getDiscriminator());
 		assertNull(joinedSubclassTarget.getDiscriminator());
