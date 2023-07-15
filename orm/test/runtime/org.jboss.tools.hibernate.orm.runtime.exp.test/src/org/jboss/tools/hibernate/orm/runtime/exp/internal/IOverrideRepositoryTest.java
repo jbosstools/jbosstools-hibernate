@@ -14,9 +14,9 @@ import org.hibernate.mapping.Table;
 import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
+import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
-import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
@@ -25,8 +25,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class IOverrideRepositoryTest {
-
-	private static final NewFacadeFactory FACADE_FACTORY = NewFacadeFactory.INSTANCE;
 	
 	private static final String HIBERNATE_REVERSE_ENGINEERING_XML =
 			"<?xml version='1.0' encoding='UTF-8'?>                                 "+
@@ -81,15 +79,17 @@ public class IOverrideRepositoryTest {
 	
 	@Test
 	public void testAddTableFilter() throws Exception {
-		TableFilter tableFilter = new TableFilter();
-		ITableFilter tableFilterFacade = FACADE_FACTORY.createTableFilter(tableFilter);
+		ITableFilter tableFilterFacade = (ITableFilter)GenericFacadeFactory.createFacade(
+				ITableFilter.class, 
+				(TableFilter)WrapperFactory.createTableFilterWrapper());
+		TableFilter tableFilterTarget = (TableFilter)((IFacade)tableFilterFacade).getTarget();
 		Field tableFiltersField = OverrideRepository.class.getDeclaredField("tableFilters");
 		tableFiltersField.setAccessible(true);
 		List<?> tableFilters = (List<?>)tableFiltersField.get(overrideRepository);
 		assertTrue(tableFilters.isEmpty());
 		overrideRepositoryFacade.addTableFilter(tableFilterFacade);
 		tableFilters = (List<?>)tableFiltersField.get(overrideRepository);
-		assertSame(tableFilter, tableFilters.get(0));		
+		assertSame(tableFilterTarget, tableFilters.get(0));		
 	}
 	
 }
