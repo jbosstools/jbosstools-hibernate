@@ -23,7 +23,6 @@ import org.hibernate.type.CollectionType;
 import org.hibernate.type.Type;
 import org.hibernate.type.internal.NamedBasicTypeImpl;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
-import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;

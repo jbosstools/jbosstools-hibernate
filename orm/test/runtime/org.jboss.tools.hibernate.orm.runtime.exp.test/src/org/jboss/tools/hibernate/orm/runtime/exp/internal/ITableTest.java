@@ -21,7 +21,6 @@ import org.hibernate.tool.orm.jbt.wrp.ColumnWrapper;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
-import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
