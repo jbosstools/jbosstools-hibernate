@@ -571,12 +571,12 @@ public class IPersistentClassTest {
 		IProperty firstPropertyFacade = (IProperty)GenericFacadeFactory.createFacade(
 				IProperty.class, 
 				WrapperFactory.createPropertyWrapper());
-		Property firstPropertyTarget = (Property)((Wrapper)((IFacade)firstPropertyFacade).getTarget()).getWrappedObject();
+		Property firstPropertyTarget = (Property)((IFacade)firstPropertyFacade).getTarget();
 		firstPropertyTarget.setName("foo");
 		IProperty secondPropertyFacade = (IProperty)GenericFacadeFactory.createFacade(
 				IProperty.class, 
 				WrapperFactory.createPropertyWrapper());
-		Property secondPropertyTarget = (Property)((Wrapper)((IFacade)secondPropertyFacade).getTarget()).getWrappedObject();
+		Property secondPropertyTarget = (Property)((IFacade)secondPropertyFacade).getTarget();
 		secondPropertyTarget.setName("bar");
 		try {
 			rootClassTarget.getProperty("foo");
@@ -651,7 +651,7 @@ public class IPersistentClassTest {
 		ITable tableFacade = (ITable)GenericFacadeFactory.createFacade(
 				ITable.class, 
 				WrapperFactory.createTableWrapper(""));
-		Table tableTarget = (Table)((Wrapper)((IFacade)tableFacade).getTarget()).getWrappedObject();
+		Table tableTarget = (Table)((IFacade)tableFacade).getTarget();
 		assertNull(rootClassTarget.getTable());
 		assertNull(singleTableSubclassTarget.getTable());
 		rootClassFacade.setTable(tableFacade);
@@ -685,13 +685,13 @@ public class IPersistentClassTest {
 			rootClassFacade.setKey(valueFacade);
 			fail();
 		} catch (RuntimeException e) {
-			assertEquals("setKey(KeyValue) is only allowed on JoinedSubclass", e.getMessage());
+			assertEquals("setKey(Value) is only allowed on JoinedSubclass", e.getMessage());
 		}
 		try {
 			singleTableSubclassFacade.setKey(valueFacade);
 			fail();
 		} catch (RuntimeException e) {
-			assertEquals("setKey(KeyValue) is only allowed on JoinedSubclass", e.getMessage());
+			assertEquals("setKey(Value) is only allowed on JoinedSubclass", e.getMessage());
 		}
 		joinedSubclassFacade.setKey(valueFacade);
 		assertSame(valueTarget, joinedSubclassTarget.getKey());
@@ -699,7 +699,7 @@ public class IPersistentClassTest {
 			specialRootClassFacade.setKey(valueFacade);
 			fail();
 		} catch (RuntimeException e) {
-			assertEquals("setKey(KeyValue) is only allowed on JoinedSubclass", e.getMessage());
+			assertEquals("setKey(Value) is only allowed on JoinedSubclass", e.getMessage());
 		}
 	}
 	
@@ -755,7 +755,7 @@ public class IPersistentClassTest {
 		IProperty propertyFacade = (IProperty)GenericFacadeFactory.createFacade(
 				IProperty.class, 
 				WrapperFactory.createPropertyWrapper());
-		Property propertyTarget = (Property)((Wrapper)((IFacade)propertyFacade).getTarget()).getWrappedObject();
+		Property propertyTarget = (Property)((IFacade)propertyFacade).getTarget();
 		assertNull(rootClassTarget.getIdentifierProperty());
 		rootClassFacade.setIdentifierProperty(propertyFacade);
 		assertSame(propertyTarget, rootClassTarget.getIdentifierProperty());
@@ -793,13 +793,13 @@ public class IPersistentClassTest {
 			singleTableSubclassFacade.setIdentifier(valueFacade);
 			fail();
 		} catch (RuntimeException e) {
-			assertEquals("Method 'setIdentifier(KeyValue)' can only be called on RootClass instances", e.getMessage());
+			assertEquals("Method 'setIdentifier(Value)' can only be called on RootClass instances", e.getMessage());
 		}
 		try {
 			joinedSubclassFacade.setIdentifier(valueFacade);
 			fail();
 		} catch (RuntimeException e) {
-			assertEquals("Method 'setIdentifier(KeyValue)' can only be called on RootClass instances", e.getMessage());
+			assertEquals("Method 'setIdentifier(Value)' can only be called on RootClass instances", e.getMessage());
 		}
 		assertNull(specialRootClassTarget.getIdentifier());
 		specialRootClassFacade.setIdentifier(valueFacade);

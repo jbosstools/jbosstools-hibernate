@@ -62,7 +62,7 @@ public class ITableTest {
 		IColumn columnFacade = (IColumn)GenericFacadeFactory.createFacade(
 				IColumn.class, 
 				WrapperFactory.createColumnWrapper("foo"));
-		Column columnTarget = ((ColumnWrapper)((IFacade)columnFacade).getTarget()).getWrappedObject();
+		Column columnTarget = (Column)((IFacade)columnFacade).getTarget();
 		assertNull(tableTarget.getColumn(columnTarget));
 		tableFacade.addColumn(columnFacade);
 		assertSame(columnTarget, tableTarget.getColumn(columnTarget));

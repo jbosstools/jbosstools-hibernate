@@ -322,7 +322,9 @@ public class ServiceImplTest {
 		assertNotNull(cfg2HbmTool);
 		Object target = ((IFacade)cfg2HbmTool).getTarget();
 		assertNotNull(target);
-		assertTrue(target instanceof Cfg2HbmTool);
+		assertTrue(target instanceof Wrapper);
+		Object wrappedObject = ((Wrapper)target).getWrappedObject();
+		assertTrue(wrappedObject instanceof Cfg2HbmTool);
 	}
 	
 	@Test

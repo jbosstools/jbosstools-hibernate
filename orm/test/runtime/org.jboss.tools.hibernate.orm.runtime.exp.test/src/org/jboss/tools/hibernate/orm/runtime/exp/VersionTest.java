@@ -13,7 +13,7 @@ public class VersionTest {
 
 	@Test
 	public void testToolsVersion() {
-		assertEquals("6.2.6.Final", org.hibernate.tool.api.version.Version.CURRENT_VERSION);
+		assertEquals("6.2.6a.Final", org.hibernate.tool.api.version.Version.CURRENT_VERSION);
 	}
 	
 }

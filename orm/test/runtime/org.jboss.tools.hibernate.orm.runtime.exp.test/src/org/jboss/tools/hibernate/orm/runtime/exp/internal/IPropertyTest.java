@@ -132,7 +132,7 @@ public class IPropertyTest {
 		IValue valueFacade = (IValue)GenericFacadeFactory.createFacade(
 				IValue.class, 
 				WrapperFactory.createSimpleValueWrapper());
-		Value valueTarget = (Value)((Wrapper)((IFacade)valueFacade).getTarget()).getWrappedObject();
+		Value valueTarget = (Value)((IFacade)valueFacade).getTarget();
 		propertyFacade.setValue(valueFacade);
 		assertSame(valueTarget, propertyTarget.getValue());
 	}

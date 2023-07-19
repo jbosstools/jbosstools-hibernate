@@ -45,10 +45,10 @@ public class IPrimaryKeyTest {
 
 	@Test
 	public void testAddColumn() throws Exception {
-		Column columnTarget = new Column("foo");
+		Column columnTarget = new DelegatingColumnWrapperImpl(new Column("foo"));
 		IColumn columnFacade = (IColumn)GenericFacadeFactory.createFacade(
 				IColumn.class, 
-				new DelegatingColumnWrapperImpl(columnTarget));
+				columnTarget);
 		assertTrue(primaryKeyTarget.getColumns().isEmpty());
 		primaryKeyFacade.addColumn(columnFacade);
 		assertEquals(1, primaryKeyTarget.getColumns().size());
@@ -98,10 +98,10 @@ public class IPrimaryKeyTest {
 	
 	@Test
 	public void testContainsColumn() {
-		Column columnTarget = new Column("foo");
+		Column columnTarget = new DelegatingColumnWrapperImpl(new Column("foo"));
 		IColumn columnFacade = (IColumn)GenericFacadeFactory.createFacade(
 				IColumn.class, 
-				new DelegatingColumnWrapperImpl(columnTarget));
+				columnTarget);
 		assertFalse(primaryKeyFacade.containsColumn(columnFacade));
 		primaryKeyTarget.addColumn(columnTarget);
 		assertTrue(primaryKeyFacade.containsColumn(columnFacade));

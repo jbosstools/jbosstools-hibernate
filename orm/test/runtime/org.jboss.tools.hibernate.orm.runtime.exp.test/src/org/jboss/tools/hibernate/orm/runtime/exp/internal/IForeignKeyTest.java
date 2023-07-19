@@ -87,12 +87,12 @@ public class IForeignKeyTest {
 	
 	@Test
 	public void testContainsColumn() throws Exception {
-		Column columnTarget = new Column("foo");
+		Column columnWrapper = new DelegatingColumnWrapperImpl(new Column("foo"));
 		IColumn columnFacade = (IColumn)GenericFacadeFactory.createFacade(
 				IColumn.class, 
-				new DelegatingColumnWrapperImpl(columnTarget));
+				columnWrapper);
 		assertFalse(foreignKeyFacade.containsColumn(columnFacade));
-		foreignKeyTarget.addColumn(columnTarget);
+		foreignKeyTarget.addColumn(columnWrapper);
 		assertTrue(foreignKeyFacade.containsColumn(columnFacade));
 	}
 	

@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.jboss.tools.hibernate.orm.runtime.common.ReflectUtil;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
@@ -146,15 +145,7 @@ public class GenericFacadeFactory {
 			result = new Object[args.length];
 			for (int i = 0; i < args.length; i++) {
 				if (args[i] != null && IFacade.class.isAssignableFrom(args[i].getClass())) {
-					Object target = ((IFacade)args[i]).getTarget();
-					Class<?> targetClass = target.getClass();
-					if (Proxy.isProxyClass(targetClass)) {
-						targetClass = targetClass.getInterfaces()[0];
-					}
-					if (Wrapper.class.isAssignableFrom(targetClass)) {
-						target = ((Wrapper)target).getWrappedObject();
-					}
-					result[i] = target;
+					result[i] = ((IFacade)args[i]).getTarget();
 				} else {
 					result[i] = args[i];
 				}
@@ -240,9 +231,6 @@ public class GenericFacadeFactory {
 					argClass = target.getClass();
 					if (Proxy.isProxyClass(argClass)) {
 						argClass = argClass.getInterfaces()[0];
-					}
-					if (Wrapper.class.isAssignableFrom(argClass)) {
-						argClass = ((Wrapper)target).getWrappedObject().getClass();
 					}
 				}
 				result[i] = argClass;
