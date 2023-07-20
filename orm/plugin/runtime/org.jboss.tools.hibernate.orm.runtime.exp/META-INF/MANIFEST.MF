@@ -18,7 +18,6 @@ Require-Bundle: org.jboss.tools.hibernate.libs.antlr4-runtime.v_4_10,
  org.jboss.tools.hibernate.libs.jandex.v_2_4,
  org.jboss.tools.hibernate.libs.jaxb.v_3_0,
  org.jboss.tools.hibernate.libs.jboss-logging.v_3_4,
- org.jboss.tools.hibernate.runtime.common,
  org.jboss.tools.hibernate.runtime.spi,
  org.jboss.tools.hibernate.orm.runtime.common
 Bundle-ClassPath: .,
