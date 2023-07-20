@@ -41,8 +41,8 @@ import org.hibernate.tool.orm.jbt.util.MockDialect;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
+import org.jboss.tools.hibernate.orm.runtime.common.IFacade;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
-import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
@@ -458,7 +458,6 @@ public class IConfigurationTest {
 			revengConfigurationFacade.configure();
 			fail();
 		} catch (RuntimeException e) {
-			e.printStackTrace();
 			assertEquals(
 					e.getMessage(),
 					"Method 'configure' should not be called on instances of " + RevengConfiguration.class.getName());

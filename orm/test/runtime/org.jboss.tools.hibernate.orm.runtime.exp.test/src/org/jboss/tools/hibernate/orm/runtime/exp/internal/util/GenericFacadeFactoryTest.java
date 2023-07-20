@@ -9,7 +9,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jboss.tools.hibernate.runtime.common.IFacade;
+import org.jboss.tools.hibernate.orm.runtime.common.IFacade;
 import org.junit.jupiter.api.Test;
 
 public class GenericFacadeFactoryTest {
