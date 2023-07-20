@@ -24,7 +24,6 @@ import org.hibernate.tool.internal.export.cfg.CfgExporter;
 import org.hibernate.tool.orm.jbt.util.JpaMappingFileHelper;
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
-import org.jboss.tools.hibernate.runtime.common.AbstractService;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.HibernateException;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
@@ -44,6 +43,7 @@ import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
+import org.jboss.tools.hibernate.runtime.spi.IService;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
@@ -51,10 +51,8 @@ import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.xml.sax.EntityResolver;
 
-public class ServiceImpl extends AbstractService {
+public class ServiceImpl implements  IService {
 
-	private static final String HIBERNATE_VERSION = "6.1";
-	
 	@Override
 	public IConfiguration newAnnotationConfiguration() {
 		return newDefaultConfiguration();
@@ -72,7 +70,6 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IConfiguration newDefaultConfiguration() {
-		getUsageTracker().trackNewConfigurationEvent(HIBERNATE_VERSION);
 		return (IConfiguration)GenericFacadeFactory.createFacade(
 				IConfiguration.class, 
 				WrapperFactory.createNativeConfigurationWrapper());
@@ -393,9 +390,10 @@ public class ServiceImpl extends AbstractService {
 	}
 	
 	@Override
-	protected String getCfgExporterClassName() {
-		return CfgExporter.class.getName();
+	public IExporter createCfgExporter() {
+		return createExporter(CfgExporter.class.getName());
 	}
+	
 
 	private ServiceRegistry buildServiceRegistry(Properties properties) {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
