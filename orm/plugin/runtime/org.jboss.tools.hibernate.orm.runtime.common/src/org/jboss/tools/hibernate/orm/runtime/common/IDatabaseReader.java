@@ -1,4 +1,4 @@
-package org.jboss.tools.hibernate.orm.runtime.exp.internal;
+package org.jboss.tools.hibernate.orm.runtime.common;
 
 import java.util.List;
 import java.util.Map;
