@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 
 import org.hibernate.cfg.Environment;
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
-import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
+import org.jboss.tools.hibernate.orm.runtime.common.GenericFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

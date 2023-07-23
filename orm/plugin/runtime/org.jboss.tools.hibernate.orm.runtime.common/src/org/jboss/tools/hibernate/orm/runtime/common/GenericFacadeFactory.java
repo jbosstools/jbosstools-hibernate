@@ -1,4 +1,4 @@
-package org.jboss.tools.hibernate.orm.runtime.exp.internal.util;
+package org.jboss.tools.hibernate.orm.runtime.common;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationHandler;
@@ -15,8 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.jboss.tools.hibernate.orm.runtime.common.IFacade;
-import org.jboss.tools.hibernate.orm.runtime.common.ReflectUtil;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
