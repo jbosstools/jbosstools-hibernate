@@ -10,6 +10,7 @@ import java.io.File;
 
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.tool.api.export.ArtifactCollector;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
@@ -23,6 +24,7 @@ import org.hibernate.tool.orm.jbt.util.MockDialect;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.jboss.tools.hibernate.orm.runtime.common.IFacade;
+import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
@@ -137,6 +139,15 @@ public class ServiceImplTest {
 					.getProperties()
 					.get(ExporterConstants.METADATA_DESCRIPTOR);
 		assertNull(metadataDescriptor.getProperties()); // Dummy metadata descriptor
+	}
+	
+	@Test
+	public void testNewArtifactCollector() {
+		IArtifactCollector artifactCollector = service.newArtifactCollector();
+		assertNotNull(artifactCollector);
+		Object target = ((IFacade)artifactCollector).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof ArtifactCollector);
 	}
 	
 }
