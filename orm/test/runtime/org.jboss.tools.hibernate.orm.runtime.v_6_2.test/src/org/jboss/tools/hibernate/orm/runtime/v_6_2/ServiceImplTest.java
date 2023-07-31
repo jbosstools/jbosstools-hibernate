@@ -25,6 +25,7 @@ import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
+import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
@@ -478,6 +479,17 @@ public class ServiceImplTest {
 		assertNotNull(manyToOneWrapper);
 		assertTrue(manyToOneWrapper instanceof Wrapper);
 		assertTrue(((Wrapper)manyToOneWrapper).getWrappedObject() instanceof ManyToOne);
+	}
+	
+	@Test
+	public void testNewOneToMany() {
+		IPersistentClass persistentClass = service.newRootClass();
+		IValue oneToMany = service.newOneToMany(persistentClass);
+		assertNotNull(oneToMany);
+		Object oneToManyWrapper = ((IFacade)oneToMany).getTarget();
+		assertNotNull(oneToManyWrapper);
+		assertTrue(oneToManyWrapper instanceof Wrapper);
+		assertTrue(((Wrapper)oneToManyWrapper).getWrappedObject() instanceof OneToMany);
 	}
 	
 }

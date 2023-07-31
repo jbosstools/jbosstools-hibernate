@@ -322,8 +322,9 @@ public class ServiceImpl implements IService {
 
 	@Override
 	public IValue newOneToMany(IPersistentClass persistentClass) {
-		// TODO Auto-generated method stub
-		return null;
+		return (IValue)GenericFacadeFactory.createFacade(
+				IValue.class, 
+				WrapperFactory.createOneToManyWrapper(((IFacade)persistentClass).getTarget()));
 	}
 
 	@Override
