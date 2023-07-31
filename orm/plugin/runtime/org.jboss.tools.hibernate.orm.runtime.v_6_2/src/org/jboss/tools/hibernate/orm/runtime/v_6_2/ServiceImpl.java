@@ -153,10 +153,11 @@ public class ServiceImpl implements IService {
 
 	@Override
 	public IReverseEngineeringStrategy newDefaultReverseEngineeringStrategy() {
-		// TODO Auto-generated method stub
-		return null;
+		return (IReverseEngineeringStrategy)GenericFacadeFactory.createFacade(
+				IReverseEngineeringStrategy.class, 
+				WrapperFactory.createRevengStrategyWrapper());
 	}
-
+	
 	@Override
 	public Map<String, List<ITable>> collectDatabaseTables(Properties properties, IReverseEngineeringStrategy strategy,
 			IProgressListener progressListener) {
