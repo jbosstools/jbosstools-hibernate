@@ -287,10 +287,11 @@ public class ServiceImpl implements IService {
 
 	@Override
 	public IValue newBag(IPersistentClass persistentClass) {
-		// TODO Auto-generated method stub
-		return null;
+		return (IValue)GenericFacadeFactory.createFacade(
+				IValue.class, 
+				WrapperFactory.createBagWrapper(((IFacade)persistentClass).getTarget()));
 	}
-
+	
 	@Override
 	public IValue newList(IPersistentClass persistentClass) {
 		// TODO Auto-generated method stub
