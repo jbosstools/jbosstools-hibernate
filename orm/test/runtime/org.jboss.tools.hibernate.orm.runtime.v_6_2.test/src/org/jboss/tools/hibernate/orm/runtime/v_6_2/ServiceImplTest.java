@@ -433,4 +433,15 @@ public class ServiceImplTest {
 		assertTrue(((Wrapper)bagWrapper).getWrappedObject() instanceof Bag);
 	}
 	
+	@Test
+	public void testNewList() {
+		IPersistentClass persistentClass = service.newRootClass();
+		IValue listFacade = service.newList(persistentClass);
+		assertNotNull(listFacade);
+		Object listWrapper = ((IFacade)listFacade).getTarget();
+		assertNotNull(listWrapper);
+		assertTrue(listWrapper instanceof Wrapper);
+		assertTrue(((Wrapper)listWrapper).getWrappedObject() instanceof org.hibernate.mapping.List);
+	}
+	
 }
