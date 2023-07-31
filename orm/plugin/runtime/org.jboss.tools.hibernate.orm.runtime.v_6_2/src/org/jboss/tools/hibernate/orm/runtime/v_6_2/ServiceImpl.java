@@ -133,8 +133,9 @@ public class ServiceImpl implements IService {
 
 	@Override
 	public IOverrideRepository newOverrideRepository() {
-		// TODO Auto-generated method stub
-		return null;
+		return (IOverrideRepository)GenericFacadeFactory.createFacade(
+				IOverrideRepository.class, 
+				WrapperFactory.createOverrideRepositoryWrapper());
 	}
 
 	@Override
