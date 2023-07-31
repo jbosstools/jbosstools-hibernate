@@ -16,6 +16,7 @@ import org.hibernate.engine.jdbc.dialect.spi.DialectFactory;
 import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfo;
 import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfoSource;
 import org.hibernate.service.ServiceRegistry;
+import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.IDatabaseReader;
@@ -196,8 +197,7 @@ public class ServiceImpl implements IService {
 
 	@Override
 	public String getReverseEngineeringStrategyClassName() {
-		// TODO Auto-generated method stub
-		return null;
+		return RevengStrategy.class.getName();
 	}
 
 	@Override
