@@ -191,8 +191,9 @@ public class ServiceImpl implements IService {
 
 	@Override
 	public ICfg2HbmTool newCfg2HbmTool() {
-		// TODO Auto-generated method stub
-		return null;
+		return (ICfg2HbmTool)GenericFacadeFactory.createFacade(
+				ICfg2HbmTool.class,
+				WrapperFactory.createCfg2HbmWrapper());
 	}
 
 	@Override
