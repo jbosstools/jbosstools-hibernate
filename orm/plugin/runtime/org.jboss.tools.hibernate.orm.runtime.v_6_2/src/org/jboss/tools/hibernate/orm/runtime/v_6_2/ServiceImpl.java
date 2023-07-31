@@ -336,8 +336,9 @@ public class ServiceImpl implements IService {
 
 	@Override
 	public IPersistentClass newSingleTableSubclass(IPersistentClass persistentClass) {
-		// TODO Auto-generated method stub
-		return null;
+		return (IPersistentClass)GenericFacadeFactory.createFacade(
+				IPersistentClass.class, 
+				WrapperFactory.createSingleTableSubClassWrapper(((IFacade)persistentClass).getTarget()));
 	}
 
 	@Override
