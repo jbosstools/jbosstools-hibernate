@@ -259,8 +259,9 @@ public class ServiceImpl implements IService {
 
 	@Override
 	public IEnvironment getEnvironment() {
-		// TODO Auto-generated method stub
-		return null;
+		return (IEnvironment)GenericFacadeFactory.createFacade(
+				IEnvironment.class, 
+				WrapperFactory.createEnvironmentWrapper());
 	}
 
 	@Override
