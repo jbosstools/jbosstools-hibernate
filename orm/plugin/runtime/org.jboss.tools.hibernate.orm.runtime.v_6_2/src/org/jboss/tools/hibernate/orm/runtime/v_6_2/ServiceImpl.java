@@ -198,8 +198,9 @@ public class ServiceImpl implements IService {
 
 	@Override
 	public IProperty newProperty() {
-		// TODO Auto-generated method stub
-		return null;
+		return (IProperty)GenericFacadeFactory.createFacade(
+				IProperty.class, 
+				WrapperFactory.createPropertyWrapper());
 	}
 
 	@Override

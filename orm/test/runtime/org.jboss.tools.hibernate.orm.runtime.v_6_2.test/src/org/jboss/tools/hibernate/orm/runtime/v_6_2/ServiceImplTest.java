@@ -19,6 +19,7 @@ import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.NamingStrategy;
+import org.hibernate.mapping.Property;
 import org.hibernate.tool.api.export.ArtifactCollector;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
@@ -48,6 +49,7 @@ import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IProgressListener;
+import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
@@ -299,6 +301,18 @@ public class ServiceImplTest {
 		assertTrue(target instanceof Wrapper);
 		Object wrappedObject = ((Wrapper)target).getWrappedObject();
 		assertTrue(wrappedObject instanceof Cfg2HbmTool);
+	}
+	
+	@Test
+	public void testNewProperty() {
+		IProperty propertyFacade = service.newProperty();
+		assertNotNull(propertyFacade);
+		Object propertyWrapper = ((IFacade)propertyFacade).getTarget();
+		assertNotNull(propertyWrapper);
+		assertTrue(propertyWrapper instanceof Wrapper);
+		Object propertyTarget = ((Wrapper)propertyWrapper).getWrappedObject();
+		assertNotNull(propertyWrapper);
+		assertTrue(propertyTarget instanceof Property);
 	}
 	
 }
