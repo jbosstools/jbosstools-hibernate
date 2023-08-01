@@ -16,6 +16,8 @@ import org.hibernate.engine.jdbc.dialect.spi.DatabaseMetaDataDialectResolutionIn
 import org.hibernate.engine.jdbc.dialect.spi.DialectFactory;
 import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfo;
 import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfoSource;
+import org.hibernate.proxy.HibernateProxy;
+import org.hibernate.proxy.LazyInitializer;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.orm.jbt.util.JpaMappingFileHelper;
@@ -375,8 +377,14 @@ public class ServiceImpl implements IService {
 	
 	@Override
 	public Class<?> getClassWithoutInitializingProxy(Object reflectedObject) {
-		// TODO Auto-generated method stub
-		return null;
+		if (reflectedObject instanceof HibernateProxy) {
+			HibernateProxy proxy = (HibernateProxy) reflectedObject;
+			LazyInitializer li = proxy.getHibernateLazyInitializer();
+			return li.getPersistentClass();
+		}
+		else {
+			return (Class<?>) reflectedObject.getClass();
+		}
 	}
 
 	@Override
