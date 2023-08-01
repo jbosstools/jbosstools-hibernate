@@ -349,11 +349,11 @@ public class ServiceImpl implements IService {
 	}
 
 	@Override
-	public IPersistentClass newSpecialRootClass(IProperty ormElement) {
-		// TODO Auto-generated method stub
-		return null;
+	public IPersistentClass newSpecialRootClass(IProperty property) {
+		return (IPersistentClass)GenericFacadeFactory.createFacade(
+				IPersistentClass.class, 
+				WrapperFactory.createSpecialRootClassWrapper(((IFacade)property).getTarget()));
 	}
-
 	@Override
 	public IPersistentClass newRootClass() {
 		return (IPersistentClass)GenericFacadeFactory.createFacade(
