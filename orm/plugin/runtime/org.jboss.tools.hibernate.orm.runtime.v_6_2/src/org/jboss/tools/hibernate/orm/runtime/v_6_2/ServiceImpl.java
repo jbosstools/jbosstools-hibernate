@@ -20,6 +20,7 @@ import org.hibernate.proxy.HibernateProxy;
 import org.hibernate.proxy.LazyInitializer;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.api.reveng.RevengStrategy;
+import org.hibernate.tool.internal.export.cfg.CfgExporter;
 import org.hibernate.tool.orm.jbt.util.JpaMappingFileHelper;
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.GenericFacadeFactory;
@@ -110,9 +111,9 @@ public class ServiceImpl implements IService {
 
 	@Override
 	public IExporter createCfgExporter() {
-		// TODO Auto-generated method stub
-		return null;
+		return createExporter(CfgExporter.class.getName());
 	}
+	
 
 	@Override
 	public IExporter createExporter(String exporterClassName) {

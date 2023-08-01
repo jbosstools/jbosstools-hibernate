@@ -198,6 +198,16 @@ public class ServiceImplTest {
 	}
 	
 	@Test
+	public void testCreateCfgExporter() {
+		IExporter exporter = service.createCfgExporter();
+		assertNotNull(exporter);
+		Object exporterWrapper = ((IFacade)exporter).getTarget();
+		assertNotNull(exporterWrapper);
+		Exporter wrappedExporter = (Exporter)((Wrapper)exporterWrapper).getWrappedObject();
+		assertTrue(wrappedExporter instanceof CfgExporter);
+	}
+	
+	@Test
 	public void testNewArtifactCollector() {
 		IArtifactCollector artifactCollector = service.newArtifactCollector();
 		assertNotNull(artifactCollector);
