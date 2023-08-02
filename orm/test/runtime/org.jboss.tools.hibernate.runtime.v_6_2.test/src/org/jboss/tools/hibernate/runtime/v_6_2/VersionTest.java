@@ -21,6 +21,6 @@ public class VersionTest {
 
 	@Test 
 	public void testRuntimeVersion() {
-		assertSame(RuntimeServiceManager.getInstance().findService("6.2").getClass(), ServiceImpl.class);
+		assertSame(RuntimeServiceManager.getInstance().findService("6.2.old").getClass(), ServiceImpl.class);
 	}
 }
