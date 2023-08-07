@@ -174,10 +174,12 @@ public class ServiceImpl implements IService {
 	}
 
 	@Override
-	public IReverseEngineeringStrategy newReverseEngineeringStrategy(String strategyName,
+	public IReverseEngineeringStrategy newReverseEngineeringStrategy(
+			String strategyName,
 			IReverseEngineeringStrategy delegate) {
-		// TODO Auto-generated method stub
-		return null;
+		return (IReverseEngineeringStrategy)GenericFacadeFactory.createFacade(
+				IReverseEngineeringStrategy.class, 
+				WrapperFactory.createRevengStrategyWrapper(strategyName, ((IFacade)delegate).getTarget()));
 	}
 
 	@Override
