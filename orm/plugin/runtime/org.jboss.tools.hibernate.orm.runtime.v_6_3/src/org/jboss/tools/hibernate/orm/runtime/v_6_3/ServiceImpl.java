@@ -106,8 +106,9 @@ public class ServiceImpl implements IService {
 
 	@Override
 	public IArtifactCollector newArtifactCollector() {
-		// TODO Auto-generated method stub
-		return null;
+		return (IArtifactCollector)GenericFacadeFactory.createFacade(
+				IArtifactCollector.class, 
+				WrapperFactory.createArtifactCollectorWrapper());
 	}
 
 	@Override
