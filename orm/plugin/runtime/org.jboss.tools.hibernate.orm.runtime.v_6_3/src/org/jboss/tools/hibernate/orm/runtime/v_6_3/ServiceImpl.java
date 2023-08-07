@@ -140,8 +140,9 @@ public class ServiceImpl implements IService {
 
 	@Override
 	public ITableFilter newTableFilter() {
-		// TODO Auto-generated method stub
-		return null;
+		return (ITableFilter)GenericFacadeFactory.createFacade(
+				ITableFilter.class, 
+				WrapperFactory.createTableFilterWrapper());
 	}
 
 	@Override
