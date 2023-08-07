@@ -99,8 +99,9 @@ public class ServiceImpl implements IService {
 
 	@Override
 	public IExporter createExporter(String exporterClassName) {
-		// TODO Auto-generated method stub
-		return null;
+		return (IExporter)GenericFacadeFactory.createFacade(
+				IExporter.class, 
+				WrapperFactory.createExporterWrapper(exporterClassName));
 	}
 
 	@Override
