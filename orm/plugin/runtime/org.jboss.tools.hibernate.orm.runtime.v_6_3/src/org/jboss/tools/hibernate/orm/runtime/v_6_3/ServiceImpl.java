@@ -126,8 +126,9 @@ public class ServiceImpl implements IService {
 
 	@Override
 	public INamingStrategy newNamingStrategy(String strategyClassName) {
-		// TODO Auto-generated method stub
-		return null;
+		return (INamingStrategy)GenericFacadeFactory.createFacade(
+				INamingStrategy.class, 
+				WrapperFactory.createNamingStrategyWrapper(strategyClassName));
 	}
 
 	@Override
