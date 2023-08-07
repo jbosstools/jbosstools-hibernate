@@ -9,6 +9,7 @@ import java.util.Properties;
 import org.hibernate.tool.internal.export.cfg.CfgExporter;
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.GenericFacadeFactory;
+import org.jboss.tools.hibernate.orm.runtime.common.IDatabaseReader;
 import org.jboss.tools.hibernate.orm.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
@@ -160,10 +161,16 @@ public class ServiceImpl implements IService {
 	}
 	
 	@Override
-	public Map<String, List<ITable>> collectDatabaseTables(Properties properties, IReverseEngineeringStrategy strategy,
-			IProgressListener progressListener) {
-		// TODO Auto-generated method stub
-		return null;
+	public Map<String, List<ITable>> collectDatabaseTables(
+			Properties properties, 
+			IReverseEngineeringStrategy strategy,
+			final IProgressListener progressListener) {
+		return ((IDatabaseReader)GenericFacadeFactory.createFacade(
+				IDatabaseReader.class, 
+				WrapperFactory.createDatabaseReaderWrapper(
+						properties,
+						((IFacade)strategy).getTarget())))
+				.collectDatabaseTables();
 	}
 
 	@Override
