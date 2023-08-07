@@ -119,8 +119,9 @@ public class ServiceImpl implements IService {
 
 	@Override
 	public ITypeFactory newTypeFactory() {
-		// TODO Auto-generated method stub
-		return null;
+		return (ITypeFactory)GenericFacadeFactory.createFacade(
+				ITypeFactory.class, 
+				WrapperFactory.createTypeFactoryWrapper());
 	}
 
 	@Override
