@@ -313,8 +313,9 @@ public class ServiceImpl implements IService {
 
 	@Override
 	public IValue newManyToOne(ITable table) {
-		// TODO Auto-generated method stub
-		return null;
+		return (IValue)GenericFacadeFactory.createFacade(
+				IValue.class, 
+				WrapperFactory.createManyToOneWrapper(((IFacade)table).getTarget()));
 	}
 
 	@Override
