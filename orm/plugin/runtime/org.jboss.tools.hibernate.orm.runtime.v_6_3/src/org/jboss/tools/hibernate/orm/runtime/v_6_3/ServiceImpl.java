@@ -344,8 +344,9 @@ public class ServiceImpl implements IService {
 
 	@Override
 	public IPersistentClass newRootClass() {
-		// TODO Auto-generated method stub
-		return null;
+		return (IPersistentClass)GenericFacadeFactory.createFacade(
+				IPersistentClass.class, 
+				WrapperFactory.createRootClassWrapper());
 	}
 
 	@Override
