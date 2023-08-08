@@ -568,4 +568,11 @@ public class ServiceImplTest {
 		assertEquals(0, result.size());
 	}
 	
+	@Test
+	public void testGetClassWithoutInitializingProxy() {
+		assertSame(
+				Object.class, 
+				service.getClassWithoutInitializingProxy(new Object()));
+	}
+	
 }
