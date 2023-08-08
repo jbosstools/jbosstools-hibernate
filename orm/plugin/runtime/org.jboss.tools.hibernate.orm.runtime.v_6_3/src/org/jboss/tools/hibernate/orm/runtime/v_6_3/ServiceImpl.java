@@ -210,9 +210,10 @@ public class ServiceImpl implements IService {
 	}
 
 	@Override
-	public IColumn newColumn(String string) {
-		// TODO Auto-generated method stub
-		return null;
+	public IColumn newColumn(String name) {
+		return (IColumn)GenericFacadeFactory.createFacade(
+				IColumn.class, 
+				WrapperFactory.createColumnWrapper(name));
 	}
 
 	@Override
