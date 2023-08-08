@@ -19,6 +19,7 @@ import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfoSource;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.export.cfg.CfgExporter;
+import org.hibernate.tool.orm.jbt.util.JpaMappingFileHelper;
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.IDatabaseReader;
@@ -368,10 +369,9 @@ public class ServiceImpl implements IService {
 
 	@Override
 	public List<String> getJPAMappingFilePaths(String persistenceUnitName, EntityResolver entityResolver) {
-		// TODO Auto-generated method stub
-		return null;
+		return JpaMappingFileHelper.findMappingFiles(persistenceUnitName);
 	}
-
+	
 	@Override
 	public Class<?> getClassWithoutInitializingProxy(Object reflectedObject) {
 		// TODO Auto-generated method stub
