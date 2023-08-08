@@ -272,8 +272,9 @@ public class ServiceImpl implements IService {
 
 	@Override
 	public IValue newPrimitiveArray(IPersistentClass persistentClass) {
-		// TODO Auto-generated method stub
-		return null;
+		return (IValue)GenericFacadeFactory.createFacade(
+				IValue.class, 
+				WrapperFactory.createPrimitiveArrayWrapper(((IFacade)persistentClass).getTarget()));
 	}
 
 	@Override
