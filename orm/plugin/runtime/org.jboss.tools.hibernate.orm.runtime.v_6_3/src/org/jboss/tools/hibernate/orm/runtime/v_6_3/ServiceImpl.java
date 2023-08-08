@@ -204,8 +204,9 @@ public class ServiceImpl implements IService {
 
 	@Override
 	public ITable newTable(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		return (ITable)GenericFacadeFactory.createFacade(
+				ITable.class, 
+				WrapperFactory.createTableWrapper(name));
 	}
 
 	@Override
