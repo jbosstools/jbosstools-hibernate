@@ -265,8 +265,9 @@ public class ServiceImpl implements IService {
 
 	@Override
 	public IValue newSimpleValue() {
-		// TODO Auto-generated method stub
-		return null;
+		return (IValue)GenericFacadeFactory.createFacade(
+				IValue.class, 
+				WrapperFactory.createSimpleValueWrapper());
 	}
 
 	@Override
