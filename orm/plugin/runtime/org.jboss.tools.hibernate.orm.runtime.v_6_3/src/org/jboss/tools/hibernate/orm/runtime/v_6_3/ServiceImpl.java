@@ -388,10 +388,9 @@ public class ServiceImpl implements IService {
 
 	@Override
 	public ClassLoader getClassLoader() {
-		// TODO Auto-generated method stub
-		return null;
+		return ServiceImpl.class.getClassLoader();
 	}
-
+	
 	private ServiceRegistry buildServiceRegistry(Properties properties) {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		builder.applySettings(properties);
