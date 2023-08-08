@@ -306,8 +306,9 @@ public class ServiceImpl implements IService {
 
 	@Override
 	public IValue newSet(IPersistentClass persistentClass) {
-		// TODO Auto-generated method stub
-		return null;
+		return (IValue)GenericFacadeFactory.createFacade(
+				IValue.class, 
+				WrapperFactory.createSetWrapper(((IFacade)persistentClass).getTarget()));
 	}
 
 	@Override
