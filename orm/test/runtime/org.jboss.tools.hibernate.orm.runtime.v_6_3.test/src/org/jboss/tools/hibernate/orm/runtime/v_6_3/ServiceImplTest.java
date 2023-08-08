@@ -27,6 +27,7 @@ import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.reveng.RevengSettings;
+import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.export.cfg.CfgExporter;
 import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
 import org.hibernate.tool.internal.export.hbm.HbmExporter;
@@ -299,6 +300,13 @@ public class ServiceImplTest {
 		target = ((IFacade)newStrategy).getTarget();
 		assertNotNull(target);
 		assertTrue(target instanceof DelegatingStrategy);
+	}
+	
+	@Test
+	public void testGetReverseEngineeringStrategyClassName() {
+		assertEquals(
+				RevengStrategy.class.getName(), 
+				service.getReverseEngineeringStrategyClassName());
 	}
 	
 	@Test
