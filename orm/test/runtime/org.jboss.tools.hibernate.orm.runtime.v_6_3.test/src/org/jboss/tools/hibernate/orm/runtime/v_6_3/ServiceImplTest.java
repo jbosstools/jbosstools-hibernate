@@ -557,4 +557,9 @@ public class ServiceImplTest {
 				((Wrapper)((IFacade)specialRootClass.getProperty()).getTarget()).getWrappedObject());
 	}
 	
+	@Test
+	public void testIsInitialized() {
+		assertTrue(service.isInitialized(new Object()));
+	}
+	
 }

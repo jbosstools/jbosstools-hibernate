@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.hibernate.Hibernate;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
@@ -362,8 +363,7 @@ public class ServiceImpl implements IService {
 
 	@Override
 	public boolean isInitialized(Object object) {
-		// TODO Auto-generated method stub
-		return false;
+		return Hibernate.isInitialized(object);
 	}
 
 	@Override
