@@ -12,6 +12,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 	<packaging>pom</packaging>
 	<properties>
 		<tycho.scmUrl>scm:git:https://github.com/jbosstools/jbosstools-hibernate.git</tycho.scmUrl>
+		<testFrameworkProvider>junit5</testFrameworkProvider>
 	</properties>
 	<modules>
 		<module>common</module>

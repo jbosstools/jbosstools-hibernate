@@ -5,4 +5,4 @@ Bundle-SymbolicName: org.jboss.tools.hibernate.runtime.spi.test;singleton:=true
 Bundle-Version: 5.4.22.qualifier
 Fragment-Host: org.jboss.tools.hibernate.runtime.spi
 Bundle-RequiredExecutionEnvironment: JavaSE-11
-Require-Bundle: org.junit.jupiter.api
+Require-Bundle: junit-jupiter-api

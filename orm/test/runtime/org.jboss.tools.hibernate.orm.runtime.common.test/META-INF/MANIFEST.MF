@@ -6,5 +6,5 @@ Automatic-Module-Name: org.jboss.tools.hibernate.orm.runtime.common.test
 Bundle-Version: 5.4.22.qualifier
 Fragment-Host: org.jboss.tools.hibernate.orm.runtime.common
 Bundle-RequiredExecutionEnvironment: JavaSE-11
-Require-Bundle: org.junit.jupiter.api
+Require-Bundle: junit-jupiter-api
 Bundle-ClassPath: .

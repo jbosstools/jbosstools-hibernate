@@ -170,7 +170,7 @@
          unpack="false"/>
 
    <plugin
-         id="org.jboss.tools.hibernate.runtime.v_6_2.test"
+         id="org.jboss.tools.hibernate.orm.runtime.v_6_3.test"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -178,7 +178,7 @@
          unpack="false"/>
 
    <plugin
-         id="org.jboss.tools.hibernate.orm.runtime.v_6_3.test"
+         id="org.jboss.tools.hibernate.orm.runtime.v_6_2.test"
          download-size="0"
          install-size="0"
          version="0.0.0"

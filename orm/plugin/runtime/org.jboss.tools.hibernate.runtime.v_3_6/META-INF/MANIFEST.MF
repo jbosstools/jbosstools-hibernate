@@ -16,7 +16,7 @@ Require-Bundle: org.apache.commons.collections,
  org.jboss.tools.hibernate.runtime.common,
  org.jboss.tools.hibernate.runtime.spi,
  org.hibernate.eclipse,
- org.slf4j.api
+ slf4j.api
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ClassPath: .,
  lib/hibernate-core-3.6.10.Final.jar,
