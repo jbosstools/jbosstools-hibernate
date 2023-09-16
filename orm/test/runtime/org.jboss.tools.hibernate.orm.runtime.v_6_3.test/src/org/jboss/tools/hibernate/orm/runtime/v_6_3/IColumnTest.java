@@ -15,13 +15,13 @@ import java.lang.reflect.Proxy;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Value;
-import org.hibernate.tool.orm.jbt.type.IntegerType;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
 import org.hibernate.tool.orm.jbt.wrp.ColumnWrapper;
 import org.hibernate.tool.orm.jbt.wrp.DelegatingColumnWrapperImpl;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
+import org.hibernate.type.spi.TypeConfiguration;
 import org.jboss.tools.hibernate.orm.runtime.common.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
@@ -174,7 +174,7 @@ public class IColumnTest {
 					public Object invoke(Object proxy, Method method, Object[] args) 
 							throws Throwable {
 						if (method.getName().equals("getType")) {
-							return IntegerType.INSTANCE;
+							return new TypeConfiguration().getBasicTypeForJavaType(Integer.class);
 						}
 						return null;
 					}

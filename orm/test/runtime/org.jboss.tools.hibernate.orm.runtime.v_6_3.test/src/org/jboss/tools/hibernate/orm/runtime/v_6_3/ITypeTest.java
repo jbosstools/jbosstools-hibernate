@@ -10,30 +10,42 @@ import org.hibernate.boot.spi.MetadataBuildingContext;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
-import org.hibernate.tool.orm.jbt.type.ClassType;
-import org.hibernate.tool.orm.jbt.type.IntegerType;
-import org.hibernate.tool.orm.jbt.type.StringType;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.wrp.TypeWrapperFactory;
 import org.hibernate.type.AnyType;
 import org.hibernate.type.ArrayType;
 import org.hibernate.type.BagType;
+import org.hibernate.type.BasicType;
 import org.hibernate.type.ComponentType;
 import org.hibernate.type.ManyToOneType;
 import org.hibernate.type.OneToOneType;
 import org.hibernate.type.spi.TypeConfiguration;
 import org.jboss.tools.hibernate.orm.runtime.common.GenericFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IType;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class ITypeTest {
+	
+	private BasicType<?> classType = null;
+	private BasicType<?> integerType = null;
+	private BasicType<?> stringType = null;
+	private TypeConfiguration typeConfiguration = null;
+	
+	@BeforeEach
+	public void beforeEach() {
+		typeConfiguration = new TypeConfiguration();
+		classType = typeConfiguration.getBasicTypeForJavaType(Class.class);
+		integerType = typeConfiguration.getBasicTypeForJavaType(Integer.class);
+		stringType = typeConfiguration.getBasicTypeForJavaType(String.class);
+	}
 	
 	@Test
 	public void testToString() {
 		// first try type that is string representable
 		IType classTypeFacade = (IType)GenericFacadeFactory.createFacade(
 				IType.class, 
-				TypeWrapperFactory.createTypeWrapper(new ClassType()));
+				TypeWrapperFactory.createTypeWrapper(classType));
 		assertEquals(
 				ITypeTest.class.getName(), 
 				classTypeFacade.toString(ITypeTest.class));
@@ -54,7 +66,7 @@ public class ITypeTest {
 		// first try a class type
 		IType classTypeFacade = (IType)GenericFacadeFactory.createFacade(
 				IType.class, 
-				TypeWrapperFactory.createTypeWrapper(new ClassType()));
+				TypeWrapperFactory.createTypeWrapper(classType));
 		assertEquals("class", classTypeFacade.getName());
 		// next try a array type
 		IType arrayTypeFacade = (IType)GenericFacadeFactory.createFacade(
@@ -68,7 +80,7 @@ public class ITypeTest {
 		// first try type that is string representable
 		IType classTypeFacade = (IType)GenericFacadeFactory.createFacade(
 				IType.class, 
-				TypeWrapperFactory.createTypeWrapper(new ClassType()));
+				TypeWrapperFactory.createTypeWrapper(classType));
 		assertEquals(
 				ITypeTest.class, 
 				classTypeFacade.fromStringValue(ITypeTest.class.getName()));
@@ -89,7 +101,7 @@ public class ITypeTest {
 		// first try type that is not an entity type
 		IType classTypeFacade = (IType)GenericFacadeFactory.createFacade(
 				IType.class, 
-				TypeWrapperFactory.createTypeWrapper(new ClassType()));
+				TypeWrapperFactory.createTypeWrapper(classType));
 		assertFalse(classTypeFacade.isEntityType());
 		// next try type that is an entity type
 		IType entityTypeFacade = (IType)GenericFacadeFactory.createFacade(
@@ -104,7 +116,7 @@ public class ITypeTest {
 		try {
 			IType classTypeFacade = (IType)GenericFacadeFactory.createFacade(
 					IType.class, 
-					TypeWrapperFactory.createTypeWrapper(new ClassType()));
+					TypeWrapperFactory.createTypeWrapper(classType));
 			classTypeFacade.isOneToOne();
 			fail();
 		} catch (UnsupportedOperationException e) {
@@ -129,7 +141,7 @@ public class ITypeTest {
 		// first try type that is not a any type
 		IType classTypeFacade = (IType)GenericFacadeFactory.createFacade(
 				IType.class, 
-				TypeWrapperFactory.createTypeWrapper(new ClassType()));
+				TypeWrapperFactory.createTypeWrapper(classType));
 		assertFalse(classTypeFacade.isAnyType());
 		// next try a any type
 		IType anyTypeFacade = (IType)GenericFacadeFactory.createFacade(
@@ -143,7 +155,7 @@ public class ITypeTest {
 		// first try type that is not a component type
 		IType classTypeFacade = (IType)GenericFacadeFactory.createFacade(
 				IType.class, 
-				TypeWrapperFactory.createTypeWrapper(new ClassType()));
+				TypeWrapperFactory.createTypeWrapper(classType));
 		assertFalse(classTypeFacade.isComponentType());
 		// next try a component type
 		Component component = new Component(
@@ -161,7 +173,7 @@ public class ITypeTest {
 		// first try type that is not a collection type
 		IType classTypeFacade = (IType)GenericFacadeFactory.createFacade(
 				IType.class, 
-				TypeWrapperFactory.createTypeWrapper(new ClassType()));
+				TypeWrapperFactory.createTypeWrapper(classType));
 		assertFalse(classTypeFacade.isCollectionType());
 		// next try a collection type
 		IType arrayTypeFacade = (IType)GenericFacadeFactory.createFacade(
@@ -175,7 +187,7 @@ public class ITypeTest {
 		// first try a class type
 		IType classTypeFacade = (IType)GenericFacadeFactory.createFacade(
 				IType.class, 
-				TypeWrapperFactory.createTypeWrapper(new ClassType()));
+				TypeWrapperFactory.createTypeWrapper(classType));
 		assertEquals(Class.class.getName(), classTypeFacade.getReturnedClassName());
 		// next try an array type of string values
 		IType arrayTypeFacade = (IType)GenericFacadeFactory.createFacade(
@@ -204,7 +216,7 @@ public class ITypeTest {
 		// first try a class type
 		IType classTypeFacade = (IType)GenericFacadeFactory.createFacade(
 				IType.class, 
-				TypeWrapperFactory.createTypeWrapper(new ClassType()));
+				TypeWrapperFactory.createTypeWrapper(classType));
 		assertNull(classTypeFacade.getAssociatedEntityName());
 		// next try a many to one type 
 		IType manyToOneTypeFacade = (IType)GenericFacadeFactory.createFacade(
@@ -219,12 +231,12 @@ public class ITypeTest {
 		// first try a class type
 		IType classTypeFacade = (IType)GenericFacadeFactory.createFacade(
 				IType.class, 
-				TypeWrapperFactory.createTypeWrapper(new ClassType()));
+				TypeWrapperFactory.createTypeWrapper(classType));
 		assertFalse(classTypeFacade.isIntegerType());
 		// next try a integer type 
 		IType integerTypeFacade = (IType)GenericFacadeFactory.createFacade(
 				IType.class, 
-				TypeWrapperFactory.createTypeWrapper(new IntegerType()));
+				TypeWrapperFactory.createTypeWrapper(integerType));
 		assertTrue(integerTypeFacade.isIntegerType());
 	}
 	
@@ -233,7 +245,7 @@ public class ITypeTest {
 		// first try a class type
 		IType classTypeFacade = (IType)GenericFacadeFactory.createFacade(
 				IType.class, 
-				TypeWrapperFactory.createTypeWrapper(new ClassType()));
+				TypeWrapperFactory.createTypeWrapper(classType));
 		assertFalse(classTypeFacade.isArrayType());
 		// next try a bag type
 		IType bagTypeFacade = (IType)GenericFacadeFactory.createFacade(
@@ -252,17 +264,17 @@ public class ITypeTest {
 		// first try a class type
 		IType classTypeFacade = (IType)GenericFacadeFactory.createFacade(
 				IType.class, 
-				TypeWrapperFactory.createTypeWrapper(new ClassType()));
+				TypeWrapperFactory.createTypeWrapper(classType));
 		assertFalse(classTypeFacade.isInstanceOfPrimitiveType());
 		// next try a string type
 		IType stringTypeFacade = (IType)GenericFacadeFactory.createFacade(
 				IType.class, 
-				TypeWrapperFactory.createTypeWrapper(new StringType()));
+				TypeWrapperFactory.createTypeWrapper(stringType));
 		assertFalse(stringTypeFacade.isInstanceOfPrimitiveType());
 		// finally try a integer type 
 		IType integerTypeFacade = (IType)GenericFacadeFactory.createFacade(
 				IType.class, 
-				TypeWrapperFactory.createTypeWrapper(new IntegerType()));
+				TypeWrapperFactory.createTypeWrapper(integerType));
 		assertTrue(integerTypeFacade.isInstanceOfPrimitiveType());
 	}
 	
@@ -272,7 +284,7 @@ public class ITypeTest {
 		try {
 			IType classTypeFacade = (IType)GenericFacadeFactory.createFacade(
 					IType.class, 
-					TypeWrapperFactory.createTypeWrapper(new ClassType()));
+					TypeWrapperFactory.createTypeWrapper(classType));
 			classTypeFacade.getPrimitiveClass();
 		} catch (UnsupportedOperationException e) {
 			assertTrue(e.getMessage().contains("does not support 'getPrimitiveClass()'"));
@@ -280,7 +292,7 @@ public class ITypeTest {
 		// next try a integer type 
 		IType integerTypeFacade = (IType)GenericFacadeFactory.createFacade(
 				IType.class, 
-				TypeWrapperFactory.createTypeWrapper(new IntegerType()));
+				TypeWrapperFactory.createTypeWrapper(integerType));
 		assertEquals(int.class, integerTypeFacade.getPrimitiveClass());
 	}
 
@@ -290,7 +302,7 @@ public class ITypeTest {
 		try {
 			IType classTypeFacade = (IType)GenericFacadeFactory.createFacade(
 					IType.class, 
-					TypeWrapperFactory.createTypeWrapper(new ClassType()));
+					TypeWrapperFactory.createTypeWrapper(classType));
 			classTypeFacade.getRole();
 		} catch (UnsupportedOperationException e) {
 			assertTrue(e.getMessage().contains("does not support 'getRole()'"));
