@@ -85,6 +85,9 @@ public class IQueryTest {
 	private IQuery positionalParameterizedQueryFacade = null;
 	private Query<?> positionalParameterizedQueryTarget = null;
 	
+	private IQuery collectionParameterizedQueryFacade = null;
+	private Query<?> collectionParameterizedQueryTarget = null;
+	
 	private ISessionFactory sessionFactoryFacade = null;
 	private Connection connection = null;
 	private Statement statement = null;
@@ -103,6 +106,9 @@ public class IQueryTest {
 		positionalParameterizedQueryFacade = sessionFacade.createQuery(
 				"from " + Foo.class.getName() + " where id = ?1");
 		positionalParameterizedQueryTarget = (Query<?>)((IFacade)positionalParameterizedQueryFacade).getTarget();
+		collectionParameterizedQueryFacade = sessionFacade.createQuery(
+				"from " + Foo.class.getName() + " where id in :foo");
+		collectionParameterizedQueryTarget = (Query<?>)((IFacade)collectionParameterizedQueryFacade).getTarget();
 	}
 	
 	@AfterEach
@@ -121,6 +127,8 @@ public class IQueryTest {
 		assertNotNull(positionalParameterizedQueryFacade);
 		assertNotNull(positionalParameterizedQueryTarget);
 		assertTrue(positionalParameterizedQueryTarget instanceof Wrapper);
+		assertNotNull(collectionParameterizedQueryTarget);
+		assertTrue(collectionParameterizedQueryTarget instanceof Wrapper);
 	}
 	
 	@Test
@@ -148,11 +156,11 @@ public class IQueryTest {
 	@Test
 	public void testSetParameterList() {
 		QueryParameterBinding<?> binding = 
-				((QuerySqmImpl<?>)((Wrapper)namedParameterizedQueryTarget).getWrappedObject())
+				((QuerySqmImpl<?>)((Wrapper)collectionParameterizedQueryTarget).getWrappedObject())
 				.getParameterBindings()
 				.getBinding("foo");
 		assertFalse(binding.isBound());
-		namedParameterizedQueryFacade.setParameterList("foo", Arrays.asList(1), DUMMY_TYPE);
+		collectionParameterizedQueryFacade.setParameterList("foo", Arrays.asList(1), DUMMY_TYPE);
 		assertTrue(binding.isBound());
 	}
 	

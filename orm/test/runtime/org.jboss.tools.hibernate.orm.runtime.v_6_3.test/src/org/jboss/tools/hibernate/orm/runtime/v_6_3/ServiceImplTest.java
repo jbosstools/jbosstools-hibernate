@@ -300,6 +300,7 @@ public class ServiceImplTest {
 		assertEquals("TEST", table.getCatalog());
 		assertEquals("PUBLIC", table.getSchema());
 		assertEquals("FOO", table.getName());
+		assertTrue(table.getColumnIterator().hasNext());
 		statement.execute("DROP TABLE FOO");
 		statement.close();
 		connection.close();
