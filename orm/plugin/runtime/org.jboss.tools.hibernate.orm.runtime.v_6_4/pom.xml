@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion> 
+	<parent>
+		<groupId>org.jboss.tools.hibernatetools.orm.plugin</groupId>
+		<artifactId>runtime</artifactId>
+		<version>5.4.22-SNAPSHOT</version>
+	</parent>
+	<groupId>org.jboss.tools.hibernatetools.orm.plugin.runtime</groupId>
+	<artifactId>org.jboss.tools.hibernate.orm.runtime.v_6_4</artifactId> 
+	
+	<packaging>eclipse-plugin</packaging>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>${basedir}/lib</directory>
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
+            <plugin>
+              <artifactId>maven-enforcer-plugin</artifactId>
+              <version>1.4.1</version>
+              <executions>
+                <execution>
+                  <id>enforce-no-snapshots-Final</id>
+                  <goals>
+                    <goal>enforce</goal>
+                  </goals>
+                  <configuration>
+                    <rules>
+                      <noSnapshotsAllowed implementation="org.jboss.tools.releng.NoSnapshotsAllowed">
+                        <buildAlias>Final</buildAlias>
+                        <buildAliasSearch>Final|GA</buildAliasSearch>
+                        <includePattern>.*</includePattern>
+                        <excludePattern>BUILD_ALIAS|tychoVersion|tychoExtrasVersion|jbossTychoPluginsVersion|jbosstoolsRelengPublishVersion|parsedVersion.qualifier|parsedVersion.osgiVersion|TARGET_PLATFORM_VERSION|TARGET_PLATFORM_VERSION_MIN|TARGET_PLATFORM_VERSION_MAXIMUM|TARGET_PLATFORM_VERSION_MAX|JBTCENTRALTARGET_VERSION|TARGET_PLATFORM_CENTRAL_MAX|tpc.version|central.tpc.version|discovery.tpc.version|p2StatsUrl|angularjs.repo.url|targetplatform.url|jbosstools-target-site|hibernate.tools.version</excludePattern>
+                      </noSnapshotsAllowed>
+                    </rules>
+                    <fail>true</fail>
+                  </configuration>
+                </execution>
+              </executions>
+              <dependencies>
+                <dependency>
+                  <groupId>org.jboss.tools.releng</groupId>
+                  <artifactId>enforcer-rules</artifactId>
+                  <version>2.7.5</version>
+                  <scope>compile</scope>
+                </dependency>
+              </dependencies>
+            </plugin>
+		</plugins>
+	</build>
+
+</project>
