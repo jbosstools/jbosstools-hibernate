@@ -13,16 +13,6 @@
 
 	<build>
 		<plugins>
-			<plugin>
-				<artifactId>maven-clean-plugin</artifactId>
-				<configuration>
-					<filesets>
-						<fileset>
-							<directory>${basedir}/lib</directory>
-						</fileset>
-					</filesets>
-				</configuration>
-			</plugin>
             <plugin>
               <artifactId>maven-enforcer-plugin</artifactId>
               <version>1.4.1</version>

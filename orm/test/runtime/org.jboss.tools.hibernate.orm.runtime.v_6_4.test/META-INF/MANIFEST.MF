@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name:  Hibernate Runtime 6.4 Tests
+Bundle-SymbolicName: org.jboss.tools.hibernate.orm.runtime.v_6_4.test
+Automatic-Module-Name: org.jboss.tools.hibernate.orm.runtime.v_6_4.test
+Bundle-Version: 5.4.22.qualifier
+Fragment-Host: org.jboss.tools.hibernate.orm.runtime.v_6_4
+Require-Bundle: junit-jupiter-api
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-ClassPath: .
