@@ -4,6 +4,8 @@ Bundle-Name: Hibernate ORM Runtime 6.4
 Bundle-Vendor: Red Hat
 Bundle-SymbolicName: org.jboss.tools.hibernate.orm.runtime.v_6_4;singleton:=true
 Bundle-Version: 5.4.22.qualifier
+Require-Bundle: org.jboss.tools.hibernate.runtime.spi,
+ org.jboss.tools.hibernate.orm.runtime.common
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ClassPath: .
