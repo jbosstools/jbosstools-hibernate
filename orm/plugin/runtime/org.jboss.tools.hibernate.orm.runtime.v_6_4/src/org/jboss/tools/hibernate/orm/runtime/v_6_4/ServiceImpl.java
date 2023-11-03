@@ -167,4 +167,10 @@ public class ServiceImpl {
 				WrapperFactory.createPropertyWrapper());
 	}
 
+	public ITable newTable(String name) {
+		return (ITable)GenericFacadeFactory.createFacade(
+				ITable.class, 
+				WrapperFactory.createTableWrapper(name));
+	}
+
 }

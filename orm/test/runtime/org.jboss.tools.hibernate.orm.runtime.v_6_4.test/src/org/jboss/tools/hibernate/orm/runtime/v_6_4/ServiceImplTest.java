@@ -19,6 +19,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.mapping.Property;
+import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.export.ArtifactCollector;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
@@ -325,6 +326,17 @@ public class ServiceImplTest {
 		Object propertyTarget = ((Wrapper)propertyWrapper).getWrappedObject();
 		assertNotNull(propertyWrapper);
 		assertTrue(propertyTarget instanceof Property);
+	}
+	
+	@Test
+	public void testNewTable() {
+		ITable table = service.newTable("foo");
+		assertNotNull(table);
+		Object target = ((IFacade)table).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof Table);
+		assertEquals("foo", ((Table)target).getName());
+		assertNotNull(((Table)target).getPrimaryKey());
 	}
 	
 }
