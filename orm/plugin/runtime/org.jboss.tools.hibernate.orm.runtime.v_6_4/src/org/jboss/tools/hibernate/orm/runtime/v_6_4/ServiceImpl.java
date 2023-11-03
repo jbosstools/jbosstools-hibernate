@@ -7,6 +7,7 @@ import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
@@ -59,6 +60,12 @@ public class ServiceImpl {
 		return (IConfiguration)GenericFacadeFactory.createFacade(
 				IConfiguration.class, 
 				WrapperFactory.createRevengConfigurationWrapper());
+	}
+
+	public IExporter createExporter(String exporterClassName) {
+		return (IExporter)GenericFacadeFactory.createFacade(
+				IExporter.class, 
+				WrapperFactory.createExporterWrapper(exporterClassName));
 	}
 
 }
