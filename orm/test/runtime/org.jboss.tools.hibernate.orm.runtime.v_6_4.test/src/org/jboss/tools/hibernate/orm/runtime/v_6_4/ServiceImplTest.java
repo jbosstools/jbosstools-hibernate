@@ -30,4 +30,11 @@ public class ServiceImplTest {
 		assertTrue(((IFacade)defaultConfiguration).getTarget() instanceof Configuration);
 	}
 
+	@Test
+	public void testNewAnnotationConfiguration() {
+		IConfiguration annotationConfiguration = service.newAnnotationConfiguration();
+		assertNotNull(annotationConfiguration);
+		assertTrue(((IFacade)annotationConfiguration).getTarget() instanceof Configuration);
+	}
+
 }

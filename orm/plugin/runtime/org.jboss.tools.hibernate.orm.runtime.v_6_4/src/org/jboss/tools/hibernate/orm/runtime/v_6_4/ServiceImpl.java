@@ -12,4 +12,8 @@ public class ServiceImpl {
 				WrapperFactory.createNativeConfigurationWrapper());
 	}
 
+	public IConfiguration newAnnotationConfiguration() {
+		return newDefaultConfiguration();
+	}
+
 }
