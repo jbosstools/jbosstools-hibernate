@@ -12,6 +12,7 @@ import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
+import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 
@@ -85,6 +86,12 @@ public class ServiceImpl {
 		return (ITypeFactory)GenericFacadeFactory.createFacade(
 				ITypeFactory.class, 
 				WrapperFactory.createTypeFactoryWrapper());
+	}
+
+	public INamingStrategy newNamingStrategy(String strategyClassName) {
+		return (INamingStrategy)GenericFacadeFactory.createFacade(
+				INamingStrategy.class, 
+				WrapperFactory.createNamingStrategyWrapper(strategyClassName));
 	}
 
 }
