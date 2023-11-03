@@ -1,10 +1,13 @@
 package org.jboss.tools.hibernate.orm.runtime.v_6_4;
 
+import java.io.File;
 import java.util.Map;
 
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.GenericFacadeFactory;
+import org.jboss.tools.hibernate.orm.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 
 public class ServiceImpl {
 
@@ -25,6 +28,13 @@ public class ServiceImpl {
 		return (IConfiguration)GenericFacadeFactory.createFacade(
 				IConfiguration.class, 
 				WrapperFactory.createJpaConfigurationWrapper(persistenceUnit, overrides));
+	}
+
+	public IHibernateMappingExporter newHibernateMappingExporter(
+			IConfiguration configuration, File file) {
+		return (IHibernateMappingExporter)GenericFacadeFactory.createFacade(
+				IHibernateMappingExporter.class, 
+				WrapperFactory.createHbmExporterWrapper(((IFacade)configuration).getTarget(), file));
 	}
 
 }
