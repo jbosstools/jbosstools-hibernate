@@ -27,6 +27,7 @@ import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
@@ -217,6 +218,12 @@ public class ServiceImpl {
 
 	public Class<?> getDriverManagerConnectionProviderClass() {
 		return DriverManagerConnectionProviderImpl.class;
+	}
+
+	public IEnvironment getEnvironment() {
+		return (IEnvironment)GenericFacadeFactory.createFacade(
+				IEnvironment.class, 
+				WrapperFactory.createEnvironmentWrapper());
 	}
 
 	private ServiceRegistry buildServiceRegistry(Properties properties) {
