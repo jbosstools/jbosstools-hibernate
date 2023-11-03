@@ -14,6 +14,7 @@ import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
+import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
@@ -115,4 +116,10 @@ public class ServiceImpl {
 				WrapperFactory.createRevengStrategyWrapper());
 	}
 
+	public IReverseEngineeringSettings newReverseEngineeringSettings(
+			IReverseEngineeringStrategy res) {
+		return (IReverseEngineeringSettings)GenericFacadeFactory.createFacade(
+				IReverseEngineeringSettings.class, 
+				WrapperFactory.createRevengSettingsWrapper(((IFacade)res).getTarget()));
+	}
 }
