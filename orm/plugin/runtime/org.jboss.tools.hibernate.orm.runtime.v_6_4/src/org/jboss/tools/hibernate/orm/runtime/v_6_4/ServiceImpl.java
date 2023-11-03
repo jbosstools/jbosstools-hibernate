@@ -7,6 +7,7 @@ import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 
@@ -42,6 +43,16 @@ public class ServiceImpl {
 		return (ISchemaExport)GenericFacadeFactory.createFacade(
 				ISchemaExport.class, 
 				WrapperFactory.createSchemaExport(((IFacade)configuration).getTarget()));
+	}
+
+	public IHQLCodeAssist newHQLCodeAssist(IConfiguration configuration) {
+		IHQLCodeAssist result = null;
+		if (configuration instanceof IConfiguration) {
+			result = (IHQLCodeAssist)GenericFacadeFactory.createFacade(
+					IHQLCodeAssist.class, 
+					WrapperFactory.createHqlCodeAssistWrapper(((IFacade)configuration).getTarget()));
+		}
+		return result;
 	}
 
 }

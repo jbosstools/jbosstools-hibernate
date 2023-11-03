@@ -17,6 +17,7 @@ import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
 import org.jboss.tools.hibernate.orm.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.junit.jupiter.api.BeforeEach;
@@ -84,6 +85,15 @@ public class ServiceImplTest {
 		configuration.setProperty(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
 		ISchemaExport schemaExport = service.newSchemaExport(configuration);
 		assertNotNull(schemaExport);
+	}
+	
+	@Test
+	public void testNewHQLCodeAssist() {
+		IConfiguration configuration = service.newDefaultConfiguration();
+		configuration.setProperty(AvailableSettings.DIALECT, MockDialect.class.getName());
+		configuration.setProperty(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
+		IHQLCodeAssist hqlCodeAssist = service.newHQLCodeAssist(configuration);
+		assertNotNull(hqlCodeAssist);
 	}
 	
 }
