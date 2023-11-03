@@ -12,6 +12,7 @@ import org.jboss.tools.hibernate.orm.runtime.common.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.IDatabaseReader;
 import org.jboss.tools.hibernate.orm.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
+import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
@@ -151,6 +152,12 @@ public class ServiceImpl {
 
 	public String getReverseEngineeringStrategyClassName() {
 		return RevengStrategy.class.getName();
+	}
+
+	public ICfg2HbmTool newCfg2HbmTool() {
+		return (ICfg2HbmTool)GenericFacadeFactory.createFacade(
+				ICfg2HbmTool.class,
+				WrapperFactory.createCfg2HbmWrapper());
 	}
 
 }
