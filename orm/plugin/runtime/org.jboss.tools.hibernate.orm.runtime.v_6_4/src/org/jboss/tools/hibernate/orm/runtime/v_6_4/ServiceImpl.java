@@ -10,6 +10,7 @@ import java.util.Properties;
 
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.dialect.Dialect;
+import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 import org.hibernate.engine.jdbc.dialect.spi.DatabaseMetaDataDialectResolutionInfoAdapter;
 import org.hibernate.engine.jdbc.dialect.spi.DialectFactory;
 import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfo;
@@ -212,6 +213,10 @@ public class ServiceImpl {
 				}
 		);
 		return dialect != null ? dialect.toString() : null;
+	}
+
+	public Class<?> getDriverManagerConnectionProviderClass() {
+		return DriverManagerConnectionProviderImpl.class;
 	}
 
 	private ServiceRegistry buildServiceRegistry(Properties properties) {
