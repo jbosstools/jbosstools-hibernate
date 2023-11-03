@@ -13,6 +13,7 @@ import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
+import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 
 public class ServiceImpl {
 
@@ -78,6 +79,12 @@ public class ServiceImpl {
 		return (IArtifactCollector)GenericFacadeFactory.createFacade(
 				IArtifactCollector.class, 
 				WrapperFactory.createArtifactCollectorWrapper());
+	}
+
+	public ITypeFactory newTypeFactory() {
+		return (ITypeFactory)GenericFacadeFactory.createFacade(
+				ITypeFactory.class, 
+				WrapperFactory.createTypeFactoryWrapper());
 	}
 
 }
