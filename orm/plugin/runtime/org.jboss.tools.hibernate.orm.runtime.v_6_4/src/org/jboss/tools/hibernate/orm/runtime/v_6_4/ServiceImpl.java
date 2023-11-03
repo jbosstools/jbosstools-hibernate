@@ -41,6 +41,7 @@ import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
+import org.jboss.tools.hibernate.runtime.spi.IValue;
 
 public class ServiceImpl {
 
@@ -224,6 +225,12 @@ public class ServiceImpl {
 		return (IEnvironment)GenericFacadeFactory.createFacade(
 				IEnvironment.class, 
 				WrapperFactory.createEnvironmentWrapper());
+	}
+
+	public IValue newSimpleValue() {
+		return (IValue)GenericFacadeFactory.createFacade(
+				IValue.class, 
+				WrapperFactory.createSimpleValueWrapper());
 	}
 
 	private ServiceRegistry buildServiceRegistry(Properties properties) {
