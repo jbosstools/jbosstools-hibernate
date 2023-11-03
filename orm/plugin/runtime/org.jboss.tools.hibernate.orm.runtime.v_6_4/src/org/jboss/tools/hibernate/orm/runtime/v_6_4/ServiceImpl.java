@@ -140,4 +140,12 @@ public class ServiceImpl {
 				.collectDatabaseTables();
 	}
 
+	public IReverseEngineeringStrategy newReverseEngineeringStrategy(
+			String strategyName,
+			IReverseEngineeringStrategy delegate) {
+		return (IReverseEngineeringStrategy)GenericFacadeFactory.createFacade(
+				IReverseEngineeringStrategy.class, 
+				WrapperFactory.createRevengStrategyWrapper(strategyName, ((IFacade)delegate).getTarget()));
+	}
+
 }
