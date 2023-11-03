@@ -19,6 +19,7 @@ import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.internal.export.cfg.CfgExporter;
 import org.hibernate.tool.internal.export.hbm.HbmExporter;
 import org.hibernate.tool.internal.export.java.JavaExporter;
+import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.util.MetadataHelper;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
@@ -32,6 +33,7 @@ import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
+import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -187,6 +189,15 @@ public class ServiceImplTest {
 					"Exception while looking up class 'some unexistent class'"));
 		}
 		assertNull(namingStrategy);
+	}
+	
+	@Test
+	public void testNewOverrideRepository() {
+		IOverrideRepository overrideRepository = service.newOverrideRepository();
+		assertNotNull(overrideRepository);
+		Object target = ((IFacade)overrideRepository).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof OverrideRepository);
 	}
 	
 }

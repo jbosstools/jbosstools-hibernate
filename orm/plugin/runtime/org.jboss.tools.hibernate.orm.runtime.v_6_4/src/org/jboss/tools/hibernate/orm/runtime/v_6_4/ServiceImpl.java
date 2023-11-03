@@ -13,6 +13,7 @@ import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
+import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 
@@ -92,6 +93,12 @@ public class ServiceImpl {
 		return (INamingStrategy)GenericFacadeFactory.createFacade(
 				INamingStrategy.class, 
 				WrapperFactory.createNamingStrategyWrapper(strategyClassName));
+	}
+
+	public IOverrideRepository newOverrideRepository() {
+		return (IOverrideRepository)GenericFacadeFactory.createFacade(
+				IOverrideRepository.class, 
+				WrapperFactory.createOverrideRepositoryWrapper());
 	}
 
 }
