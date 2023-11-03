@@ -55,4 +55,10 @@ public class ServiceImpl {
 		return result;
 	}
 
+	public IConfiguration newJDBCMetaDataConfiguration() {
+		return (IConfiguration)GenericFacadeFactory.createFacade(
+				IConfiguration.class, 
+				WrapperFactory.createRevengConfigurationWrapper());
+	}
+
 }
