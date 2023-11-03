@@ -1,11 +1,14 @@
 package org.jboss.tools.hibernate.orm.runtime.v_6_4;
 
 import java.io.File;
+import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.hibernate.tool.internal.export.cfg.CfgExporter;
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.GenericFacadeFactory;
+import org.jboss.tools.hibernate.orm.runtime.common.IDatabaseReader;
 import org.jboss.tools.hibernate.orm.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
@@ -14,9 +17,11 @@ import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
+import org.jboss.tools.hibernate.runtime.spi.IProgressListener;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
+import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 
@@ -122,4 +127,17 @@ public class ServiceImpl {
 				IReverseEngineeringSettings.class, 
 				WrapperFactory.createRevengSettingsWrapper(((IFacade)res).getTarget()));
 	}
+
+	public Map<String, List<ITable>> collectDatabaseTables(
+			Properties properties, 
+			IReverseEngineeringStrategy strategy,
+			final IProgressListener progressListener) {
+		return ((IDatabaseReader)GenericFacadeFactory.createFacade(
+				IDatabaseReader.class, 
+				WrapperFactory.createDatabaseReaderWrapper(
+						properties,
+						((IFacade)strategy).getTarget())))
+				.collectDatabaseTables();
+	}
+
 }
