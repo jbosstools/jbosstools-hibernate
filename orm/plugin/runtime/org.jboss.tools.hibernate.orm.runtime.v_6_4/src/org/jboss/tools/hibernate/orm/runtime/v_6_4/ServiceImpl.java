@@ -3,6 +3,7 @@ package org.jboss.tools.hibernate.orm.runtime.v_6_4;
 import java.io.File;
 import java.util.Map;
 
+import org.hibernate.tool.internal.export.cfg.CfgExporter;
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.IFacade;
@@ -68,4 +69,8 @@ public class ServiceImpl {
 				WrapperFactory.createExporterWrapper(exporterClassName));
 	}
 
+	public IExporter createCfgExporter() {
+		return createExporter(CfgExporter.class.getName());
+	}
+	
 }

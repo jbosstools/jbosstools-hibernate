@@ -139,4 +139,14 @@ public class ServiceImplTest {
 		assertNull(metadataDescriptor.getProperties()); // Dummy metadata descriptor
 	}
 	
+	@Test
+	public void testCreateCfgExporter() {
+		IExporter exporter = service.createCfgExporter();
+		assertNotNull(exporter);
+		Object exporterWrapper = ((IFacade)exporter).getTarget();
+		assertNotNull(exporterWrapper);
+		Exporter wrappedExporter = (Exporter)((Wrapper)exporterWrapper).getWrappedObject();
+		assertTrue(wrappedExporter instanceof CfgExporter);
+	}
+	
 }
