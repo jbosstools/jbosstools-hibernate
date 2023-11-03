@@ -15,6 +15,7 @@ import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
+import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 
 public class ServiceImpl {
@@ -99,6 +100,12 @@ public class ServiceImpl {
 		return (IOverrideRepository)GenericFacadeFactory.createFacade(
 				IOverrideRepository.class, 
 				WrapperFactory.createOverrideRepositoryWrapper());
+	}
+
+	public ITableFilter newTableFilter() {
+		return (ITableFilter)GenericFacadeFactory.createFacade(
+				ITableFilter.class, 
+				WrapperFactory.createTableFilterWrapper());
 	}
 
 }
