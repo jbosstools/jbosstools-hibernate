@@ -33,6 +33,7 @@ import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
+import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProgressListener;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
@@ -231,6 +232,12 @@ public class ServiceImpl {
 		return (IValue)GenericFacadeFactory.createFacade(
 				IValue.class, 
 				WrapperFactory.createSimpleValueWrapper());
+	}
+
+	public IPersistentClass newRootClass() {
+		return (IPersistentClass)GenericFacadeFactory.createFacade(
+				IPersistentClass.class, 
+				WrapperFactory.createRootClassWrapper());
 	}
 
 	private ServiceRegistry buildServiceRegistry(Properties properties) {
