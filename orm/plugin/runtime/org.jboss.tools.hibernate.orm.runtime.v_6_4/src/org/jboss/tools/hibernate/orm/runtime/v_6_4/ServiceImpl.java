@@ -240,6 +240,12 @@ public class ServiceImpl {
 				WrapperFactory.createRootClassWrapper());
 	}
 
+	public IValue newPrimitiveArray(IPersistentClass persistentClass) {
+		return (IValue)GenericFacadeFactory.createFacade(
+				IValue.class, 
+				WrapperFactory.createPrimitiveArrayWrapper(((IFacade)persistentClass).getTarget()));
+	}
+
 	private ServiceRegistry buildServiceRegistry(Properties properties) {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		builder.applySettings(properties);
