@@ -264,6 +264,12 @@ public class ServiceImpl {
 				WrapperFactory.createListWrapper(((IFacade)persistentClass).getTarget()));
 	}
 
+	public IValue newMap(IPersistentClass persistentClass) {
+		return (IValue)GenericFacadeFactory.createFacade(
+				IValue.class, 
+				WrapperFactory.createMapWrapper(((IFacade)persistentClass).getTarget()));
+	}
+
 	public IValue newSet(IPersistentClass persistentClass) {
 		return (IValue)GenericFacadeFactory.createFacade(
 				IValue.class, 
