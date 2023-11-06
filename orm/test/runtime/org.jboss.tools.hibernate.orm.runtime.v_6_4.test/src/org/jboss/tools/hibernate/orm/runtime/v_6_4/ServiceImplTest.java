@@ -22,6 +22,7 @@ import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
+import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
 import org.hibernate.mapping.OneToMany;
@@ -526,6 +527,23 @@ public class ServiceImplTest {
 		assertSame(
 				((Wrapper)((IFacade)persistentClass).getTarget()).getWrappedObject(), 
 				((SingleTableSubclass)((Wrapper)target).getWrappedObject()).getSuperclass());
+	}
+	
+	@Test
+	public void testNewJoinedSubclass() {
+		IPersistentClass persistentClass = (IPersistentClass)GenericFacadeFactory.createFacade(
+				IPersistentClass.class, 
+				WrapperFactory.createRootClassWrapper());
+		IPersistentClass joinedSubclass = service.newJoinedSubclass(persistentClass);
+		assertNotNull(joinedSubclass);
+		Object target = ((IFacade)joinedSubclass).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof Wrapper);
+		assertTrue(((Wrapper)target).getWrappedObject() instanceof JoinedSubclass);
+		assertEquals(persistentClass, joinedSubclass.getSuperclass());
+		assertSame(
+				((Wrapper)((IFacade)persistentClass).getTarget()).getWrappedObject(), 
+				((JoinedSubclass)((Wrapper)target).getWrappedObject()).getSuperclass());
 	}
 	
 }
