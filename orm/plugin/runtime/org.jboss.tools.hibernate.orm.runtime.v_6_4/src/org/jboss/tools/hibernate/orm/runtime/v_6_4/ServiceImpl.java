@@ -282,6 +282,12 @@ public class ServiceImpl {
 				WrapperFactory.createManyToOneWrapper(((IFacade)table).getTarget()));
 	}
 
+	public IValue newOneToMany(IPersistentClass persistentClass) {
+		return (IValue)GenericFacadeFactory.createFacade(
+				IValue.class, 
+				WrapperFactory.createOneToManyWrapper(((IFacade)persistentClass).getTarget()));
+	}
+
 	private ServiceRegistry buildServiceRegistry(Properties properties) {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		builder.applySettings(properties);
