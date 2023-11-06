@@ -294,6 +294,12 @@ public class ServiceImpl {
 				WrapperFactory.createOneToOneWrapper(((IFacade)persistentClass).getTarget()));
 	}
 
+	public IPersistentClass newSingleTableSubclass(IPersistentClass persistentClass) {
+		return (IPersistentClass)GenericFacadeFactory.createFacade(
+				IPersistentClass.class, 
+				WrapperFactory.createSingleTableSubClassWrapper(((IFacade)persistentClass).getTarget()));
+	}
+
 	private ServiceRegistry buildServiceRegistry(Properties properties) {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		builder.applySettings(properties);
