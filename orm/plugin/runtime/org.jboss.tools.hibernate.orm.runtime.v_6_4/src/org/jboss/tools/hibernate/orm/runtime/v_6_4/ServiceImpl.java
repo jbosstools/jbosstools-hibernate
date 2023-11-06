@@ -252,6 +252,12 @@ public class ServiceImpl {
 				WrapperFactory.createArrayWrapper(((IFacade)persistentClass).getTarget()));
 	}
 
+	public IValue newBag(IPersistentClass persistentClass) {
+		return (IValue)GenericFacadeFactory.createFacade(
+				IValue.class, 
+				WrapperFactory.createBagWrapper(((IFacade)persistentClass).getTarget()));
+	}
+
 	private ServiceRegistry buildServiceRegistry(Properties properties) {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		builder.applySettings(properties);
