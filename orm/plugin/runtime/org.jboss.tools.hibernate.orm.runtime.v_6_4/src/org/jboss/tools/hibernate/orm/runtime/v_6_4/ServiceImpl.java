@@ -336,6 +336,10 @@ public class ServiceImpl {
 		}
 	}
 
+	public ClassLoader getClassLoader() {
+		return ServiceImpl.class.getClassLoader();
+	}
+	
 	private ServiceRegistry buildServiceRegistry(Properties properties) {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		builder.applySettings(properties);
