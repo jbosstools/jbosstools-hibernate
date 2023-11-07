@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.hibernate.Hibernate;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
@@ -310,6 +311,10 @@ public class ServiceImpl {
 		return (IPersistentClass)GenericFacadeFactory.createFacade(
 				IPersistentClass.class, 
 				WrapperFactory.createSpecialRootClassWrapper(((IFacade)property).getTarget()));
+	}
+
+	public boolean isInitialized(Object object) {
+		return Hibernate.isInitialized(object);
 	}
 
 	private ServiceRegistry buildServiceRegistry(Properties properties) {
