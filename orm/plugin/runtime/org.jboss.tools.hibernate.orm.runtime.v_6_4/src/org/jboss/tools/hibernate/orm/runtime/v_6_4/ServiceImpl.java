@@ -19,6 +19,7 @@ import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfoSource;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.export.cfg.CfgExporter;
+import org.hibernate.tool.orm.jbt.util.JpaMappingFileHelper;
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.IDatabaseReader;
@@ -44,6 +45,7 @@ import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
+import org.xml.sax.EntityResolver;
 
 public class ServiceImpl {
 
@@ -317,6 +319,10 @@ public class ServiceImpl {
 		return Hibernate.isInitialized(object);
 	}
 
+	public List<String> getJPAMappingFilePaths(String persistenceUnitName, EntityResolver entityResolver) {
+		return JpaMappingFileHelper.findMappingFiles(persistenceUnitName);
+	}
+	
 	private ServiceRegistry buildServiceRegistry(Properties properties) {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		builder.applySettings(properties);
