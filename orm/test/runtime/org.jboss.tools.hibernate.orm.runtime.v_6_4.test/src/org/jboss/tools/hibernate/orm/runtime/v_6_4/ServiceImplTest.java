@@ -53,6 +53,7 @@ import org.hibernate.tool.orm.jbt.util.MetadataHelper;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
+import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
 import org.hibernate.tool.orm.jbt.wrp.ColumnWrapper;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
@@ -544,6 +545,22 @@ public class ServiceImplTest {
 		assertSame(
 				((Wrapper)((IFacade)persistentClass).getTarget()).getWrappedObject(), 
 				((JoinedSubclass)((Wrapper)target).getWrappedObject()).getSuperclass());
+	}
+	
+	@Test
+	public void testNewSpecialRootClass() {
+		IProperty property = service.newProperty();
+		IPersistentClass pc = service.newRootClass();
+		property.setPersistentClass(pc);
+		IPersistentClass specialRootClass = service.newSpecialRootClass(property);
+		assertNotNull(specialRootClass);
+		Object target = ((IFacade)specialRootClass).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof Wrapper);
+		assertTrue(((Wrapper)target).getWrappedObject() instanceof SpecialRootClass);
+		assertEquals(
+				((Wrapper)((IFacade)property).getTarget()).getWrappedObject(), 
+				((Wrapper)((IFacade)specialRootClass.getProperty()).getTarget()).getWrappedObject());
 	}
 	
 }
