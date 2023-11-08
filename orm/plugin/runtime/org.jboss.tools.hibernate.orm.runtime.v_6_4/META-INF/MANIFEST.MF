@@ -23,6 +23,6 @@ Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ClassPath: .,
  lib/hibernate-ant-6.4.0.CR1.jar,
  lib/hibernate-core-6.4.0.CR1.jar,
- lib/hibernate-tools-orm-6.4.0-SNAPSHOT.jar,
- lib/hibernate-tools-orm-jbt-6.4.0-SNAPSHOT.jar,
- lib/hibernate-tools-utils-6.4.0-SNAPSHOT.jar
+ lib/hibernate-tools-orm-6.4.0.CR1.jar,
+ lib/hibernate-tools-orm-jbt-6.4.0.CR1.jar,
+ lib/hibernate-tools-utils-6.4.0.CR1.jar
