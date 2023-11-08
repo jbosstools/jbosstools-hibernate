@@ -34,6 +34,7 @@ import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
+import org.jboss.tools.hibernate.runtime.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
@@ -43,24 +44,29 @@ import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
+import org.jboss.tools.hibernate.runtime.spi.IService;
+import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.xml.sax.EntityResolver;
 
-public class ServiceImpl {
+public class ServiceImpl implements IService {
 
+	@Override
 	public IConfiguration newDefaultConfiguration() {
 		return (IConfiguration)GenericFacadeFactory.createFacade(
 				IConfiguration.class, 
 				WrapperFactory.createNativeConfigurationWrapper());
 	}
 
+	@Override
 	public IConfiguration newAnnotationConfiguration() {
 		return newDefaultConfiguration();
 	}
 
+	@Override
 	public IConfiguration newJpaConfiguration(
 			String entityResolver, 
 			String persistenceUnit,
@@ -70,6 +76,7 @@ public class ServiceImpl {
 				WrapperFactory.createJpaConfigurationWrapper(persistenceUnit, overrides));
 	}
 
+	@Override
 	public IHibernateMappingExporter newHibernateMappingExporter(
 			IConfiguration configuration, File file) {
 		return (IHibernateMappingExporter)GenericFacadeFactory.createFacade(
@@ -77,12 +84,14 @@ public class ServiceImpl {
 				WrapperFactory.createHbmExporterWrapper(((IFacade)configuration).getTarget(), file));
 	}
 
+	@Override
 	public ISchemaExport newSchemaExport(IConfiguration configuration) {
 		return (ISchemaExport)GenericFacadeFactory.createFacade(
 				ISchemaExport.class, 
 				WrapperFactory.createSchemaExport(((IFacade)configuration).getTarget()));
 	}
 
+	@Override
 	public IHQLCodeAssist newHQLCodeAssist(IConfiguration configuration) {
 		IHQLCodeAssist result = null;
 		if (configuration instanceof IConfiguration) {
@@ -93,58 +102,68 @@ public class ServiceImpl {
 		return result;
 	}
 
+	@Override
 	public IConfiguration newJDBCMetaDataConfiguration() {
 		return (IConfiguration)GenericFacadeFactory.createFacade(
 				IConfiguration.class, 
 				WrapperFactory.createRevengConfigurationWrapper());
 	}
 
+	@Override
 	public IExporter createExporter(String exporterClassName) {
 		return (IExporter)GenericFacadeFactory.createFacade(
 				IExporter.class, 
 				WrapperFactory.createExporterWrapper(exporterClassName));
 	}
 
+	@Override
 	public IExporter createCfgExporter() {
 		return createExporter(CfgExporter.class.getName());
 	}
 	
+	@Override
 	public IArtifactCollector newArtifactCollector() {
 		return (IArtifactCollector)GenericFacadeFactory.createFacade(
 				IArtifactCollector.class, 
 				WrapperFactory.createArtifactCollectorWrapper());
 	}
 
+	@Override
 	public ITypeFactory newTypeFactory() {
 		return (ITypeFactory)GenericFacadeFactory.createFacade(
 				ITypeFactory.class, 
 				WrapperFactory.createTypeFactoryWrapper());
 	}
 
+	@Override
 	public INamingStrategy newNamingStrategy(String strategyClassName) {
 		return (INamingStrategy)GenericFacadeFactory.createFacade(
 				INamingStrategy.class, 
 				WrapperFactory.createNamingStrategyWrapper(strategyClassName));
 	}
 
+	@Override
 	public IOverrideRepository newOverrideRepository() {
 		return (IOverrideRepository)GenericFacadeFactory.createFacade(
 				IOverrideRepository.class, 
 				WrapperFactory.createOverrideRepositoryWrapper());
 	}
 
-	public ITableFilter newTableFilter() {
+	@Override
+ 	public ITableFilter newTableFilter() {
 		return (ITableFilter)GenericFacadeFactory.createFacade(
 				ITableFilter.class, 
 				WrapperFactory.createTableFilterWrapper());
 	}
 
+	@Override
 	public IReverseEngineeringStrategy newDefaultReverseEngineeringStrategy() {
 		return (IReverseEngineeringStrategy)GenericFacadeFactory.createFacade(
 				IReverseEngineeringStrategy.class, 
 				WrapperFactory.createRevengStrategyWrapper());
 	}
 
+	@Override
 	public IReverseEngineeringSettings newReverseEngineeringSettings(
 			IReverseEngineeringStrategy res) {
 		return (IReverseEngineeringSettings)GenericFacadeFactory.createFacade(
@@ -152,6 +171,7 @@ public class ServiceImpl {
 				WrapperFactory.createRevengSettingsWrapper(((IFacade)res).getTarget()));
 	}
 
+	@Override
 	public Map<String, List<ITable>> collectDatabaseTables(
 			Properties properties, 
 			IReverseEngineeringStrategy strategy,
@@ -164,6 +184,7 @@ public class ServiceImpl {
 				.collectDatabaseTables();
 	}
 
+	@Override
 	public IReverseEngineeringStrategy newReverseEngineeringStrategy(
 			String strategyName,
 			IReverseEngineeringStrategy delegate) {
@@ -172,34 +193,40 @@ public class ServiceImpl {
 				WrapperFactory.createRevengStrategyWrapper(strategyName, ((IFacade)delegate).getTarget()));
 	}
 
+	@Override
 	public String getReverseEngineeringStrategyClassName() {
 		return RevengStrategy.class.getName();
 	}
 
+	@Override
 	public ICfg2HbmTool newCfg2HbmTool() {
 		return (ICfg2HbmTool)GenericFacadeFactory.createFacade(
 				ICfg2HbmTool.class,
 				WrapperFactory.createCfg2HbmWrapper());
 	}
 
+	@Override
 	public IProperty newProperty() {
 		return (IProperty)GenericFacadeFactory.createFacade(
 				IProperty.class, 
 				WrapperFactory.createPropertyWrapper());
 	}
 
+	@Override
 	public ITable newTable(String name) {
 		return (ITable)GenericFacadeFactory.createFacade(
 				ITable.class, 
 				WrapperFactory.createTableWrapper(name));
 	}
 
+	@Override
 	public IColumn newColumn(String name) {
 		return (IColumn)GenericFacadeFactory.createFacade(
 				IColumn.class, 
 				WrapperFactory.createColumnWrapper(name));
 	}
 
+	@Override
 	public String newDialect(Properties properties, final Connection connection) {
 		ServiceRegistry serviceRegistry = buildServiceRegistry(properties);
 		DialectFactory dialectFactory = serviceRegistry.getService(DialectFactory.class);
@@ -223,108 +250,127 @@ public class ServiceImpl {
 		return dialect != null ? dialect.toString() : null;
 	}
 
+	@Override
 	public Class<?> getDriverManagerConnectionProviderClass() {
 		return DriverManagerConnectionProviderImpl.class;
 	}
 
+	@Override
 	public IEnvironment getEnvironment() {
 		return (IEnvironment)GenericFacadeFactory.createFacade(
 				IEnvironment.class, 
 				WrapperFactory.createEnvironmentWrapper());
 	}
 
+	@Override
 	public IValue newSimpleValue() {
 		return (IValue)GenericFacadeFactory.createFacade(
 				IValue.class, 
 				WrapperFactory.createSimpleValueWrapper());
 	}
 
+	@Override
 	public IPersistentClass newRootClass() {
 		return (IPersistentClass)GenericFacadeFactory.createFacade(
 				IPersistentClass.class, 
 				WrapperFactory.createRootClassWrapper());
 	}
 
+	@Override
 	public IValue newPrimitiveArray(IPersistentClass persistentClass) {
 		return (IValue)GenericFacadeFactory.createFacade(
 				IValue.class, 
 				WrapperFactory.createPrimitiveArrayWrapper(((IFacade)persistentClass).getTarget()));
 	}
 
+	@Override
 	public IValue newArray(IPersistentClass persistentClass) {
 		return (IValue)GenericFacadeFactory.createFacade(
 				IValue.class, 
 				WrapperFactory.createArrayWrapper(((IFacade)persistentClass).getTarget()));
 	}
 
+	@Override
 	public IValue newBag(IPersistentClass persistentClass) {
 		return (IValue)GenericFacadeFactory.createFacade(
 				IValue.class, 
 				WrapperFactory.createBagWrapper(((IFacade)persistentClass).getTarget()));
 	}
 
+	@Override
 	public IValue newList(IPersistentClass persistentClass) {
 		return (IValue)GenericFacadeFactory.createFacade(
 				IValue.class, 
 				WrapperFactory.createListWrapper(((IFacade)persistentClass).getTarget()));
 	}
 
+	@Override
 	public IValue newMap(IPersistentClass persistentClass) {
 		return (IValue)GenericFacadeFactory.createFacade(
 				IValue.class, 
 				WrapperFactory.createMapWrapper(((IFacade)persistentClass).getTarget()));
 	}
 
+	@Override
 	public IValue newSet(IPersistentClass persistentClass) {
 		return (IValue)GenericFacadeFactory.createFacade(
 				IValue.class, 
 				WrapperFactory.createSetWrapper(((IFacade)persistentClass).getTarget()));
 	}
 
+	@Override
 	public IValue newManyToOne(ITable table) {
 		return (IValue)GenericFacadeFactory.createFacade(
 				IValue.class, 
 				WrapperFactory.createManyToOneWrapper(((IFacade)table).getTarget()));
 	}
 
+	@Override
 	public IValue newOneToMany(IPersistentClass persistentClass) {
 		return (IValue)GenericFacadeFactory.createFacade(
 				IValue.class, 
 				WrapperFactory.createOneToManyWrapper(((IFacade)persistentClass).getTarget()));
 	}
 
+	@Override
 	public IValue newOneToOne(IPersistentClass persistentClass) {
 		return (IValue)GenericFacadeFactory.createFacade(
 				IValue.class, 
 				WrapperFactory.createOneToOneWrapper(((IFacade)persistentClass).getTarget()));
 	}
 
+	@Override
 	public IPersistentClass newSingleTableSubclass(IPersistentClass persistentClass) {
 		return (IPersistentClass)GenericFacadeFactory.createFacade(
 				IPersistentClass.class, 
 				WrapperFactory.createSingleTableSubClassWrapper(((IFacade)persistentClass).getTarget()));
 	}
 
+	@Override
 	public IPersistentClass newJoinedSubclass(IPersistentClass persistentClass) {
 		return (IPersistentClass)GenericFacadeFactory.createFacade(
 				IPersistentClass.class, 
 				WrapperFactory.createJoinedTableSubClassWrapper(((IFacade)persistentClass).getTarget()));
 	}
 
+	@Override
 	public IPersistentClass newSpecialRootClass(IProperty property) {
 		return (IPersistentClass)GenericFacadeFactory.createFacade(
 				IPersistentClass.class, 
 				WrapperFactory.createSpecialRootClassWrapper(((IFacade)property).getTarget()));
 	}
 
+	@Override
 	public boolean isInitialized(Object object) {
 		return Hibernate.isInitialized(object);
 	}
 
+	@Override
 	public List<String> getJPAMappingFilePaths(String persistenceUnitName, EntityResolver entityResolver) {
 		return JpaMappingFileHelper.findMappingFiles(persistenceUnitName);
 	}
 	
+	@Override
 	public Class<?> getClassWithoutInitializingProxy(Object reflectedObject) {
 		if (reflectedObject instanceof HibernateProxy) {
 			HibernateProxy proxy = (HibernateProxy) reflectedObject;
@@ -336,10 +382,17 @@ public class ServiceImpl {
 		}
 	}
 
+	@Override
 	public ClassLoader getClassLoader() {
 		return ServiceImpl.class.getClassLoader();
 	}
 	
+	@Override
+	public IHQLQueryPlan newHQLQueryPlan(String query, boolean shallow, ISessionFactory sessionFactory) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	private ServiceRegistry buildServiceRegistry(Properties properties) {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		builder.applySettings(properties);
