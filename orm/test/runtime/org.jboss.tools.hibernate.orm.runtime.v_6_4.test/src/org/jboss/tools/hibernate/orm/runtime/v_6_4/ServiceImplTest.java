@@ -14,6 +14,7 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.Properties;
 
+import org.h2.Driver;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
@@ -79,6 +80,7 @@ import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -86,6 +88,11 @@ public class ServiceImplTest {
 
 	private ServiceImpl service = null;
 	
+	@BeforeAll
+	public static void beforeAll() throws Exception {
+		DriverManager.registerDriver(new Driver());		
+	}
+
 	@BeforeEach
 	public void beforeEach() {
 		service = new ServiceImpl();
