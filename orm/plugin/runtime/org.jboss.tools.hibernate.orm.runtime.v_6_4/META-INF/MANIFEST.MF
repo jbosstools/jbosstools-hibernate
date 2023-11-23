@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Hibernate ORM Runtime 6.4
 Bundle-Vendor: Red Hat
 Bundle-SymbolicName: org.jboss.tools.hibernate.orm.runtime.v_6_4;singleton:=true
-Bundle-Version: 5.4.22.qualifier
+Bundle-Version: 5.4.23.qualifier
 Require-Bundle: org.jboss.tools.hibernate.libs.antlr4-runtime.v_4_10,
  org.jboss.tools.hibernate.libs.byte-buddy.v_1_12,
  org.jboss.tools.hibernate.libs.classmate.v_1_5,
