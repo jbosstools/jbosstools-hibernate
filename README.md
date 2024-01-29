@@ -31,7 +31,7 @@ The general idea is to keep your 'master' branch in-sync with the
 ## Building Hibernate Eclipse Tools
 
 To build _Hibernate Eclipse Tools_ requires specific versions of Java (1.6+) and
-+Maven (3.1+). See this [link](https://github.com/jbosstools/jbosstools-devdoc/blob/master/building/readme.md) for more information on how to setup, run and configure build.
++Maven (3.1+). Check [here](https://github.com/jbosstools/jbosstools-devdoc/blob/master/building) for more information on how to setup, run and configure build.
 
 This command will run the build:
 
@@ -39,7 +39,7 @@ This command will run the build:
 
 If you just want to check if things compiles/builds you can run:
 
-    $ mvn clean verify -DskipTest=true
+    $ mvn clean verify -DskipTests
 
 But *do not* push changes without having the new and existing unit tests pass!
  
