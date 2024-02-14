@@ -67,9 +67,10 @@ public class ServiceImpl implements IService {
 	}
 
 	@Override
-	public ISchemaExport newSchemaExport(IConfiguration hcfg) {
-		// TODO Auto-generated method stub
-		return null;
+	public ISchemaExport newSchemaExport(IConfiguration configuration) {
+		return (ISchemaExport)GenericFacadeFactory.createFacade(
+				ISchemaExport.class, 
+				WrapperFactory.createSchemaExport(((IFacade)configuration).getTarget()));
 	}
 
 	@Override
