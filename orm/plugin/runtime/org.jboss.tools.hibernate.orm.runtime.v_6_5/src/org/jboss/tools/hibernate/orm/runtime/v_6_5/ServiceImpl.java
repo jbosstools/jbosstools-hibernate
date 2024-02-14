@@ -36,9 +36,15 @@ import org.xml.sax.EntityResolver;
 public class ServiceImpl implements IService {
 
 	@Override
+	public IConfiguration newDefaultConfiguration() {
+		return (IConfiguration)GenericFacadeFactory.createFacade(
+				IConfiguration.class, 
+				WrapperFactory.createNativeConfigurationWrapper());
+	}
+
+	@Override
 	public IConfiguration newAnnotationConfiguration() {
-		// TODO Auto-generated method stub
-		return null;
+		return newDefaultConfiguration();
 	}
 
 	@Override
@@ -46,13 +52,6 @@ public class ServiceImpl implements IService {
 			Map<Object, Object> overrides) {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	@Override
-	public IConfiguration newDefaultConfiguration() {
-		return (IConfiguration)GenericFacadeFactory.createFacade(
-				IConfiguration.class, 
-				WrapperFactory.createNativeConfigurationWrapper());
 	}
 
 	@Override
