@@ -104,10 +104,11 @@ public class ServiceImpl implements IService {
 		return createExporter(CfgExporter.class.getName());
 	}
 	
- 	@Override
+	@Override
 	public IArtifactCollector newArtifactCollector() {
-		// TODO Auto-generated method stub
-		return null;
+		return (IArtifactCollector)GenericFacadeFactory.createFacade(
+				IArtifactCollector.class, 
+				WrapperFactory.createArtifactCollectorWrapper());
 	}
 
 	@Override
