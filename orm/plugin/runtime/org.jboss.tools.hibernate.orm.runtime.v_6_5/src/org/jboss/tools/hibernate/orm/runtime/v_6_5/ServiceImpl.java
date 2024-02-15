@@ -86,8 +86,9 @@ public class ServiceImpl implements IService {
 
 	@Override
 	public IConfiguration newJDBCMetaDataConfiguration() {
-		// TODO Auto-generated method stub
-		return null;
+		return (IConfiguration)GenericFacadeFactory.createFacade(
+				IConfiguration.class, 
+				WrapperFactory.createRevengConfigurationWrapper());
 	}
 
 	@Override
