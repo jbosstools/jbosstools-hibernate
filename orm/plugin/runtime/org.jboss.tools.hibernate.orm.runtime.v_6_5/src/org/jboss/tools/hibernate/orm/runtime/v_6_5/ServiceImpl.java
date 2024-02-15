@@ -74,9 +74,14 @@ public class ServiceImpl implements IService {
 	}
 
 	@Override
-	public IHQLCodeAssist newHQLCodeAssist(IConfiguration hcfg) {
-		// TODO Auto-generated method stub
-		return null;
+	public IHQLCodeAssist newHQLCodeAssist(IConfiguration configuration) {
+		IHQLCodeAssist result = null;
+		if (configuration instanceof IConfiguration) {
+			result = (IHQLCodeAssist)GenericFacadeFactory.createFacade(
+					IHQLCodeAssist.class, 
+					WrapperFactory.createHqlCodeAssistWrapper(((IFacade)configuration).getTarget()));
+		}
+		return result;
 	}
 
 	@Override
