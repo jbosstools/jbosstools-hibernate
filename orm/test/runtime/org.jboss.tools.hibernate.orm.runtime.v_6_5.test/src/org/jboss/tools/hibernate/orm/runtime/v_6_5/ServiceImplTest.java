@@ -10,6 +10,8 @@ import java.io.File;
 
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.DefaultNamingStrategy;
+import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.tool.api.export.ArtifactCollector;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
@@ -29,6 +31,7 @@ import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
+import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -165,6 +168,25 @@ public class ServiceImplTest {
 	public void testNewTypeFactory() {
 		ITypeFactory typeFactory = service.newTypeFactory();
 		assertNotNull(typeFactory);
+	}
+	
+	@Test
+	public void testNewNamingStrategy() {
+		String strategyClassName = DefaultNamingStrategy.class.getName();
+		INamingStrategy namingStrategy = service.newNamingStrategy(strategyClassName);
+		assertNotNull(namingStrategy);
+		Object target = ((IFacade)namingStrategy).getTarget();
+		assertNotNull(target);
+		assertTrue(NamingStrategy.class.isAssignableFrom(target.getClass()));
+		namingStrategy = null;
+		assertNull(namingStrategy);
+		try {
+			namingStrategy = service.newNamingStrategy("some unexistent class");
+		} catch (Throwable t) {
+			assertTrue(t.getMessage().contains(
+					"Exception while looking up class 'some unexistent class'"));
+		}
+		assertNull(namingStrategy);
 	}
 	
 }
