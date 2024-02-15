@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.hibernate.tool.internal.export.cfg.CfgExporter;
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.IFacade;
@@ -100,11 +101,10 @@ public class ServiceImpl implements IService {
 
 	@Override
 	public IExporter createCfgExporter() {
-		// TODO Auto-generated method stub
-		return null;
+		return createExporter(CfgExporter.class.getName());
 	}
-
-	@Override
+	
+ 	@Override
 	public IArtifactCollector newArtifactCollector() {
 		// TODO Auto-generated method stub
 		return null;
