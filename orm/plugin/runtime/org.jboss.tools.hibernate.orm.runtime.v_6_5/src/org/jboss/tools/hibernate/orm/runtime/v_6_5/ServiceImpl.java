@@ -92,13 +92,14 @@ public class ServiceImpl implements IService {
 	}
 
 	@Override
-	public IExporter createCfgExporter() {
-		// TODO Auto-generated method stub
-		return null;
+	public IExporter createExporter(String exporterClassName) {
+		return (IExporter)GenericFacadeFactory.createFacade(
+				IExporter.class, 
+				WrapperFactory.createExporterWrapper(exporterClassName));
 	}
 
 	@Override
-	public IExporter createExporter(String exporterClassName) {
+	public IExporter createCfgExporter() {
 		// TODO Auto-generated method stub
 		return null;
 	}
