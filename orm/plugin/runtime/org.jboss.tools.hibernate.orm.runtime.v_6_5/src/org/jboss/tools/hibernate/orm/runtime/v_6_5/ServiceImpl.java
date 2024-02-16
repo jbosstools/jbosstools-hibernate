@@ -133,13 +133,14 @@ public class ServiceImpl implements IService {
 	}
 
 	@Override
-	public IHQLQueryPlan newHQLQueryPlan(String query, boolean shallow, ISessionFactory sessionFactory) {
-		// TODO Auto-generated method stub
-		return null;
+ 	public ITableFilter newTableFilter() {
+		return (ITableFilter)GenericFacadeFactory.createFacade(
+				ITableFilter.class, 
+				WrapperFactory.createTableFilterWrapper());
 	}
 
 	@Override
-	public ITableFilter newTableFilter() {
+	public IHQLQueryPlan newHQLQueryPlan(String query, boolean shallow, ISessionFactory sessionFactory) {
 		// TODO Auto-generated method stub
 		return null;
 	}
