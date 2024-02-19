@@ -26,6 +26,7 @@ import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.export.cfg.CfgExporter;
+import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
 import org.hibernate.tool.internal.export.hbm.HbmExporter;
 import org.hibernate.tool.internal.export.java.JavaExporter;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
@@ -40,6 +41,7 @@ import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.jboss.tools.hibernate.orm.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
+import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
@@ -305,6 +307,17 @@ public class ServiceImplTest {
 		assertEquals(
 				RevengStrategy.class.getName(), 
 				service.getReverseEngineeringStrategyClassName());
+	}
+	
+	@Test
+	public void testNewCfg2HbmTool() {
+		ICfg2HbmTool cfg2HbmTool = service.newCfg2HbmTool();
+		assertNotNull(cfg2HbmTool);
+		Object target = ((IFacade)cfg2HbmTool).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof Wrapper);
+		Object wrappedObject = ((Wrapper)target).getWrappedObject();
+		assertTrue(wrappedObject instanceof Cfg2HbmTool);
 	}
 	
 }
