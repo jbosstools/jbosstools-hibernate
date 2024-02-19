@@ -247,18 +247,19 @@ public class ServiceImpl implements IService {
 	}
 
 	@Override
+	public IEnvironment getEnvironment() {
+		return (IEnvironment)GenericFacadeFactory.createFacade(
+				IEnvironment.class, 
+				WrapperFactory.createEnvironmentWrapper());
+	}
+
+	@Override
 	public Class<?> getDriverManagerConnectionProviderClass() {
 		return DriverManagerConnectionProviderImpl.class;
 	}
 
 	@Override
 	public IHQLQueryPlan newHQLQueryPlan(String query, boolean shallow, ISessionFactory sessionFactory) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public IEnvironment getEnvironment() {
 		// TODO Auto-generated method stub
 		return null;
 	}
