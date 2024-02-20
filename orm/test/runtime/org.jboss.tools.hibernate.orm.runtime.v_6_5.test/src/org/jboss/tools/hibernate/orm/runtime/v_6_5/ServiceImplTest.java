@@ -22,6 +22,7 @@ import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 import org.hibernate.mapping.Property;
+import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.export.ArtifactCollector;
 import org.hibernate.tool.api.export.Exporter;
@@ -63,6 +64,7 @@ import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
+import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -382,6 +384,16 @@ public class ServiceImplTest {
 		assertEquals(
 				environment.getTransactionManagerStrategy(), 
 				Environment.TRANSACTION_COORDINATOR_STRATEGY);
+	}
+	
+	@Test
+	public void testSimpleValue() {
+		IValue simpleValue = service.newSimpleValue();
+		assertNotNull(simpleValue);
+		Object simpleValueWrapper = ((IFacade)simpleValue).getTarget();
+		assertNotNull(simpleValueWrapper);
+		assertTrue(simpleValueWrapper instanceof Wrapper);
+		assertTrue(((Wrapper)simpleValueWrapper).getWrappedObject() instanceof SimpleValue);
 	}
 	
 }
