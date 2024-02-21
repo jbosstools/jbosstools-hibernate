@@ -287,13 +287,14 @@ public class ServiceImpl implements IService {
 	}
 
 	@Override
-	public IHQLQueryPlan newHQLQueryPlan(String query, boolean shallow, ISessionFactory sessionFactory) {
-		// TODO Auto-generated method stub
-		return null;
+	public IValue newBag(IPersistentClass persistentClass) {
+		return (IValue)GenericFacadeFactory.createFacade(
+				IValue.class, 
+				WrapperFactory.createBagWrapper(((IFacade)persistentClass).getTarget()));
 	}
 
 	@Override
-	public IValue newBag(IPersistentClass persistentClass) {
+	public IHQLQueryPlan newHQLQueryPlan(String query, boolean shallow, ISessionFactory sessionFactory) {
 		// TODO Auto-generated method stub
 		return null;
 	}

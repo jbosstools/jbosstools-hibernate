@@ -22,6 +22,7 @@ import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 import org.hibernate.mapping.Array;
+import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
@@ -430,6 +431,17 @@ public class ServiceImplTest {
 		assertNotNull(arrayWrapper);
 		assertTrue(arrayWrapper instanceof Wrapper);
 		assertTrue(((Wrapper)arrayWrapper).getWrappedObject() instanceof Array);
+	}
+	
+	@Test
+	public void testNewBag() {
+		IPersistentClass persistentClass = service.newRootClass();
+		IValue bagFacade = service.newBag(persistentClass);
+		assertNotNull(bagFacade);
+		Object bagWrapper = ((IFacade)bagFacade).getTarget();
+		assertNotNull(bagWrapper);
+		assertTrue(bagWrapper instanceof Wrapper);
+		assertTrue(((Wrapper)bagWrapper).getWrappedObject() instanceof Bag);
 	}
 	
 }
