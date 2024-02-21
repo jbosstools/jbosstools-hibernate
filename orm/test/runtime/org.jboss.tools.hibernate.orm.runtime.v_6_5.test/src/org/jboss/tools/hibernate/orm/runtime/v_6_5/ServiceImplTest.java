@@ -23,6 +23,7 @@ import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
+import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
 import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
@@ -477,6 +478,17 @@ public class ServiceImplTest {
 		assertNotNull(setWrapper);
 		assertTrue(setWrapper instanceof Wrapper);
 		assertTrue(((Wrapper)setWrapper).getWrappedObject() instanceof Set);
+	}
+	
+	@Test
+	public void testNewManyToOne() {
+		ITable table = service.newTable("foo");
+		IValue manyToOne = service.newManyToOne(table);
+		assertNotNull(manyToOne);
+		Object manyToOneWrapper = ((IFacade)manyToOne).getTarget();
+		assertNotNull(manyToOneWrapper);
+		assertTrue(manyToOneWrapper instanceof Wrapper);
+		assertTrue(((Wrapper)manyToOneWrapper).getWrappedObject() instanceof ManyToOne);
 	}
 	
 }
