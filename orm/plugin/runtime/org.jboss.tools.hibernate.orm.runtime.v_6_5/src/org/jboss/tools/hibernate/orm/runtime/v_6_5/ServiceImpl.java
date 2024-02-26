@@ -16,6 +16,8 @@ import org.hibernate.engine.jdbc.dialect.spi.DatabaseMetaDataDialectResolutionIn
 import org.hibernate.engine.jdbc.dialect.spi.DialectFactory;
 import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfo;
 import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfoSource;
+import org.hibernate.proxy.HibernateProxy;
+import org.hibernate.proxy.LazyInitializer;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.export.cfg.CfgExporter;
@@ -369,13 +371,19 @@ public class ServiceImpl implements IService {
 	}
 	
 	@Override
-	public IHQLQueryPlan newHQLQueryPlan(String query, boolean shallow, ISessionFactory sessionFactory) {
-		// TODO Auto-generated method stub
-		return null;
+	public Class<?> getClassWithoutInitializingProxy(Object reflectedObject) {
+		if (reflectedObject instanceof HibernateProxy) {
+			HibernateProxy proxy = (HibernateProxy) reflectedObject;
+			LazyInitializer li = proxy.getHibernateLazyInitializer();
+			return li.getPersistentClass();
+		}
+		else {
+			return (Class<?>) reflectedObject.getClass();
+		}
 	}
 
 	@Override
-	public Class<?> getClassWithoutInitializingProxy(Object reflectedObject) {
+	public IHQLQueryPlan newHQLQueryPlan(String query, boolean shallow, ISessionFactory sessionFactory) {
 		// TODO Auto-generated method stub
 		return null;
 	}
