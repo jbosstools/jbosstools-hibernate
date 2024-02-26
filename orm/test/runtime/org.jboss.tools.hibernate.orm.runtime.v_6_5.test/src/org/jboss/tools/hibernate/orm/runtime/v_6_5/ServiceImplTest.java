@@ -588,4 +588,11 @@ public class ServiceImplTest {
 				service.getClassWithoutInitializingProxy(new Object()));
 	}
 	
+	@Test
+	public void testGetClassLoader(){
+		assertSame(
+				ServiceImpl.class.getClassLoader(), 
+				service.getClassLoader());
+	}
+	
 }
