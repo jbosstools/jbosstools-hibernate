@@ -213,7 +213,9 @@ public class ServiceImplTest {
 		assertNotNull(artifactCollector);
 		Object target = ((IFacade)artifactCollector).getTarget();
 		assertNotNull(target);
-		assertTrue(target instanceof ArtifactCollector);
+		assertTrue(target instanceof Wrapper);
+		Object wrappedObject = ((Wrapper)target).getWrappedObject();
+		assertTrue(wrappedObject instanceof ArtifactCollector);
 	}
 	
 	@Test 

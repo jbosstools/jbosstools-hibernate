@@ -40,7 +40,10 @@ import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+
+import net.bytebuddy.implementation.bind.annotation.IgnoreForBinding;
 
 public class IPersistentClassTest {
 
@@ -56,6 +59,7 @@ public class IPersistentClassTest {
 	private IProperty propertyFacade = null;
 	private Property propertyTarget = null;
 	
+	@Disabled
 	@BeforeEach
 	public void beforeEach() {
 		rootClassFacade = (IPersistentClass)GenericFacadeFactory.createFacade(

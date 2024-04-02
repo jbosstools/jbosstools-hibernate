@@ -108,10 +108,11 @@ public class IExporterTest {
 		IArtifactCollector artifactCollectorFacade = (IArtifactCollector)GenericFacadeFactory.createFacade(
 				IArtifactCollector.class, 
 				WrapperFactory.createArtifactCollectorWrapper());
-		Object artifactCollectorTarget = ((IFacade)artifactCollectorFacade).getTarget();
-		assertNotSame(artifactCollectorTarget, exporterTarget.getProperties().get(ExporterConstants.ARTIFACT_COLLECTOR));
+		Wrapper artifactCollectorWrapper = (Wrapper)((IFacade)artifactCollectorFacade).getTarget();
+		Object wrappedArtifactCollector = artifactCollectorWrapper.getWrappedObject();
+		assertNotSame(wrappedArtifactCollector, exporterTarget.getProperties().get(ExporterConstants.ARTIFACT_COLLECTOR));
 		exporterFacade.setArtifactCollector(artifactCollectorFacade);
-		assertSame(artifactCollectorTarget, exporterTarget.getProperties().get(ExporterConstants.ARTIFACT_COLLECTOR));
+		assertSame(wrappedArtifactCollector, exporterTarget.getProperties().get(ExporterConstants.ARTIFACT_COLLECTOR));
 	}
 	
 	@Test

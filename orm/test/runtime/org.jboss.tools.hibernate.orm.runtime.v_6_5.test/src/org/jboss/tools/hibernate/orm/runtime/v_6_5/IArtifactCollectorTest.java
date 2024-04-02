@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.IFacade;
@@ -28,7 +29,6 @@ public class IArtifactCollectorTest {
 	
 	private Map<String, List<File>> filesMap = null;
 	private List<File> xmlFiles = new ArrayList<File>();
-	private Object target = null;
 	private File fooFile = null;
 	private IArtifactCollector facade = null;
 	
@@ -41,11 +41,11 @@ public class IArtifactCollectorTest {
 		facade = (IArtifactCollector)GenericFacadeFactory.createFacade(
 				IArtifactCollector.class, 
 				WrapperFactory.createArtifactCollectorWrapper());
-
-		target = ((IFacade)facade).getTarget();
-		Field filesField = target.getClass().getDeclaredField("files");
+		Wrapper wrapper = (Wrapper)((IFacade)facade).getTarget();
+		Object wrappedObject = wrapper.getWrappedObject();
+		Field filesField = wrappedObject.getClass().getDeclaredField("files");
 		filesField.setAccessible(true);
-		filesMap = (Map<String, List<File>>)filesField.get(target);
+		filesMap = (Map<String, List<File>>)filesField.get(wrappedObject);
 		tempDir = Files.createTempDirectory("temp").toFile();
 		fooFile = new File(tempDir, "foo.xml");
 		Files.write(fooFile.toPath(), FOO_XML.getBytes());
