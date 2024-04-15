@@ -12,7 +12,7 @@
 	<packaging>eclipse-plugin</packaging>
 
 	<properties>
-		<hibernate.version>6.5.0-SNAPSHOT</hibernate.version>
+		<hibernate.version>6.5.0.CR2</hibernate.version>
 	</properties>
 
 	<build>

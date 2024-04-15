@@ -21,8 +21,8 @@ Require-Bundle: org.jboss.tools.hibernate.orm.runtime.common,
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ClassPath: .,
- lib/hibernate-ant-6.5.0-SNAPSHOT.jar,
- lib/hibernate-core-6.5.0-SNAPSHOT.jar,
- lib/hibernate-tools-orm-6.5.0-SNAPSHOT.jar,
- lib/hibernate-tools-orm-jbt-6.5.0-SNAPSHOT.jar,
- lib/hibernate-tools-utils-6.5.0-SNAPSHOT.jar
+ lib/hibernate-ant-6.5.0.CR2.jar,
+ lib/hibernate-core-6.5.0.CR2.jar,
+ lib/hibernate-tools-orm-6.5.0.CR2.jar,
+ lib/hibernate-tools-orm-jbt-6.5.0.CR2.jar,
+ lib/hibernate-tools-utils-6.5.0.CR2.jar
