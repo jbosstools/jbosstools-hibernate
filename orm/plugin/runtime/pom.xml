@@ -17,6 +17,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		<module>org.jboss.tools.hibernate.orm.runtime.v_6_2</module>
 		<module>org.jboss.tools.hibernate.orm.runtime.v_6_3</module>
 		<module>org.jboss.tools.hibernate.orm.runtime.v_6_4</module>
+		<module>org.jboss.tools.hibernate.orm.runtime.v_6_5</module>
 		<module>org.jboss.tools.hibernate.runtime.common</module>
 		<module>org.jboss.tools.hibernate.runtime.spi</module>
 		<module>org.jboss.tools.hibernate.runtime.v_3_5</module>

@@ -48,4 +48,11 @@ Also this plugin is an addition to JBoss Tools Hibernate plugin which is license
          version="0.0.0"
          unpack="false"/>
 
+   <plugin
+         id="org.jboss.tools.hibernate.orm.runtime.v_6_5"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
 </feature>
