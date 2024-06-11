@@ -13,8 +13,10 @@ import java.util.List;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Table;
-import org.hibernate.tool.orm.jbt.wrp.DelegatingColumnWrapperImpl;
-import org.hibernate.tool.orm.jbt.wrp.ForeignKeyWrapperFactory;
+import org.hibernate.tool.orm.jbt.api.wrp.ColumnWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.Wrapper;
+import org.hibernate.tool.orm.jbt.internal.factory.ColumnWrapperFactory;
+import org.hibernate.tool.orm.jbt.internal.factory.ForeignKeyWrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
@@ -33,7 +35,7 @@ public class IForeignKeyTest {
 		foreignKeyTarget = new ForeignKey();
 		foreignKeyFacade = (IForeignKey)GenericFacadeFactory.createFacade(
 				IForeignKey.class, 
-				ForeignKeyWrapperFactory.createForeinKeyWrapper(foreignKeyTarget));
+				ForeignKeyWrapperFactory.createForeignKeyWrapper(foreignKeyTarget));
 	}
 	
 	@Test
@@ -47,7 +49,7 @@ public class IForeignKeyTest {
 		Table tableTarget = new Table("");
 		foreignKeyTarget.setReferencedTable(tableTarget);
 		ITable table = foreignKeyFacade.getReferencedTable();
-		assertSame(tableTarget, ((IFacade)table).getTarget());
+		assertSame(tableTarget, ((Wrapper)((IFacade)table).getTarget()).getWrappedObject());
 	}
 	
 	@Test
@@ -58,7 +60,7 @@ public class IForeignKeyTest {
 		foreignKeyTarget.addColumn(column);
 		iterator = foreignKeyFacade.columnIterator();
 		IColumn columnFacade = iterator.next();
-		assertSame(column, ((IFacade)columnFacade).getTarget());
+		assertSame(column, ((Wrapper)((IFacade)columnFacade).getTarget()).getWrappedObject());
 		assertFalse(iterator.hasNext());
 	}
 	
@@ -82,17 +84,17 @@ public class IForeignKeyTest {
 		foreignKeyTarget.addReferencedColumns(columns);
 		list = foreignKeyFacade.getReferencedColumns();
 		assertEquals(1, list.size());
-		assertSame(column, ((IFacade)list.get(0)).getTarget());
+		assertSame(column, ((Wrapper)((IFacade)list.get(0)).getTarget()).getWrappedObject());
 	}
 	
 	@Test
 	public void testContainsColumn() throws Exception {
-		Column columnWrapper = new DelegatingColumnWrapperImpl(new Column("foo"));
+		ColumnWrapper columnWrapper = ColumnWrapperFactory.createColumnWrapper("foo");
 		IColumn columnFacade = (IColumn)GenericFacadeFactory.createFacade(
 				IColumn.class, 
 				columnWrapper);
 		assertFalse(foreignKeyFacade.containsColumn(columnFacade));
-		foreignKeyTarget.addColumn(columnWrapper);
+		foreignKeyTarget.addColumn((Column)columnWrapper.getWrappedObject());
 		assertTrue(foreignKeyFacade.containsColumn(columnFacade));
 	}
 	

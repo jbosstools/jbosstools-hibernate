@@ -15,8 +15,10 @@ import java.util.List;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
-import org.hibernate.tool.orm.jbt.wrp.DelegatingColumnWrapperImpl;
-import org.hibernate.tool.orm.jbt.wrp.PrimaryKeyWrapperFactory;
+import org.hibernate.tool.orm.jbt.api.wrp.ColumnWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.Wrapper;
+import org.hibernate.tool.orm.jbt.internal.factory.ColumnWrapperFactory;
+import org.hibernate.tool.orm.jbt.internal.factory.PrimaryKeyWrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
@@ -34,7 +36,7 @@ public class IPrimaryKeyTest {
 		primaryKeyTarget = new PrimaryKey(new Table(""));
 		primaryKeyFacade = (IPrimaryKey)GenericFacadeFactory.createFacade(
 				IPrimaryKey.class, 
-				PrimaryKeyWrapperFactory.createForeinKeyWrapper(primaryKeyTarget));
+				PrimaryKeyWrapperFactory.createPrimaryKeyWrapper(primaryKeyTarget));
 	}
 	
 	@Test
@@ -45,10 +47,11 @@ public class IPrimaryKeyTest {
 
 	@Test
 	public void testAddColumn() throws Exception {
-		Column columnTarget = new DelegatingColumnWrapperImpl(new Column("foo"));
+		ColumnWrapper columnWrapper = ColumnWrapperFactory.createColumnWrapper("foo");
+		Column columnTarget = (Column)columnWrapper.getWrappedObject();
 		IColumn columnFacade = (IColumn)GenericFacadeFactory.createFacade(
 				IColumn.class, 
-				columnTarget);
+				columnWrapper);
 		assertTrue(primaryKeyTarget.getColumns().isEmpty());
 		primaryKeyFacade.addColumn(columnFacade);
 		assertEquals(1, primaryKeyTarget.getColumns().size());
@@ -70,7 +73,7 @@ public class IPrimaryKeyTest {
 		List<IColumn> columnFacades = primaryKeyFacade.getColumns();
 		assertNotNull(columnFacades);
 		assertEquals(1, columnFacades.size());
-		assertSame(columnTarget, ((IFacade)columnFacades.get(0)).getTarget());
+		assertSame(columnTarget, ((Wrapper)((IFacade)columnFacades.get(0)).getTarget()).getWrappedObject());
 	}
 	
 	@Test
@@ -85,23 +88,24 @@ public class IPrimaryKeyTest {
 		primaryKeyTarget.addColumn(columnTarget);
 		IColumn columnFacade = primaryKeyFacade.getColumn(0);
 		assertNotNull(columnFacade);
-		assertSame(columnTarget, ((IFacade)columnFacade).getTarget());
+		assertSame(columnTarget, ((Wrapper)((IFacade)columnFacade).getTarget()).getWrappedObject());
 	}
 	
 	@Test
 	public void testGetTable() throws Exception {
 		Table tableTarget = new Table("foo");
-		assertNotSame(tableTarget, (Table)((IFacade)primaryKeyFacade.getTable()).getTarget());
+		assertNotSame(tableTarget, ((Wrapper)((IFacade)primaryKeyFacade.getTable()).getTarget()).getWrappedObject());
 		primaryKeyTarget.setTable(tableTarget);
-		assertSame(tableTarget, (Table)((IFacade)primaryKeyFacade.getTable()).getTarget());
+		assertSame(tableTarget, ((Wrapper)((IFacade)primaryKeyFacade.getTable()).getTarget()).getWrappedObject());
 	}
 	
 	@Test
 	public void testContainsColumn() {
-		Column columnTarget = new DelegatingColumnWrapperImpl(new Column("foo"));
+		ColumnWrapper columnWrapper = ColumnWrapperFactory.createColumnWrapper("foo");
+		Column columnTarget = (Column)columnWrapper.getWrappedObject();
 		IColumn columnFacade = (IColumn)GenericFacadeFactory.createFacade(
 				IColumn.class, 
-				columnTarget);
+				columnWrapper);
 		assertFalse(primaryKeyFacade.containsColumn(columnFacade));
 		primaryKeyTarget.addColumn(columnTarget);
 		assertTrue(primaryKeyFacade.containsColumn(columnFacade));
@@ -114,7 +118,7 @@ public class IPrimaryKeyTest {
 		primaryKeyTarget.addColumn(columnTarget);
 		Iterator<IColumn> columnIterator = primaryKeyFacade.columnIterator();
 		assertTrue(columnIterator.hasNext());
-		assertSame(columnTarget, ((IFacade)columnIterator.next()).getTarget());
+		assertSame(columnTarget, ((Wrapper)((IFacade)columnIterator.next()).getTarget()).getWrappedObject());
 	}
 	
 	@Test

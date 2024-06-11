@@ -20,10 +20,10 @@ import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
-import org.hibernate.tool.orm.jbt.api.PersistentClassWrapper;
+import org.hibernate.tool.orm.jbt.api.factory.WrapperFactory;
+import org.hibernate.tool.orm.jbt.api.wrp.PersistentClassWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.Wrapper;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
-import org.hibernate.tool.orm.jbt.wrp.Wrapper;
-import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
@@ -132,7 +132,7 @@ public class IPropertyTest {
 		IValue valueFacade = (IValue)GenericFacadeFactory.createFacade(
 				IValue.class, 
 				WrapperFactory.createSimpleValueWrapper());
-		Value valueTarget = (Value)((IFacade)valueFacade).getTarget();
+		Value valueTarget = (Value)((Wrapper)((IFacade)valueFacade).getTarget()).getWrappedObject();
 		propertyFacade.setValue(valueFacade);
 		assertSame(valueTarget, propertyTarget.getValue());
 	}

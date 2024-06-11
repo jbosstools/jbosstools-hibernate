@@ -16,10 +16,10 @@ import java.util.Set;
 import org.hibernate.Session;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.query.Query;
+import org.hibernate.tool.orm.jbt.api.factory.WrapperFactory;
+import org.hibernate.tool.orm.jbt.api.wrp.Wrapper;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
-import org.hibernate.tool.orm.jbt.wrp.Wrapper;
-import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
@@ -83,7 +83,8 @@ public class ISessionTest {
 		configuration.configure(cfgXmlFile);
 		sessionFactoryFacade = configuration.buildSessionFactory();
 		sessionFacade = sessionFactoryFacade.openSession();
-		sessionTarget = (Session)((IFacade)sessionFacade).getTarget();
+		Wrapper wrapper = (Wrapper)((IFacade)sessionFacade).getTarget();
+		sessionTarget = (Session)wrapper.getWrappedObject();
 	}
 	
 	@Test
@@ -104,8 +105,8 @@ public class ISessionTest {
 	public void testGetSessionFactory() {		
 		assertEquals(sessionFactoryFacade, sessionFacade.getSessionFactory());
 		assertSame(
-				((IFacade)sessionFactoryFacade).getTarget(), 
-				((IFacade)sessionFacade.getSessionFactory()).getTarget());
+				((Wrapper)((IFacade)sessionFactoryFacade).getTarget()).getWrappedObject(), 
+				((Wrapper)((IFacade)sessionFacade.getSessionFactory()).getTarget()).getWrappedObject());
 	}
 	
 	@Test
@@ -114,8 +115,8 @@ public class ISessionTest {
 		assertNotNull(queryFacade);
 		assertTrue(Proxy.isProxyClass(queryFacade.getClass()));
 		Object queryTarget = ((IFacade)queryFacade).getTarget();
-		assertTrue(queryTarget instanceof Query<?>);
 		assertTrue(queryTarget instanceof Wrapper);
+		assertTrue(((Wrapper)queryTarget).getWrappedObject() instanceof Query);
 	}
 	
 	@Test
@@ -147,7 +148,7 @@ public class ISessionTest {
 	public void testCreateCriteria() {
 		ICriteria criteria = sessionFacade.createCriteria(Foo.class);
 		assertNotNull(criteria);
-		assertTrue(((IFacade)criteria).getTarget() instanceof jakarta.persistence.Query);
+		assertTrue(((Wrapper)((IFacade)criteria).getTarget()).getWrappedObject() instanceof Query);
 	}
 
 }

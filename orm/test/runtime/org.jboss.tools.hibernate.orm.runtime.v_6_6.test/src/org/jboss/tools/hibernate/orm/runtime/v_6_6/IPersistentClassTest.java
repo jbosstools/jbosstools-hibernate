@@ -27,11 +27,11 @@ import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
-import org.hibernate.tool.orm.jbt.api.PersistentClassWrapper;
+import org.hibernate.tool.orm.jbt.api.factory.WrapperFactory;
+import org.hibernate.tool.orm.jbt.api.wrp.PersistentClassWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.Wrapper;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
-import org.hibernate.tool.orm.jbt.wrp.Wrapper;
-import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
@@ -64,17 +64,17 @@ public class IPersistentClassTest {
 				IPersistentClass.class, 
 				WrapperFactory.createRootClassWrapper());
 		PersistentClassWrapper rootClassWrapper = (PersistentClassWrapper)((IFacade)rootClassFacade).getTarget();
-		rootClassTarget = rootClassWrapper.getWrappedObject();
+		rootClassTarget = (PersistentClass)rootClassWrapper.getWrappedObject();
 		singleTableSubclassFacade = (IPersistentClass)GenericFacadeFactory.createFacade(
 				IPersistentClass.class, 
 				WrapperFactory.createSingleTableSubClassWrapper(rootClassWrapper));
 		PersistentClassWrapper singleTableSubclassWrapper = (PersistentClassWrapper)((IFacade)singleTableSubclassFacade).getTarget();
-		singleTableSubclassTarget = singleTableSubclassWrapper.getWrappedObject();
+		singleTableSubclassTarget = (PersistentClass)singleTableSubclassWrapper.getWrappedObject();
 		joinedSubclassFacade = (IPersistentClass)GenericFacadeFactory.createFacade(
 				IPersistentClass.class, 
 				WrapperFactory.createJoinedTableSubClassWrapper(rootClassWrapper));
 		PersistentClassWrapper joinedSubclassWrapper = (PersistentClassWrapper)((IFacade)joinedSubclassFacade).getTarget();
-		joinedSubclassTarget = joinedSubclassWrapper.getWrappedObject();
+		joinedSubclassTarget = (PersistentClass)joinedSubclassWrapper.getWrappedObject();
 		propertyFacade = (IProperty)GenericFacadeFactory.createFacade(
 				IProperty.class, 
 				WrapperFactory.createPropertyWrapper());
@@ -84,7 +84,7 @@ public class IPersistentClassTest {
 				IPersistentClass.class, 
 				WrapperFactory.createSpecialRootClassWrapper(propertyWrapper));
 		PersistentClassWrapper specialRootClassWrapper = (PersistentClassWrapper)((IFacade)specialRootClassFacade).getTarget();
-		specialRootClassTarget = specialRootClassWrapper.getWrappedObject();
+		specialRootClassTarget = (PersistentClass)specialRootClassWrapper.getWrappedObject();
 	}
 	
 	@Test
@@ -103,7 +103,7 @@ public class IPersistentClassTest {
 		assertNotNull(specialRootClassFacade);
 		assertNotNull(specialRootClassTarget);
 		assertTrue(specialRootClassTarget instanceof SpecialRootClass);
-		assertSame(propertyTarget, ((Wrapper)((SpecialRootClass)specialRootClassTarget).getProperty()).getWrappedObject());
+		assertSame(propertyTarget, ((SpecialRootClass)specialRootClassTarget).getProperty());
 	}
 	
 	@Test
@@ -163,18 +163,18 @@ public class IPersistentClassTest {
 		((RootClass)rootClassTarget).setIdentifierProperty(propertyTarget);
 		IProperty propertyFacade = rootClassFacade.getIdentifierProperty();
 		assertNotNull(propertyFacade);
-		assertSame(propertyTarget, ((IFacade)propertyFacade).getTarget());
+		assertSame(propertyTarget, ((Wrapper)((IFacade)propertyFacade).getTarget()).getWrappedObject());
 		propertyFacade = singleTableSubclassFacade.getIdentifierProperty();
 		assertNotNull(propertyFacade);
-		assertSame(propertyTarget, ((IFacade)propertyFacade).getTarget());
+		assertSame(propertyTarget, ((Wrapper)((IFacade)propertyFacade).getTarget()).getWrappedObject());
 		propertyFacade = joinedSubclassFacade.getIdentifierProperty();
 		assertNotNull(propertyFacade);
-		assertSame(propertyTarget, ((IFacade)propertyFacade).getTarget());
+		assertSame(propertyTarget, ((Wrapper)((IFacade)propertyFacade).getTarget()).getWrappedObject());
 		assertNull(specialRootClassFacade.getIdentifierProperty());
 		((RootClass)specialRootClassTarget).setIdentifierProperty(propertyTarget);
 		propertyFacade = specialRootClassFacade.getIdentifierProperty();
 		assertNotNull(propertyFacade);
-		assertSame(propertyTarget, ((IFacade)propertyFacade).getTarget());
+		assertSame(propertyTarget, ((Wrapper)((IFacade)propertyFacade).getTarget()).getWrappedObject());
 	}
 	
 	@Test
@@ -209,10 +209,10 @@ public class IPersistentClassTest {
 	
 	@Test
 	public void testGetRootClass() {
-		assertSame(((IFacade)rootClassFacade.getRootClass()).getTarget(), rootClassTarget);
-		assertSame(((IFacade)singleTableSubclassFacade.getRootClass()).getTarget(), rootClassTarget);
-		assertSame(((IFacade)joinedSubclassFacade.getRootClass()).getTarget(), rootClassTarget);
-		assertSame(((IFacade)specialRootClassFacade.getRootClass()).getTarget(), specialRootClassTarget);
+		assertSame(((Wrapper)((IFacade)rootClassFacade.getRootClass()).getTarget()).getWrappedObject(), rootClassTarget);
+		assertSame(((Wrapper)((IFacade)singleTableSubclassFacade.getRootClass()).getTarget()).getWrappedObject(), rootClassTarget);
+		assertSame(((Wrapper)((IFacade)joinedSubclassFacade.getRootClass()).getTarget()).getWrappedObject(), rootClassTarget);
+		assertSame(((Wrapper)((IFacade)specialRootClassFacade.getRootClass()).getTarget()).getWrappedObject(), specialRootClassTarget);
 	}
 	
 	@Test
@@ -228,15 +228,15 @@ public class IPersistentClassTest {
 		propertyClosureIterator = rootClassFacade.getPropertyClosureIterator();
 		assertTrue(propertyClosureIterator.hasNext());
 		IProperty propertyFacade = propertyClosureIterator.next();
-		assertSame(propertyTarget, ((IFacade)propertyFacade).getTarget());
+		assertSame(propertyTarget, ((Wrapper)((IFacade)propertyFacade).getTarget()).getWrappedObject());
 		propertyClosureIterator = singleTableSubclassFacade.getPropertyClosureIterator();
 		assertTrue(propertyClosureIterator.hasNext());
 		propertyFacade = propertyClosureIterator.next();
-		assertSame(propertyTarget, ((IFacade)propertyFacade).getTarget());
+		assertSame(propertyTarget, ((Wrapper)((IFacade)propertyFacade).getTarget()).getWrappedObject());
 		propertyClosureIterator = joinedSubclassFacade.getPropertyClosureIterator();
 		assertTrue(propertyClosureIterator.hasNext());
 		propertyFacade = propertyClosureIterator.next();
-		assertSame(propertyTarget, ((IFacade)propertyFacade).getTarget());
+		assertSame(propertyTarget, ((Wrapper)((IFacade)propertyFacade).getTarget()).getWrappedObject());
 		propertyClosureIterator = specialRootClassFacade.getPropertyClosureIterator();
 		assertFalse(propertyClosureIterator.hasNext());
 		specialRootClassTarget.addProperty(propertyTarget);
@@ -249,8 +249,8 @@ public class IPersistentClassTest {
 	@Test
 	public void testGetSuperClass() {
 		assertNull(rootClassFacade.getSuperclass());
-		assertSame(rootClassTarget, ((IFacade)singleTableSubclassFacade.getSuperclass()).getTarget());
-		assertSame(rootClassTarget, ((IFacade)joinedSubclassFacade.getSuperclass()).getTarget());
+		assertSame(rootClassTarget, ((Wrapper)((IFacade)singleTableSubclassFacade.getSuperclass()).getTarget()).getWrappedObject());
+		assertSame(rootClassTarget, ((Wrapper)((IFacade)joinedSubclassFacade.getSuperclass()).getTarget()).getWrappedObject());
 		assertNull(specialRootClassFacade.getSuperclass());
 	}
 	
@@ -265,21 +265,21 @@ public class IPersistentClassTest {
 		propertyIterator = rootClassFacade.getPropertyIterator();
 		assertTrue(propertyIterator.hasNext());
 		IProperty propertyFacade = propertyIterator.next();
-		assertSame(propertyTarget, ((IFacade)propertyFacade).getTarget());
+		assertSame(propertyTarget, ((Wrapper)((IFacade)propertyFacade).getTarget()).getWrappedObject());
 		propertyIterator = singleTableSubclassFacade.getPropertyIterator();
 		assertFalse(propertyIterator.hasNext());
 		singleTableSubclassTarget.addProperty(propertyTarget);
 		propertyIterator = singleTableSubclassFacade.getPropertyIterator();
 		assertTrue(propertyIterator.hasNext());
 		propertyFacade = propertyIterator.next();
-		assertSame(propertyTarget, ((IFacade)propertyFacade).getTarget());
+		assertSame(propertyTarget, ((Wrapper)((IFacade)propertyFacade).getTarget()).getWrappedObject());
 		propertyIterator = joinedSubclassFacade.getPropertyIterator();
 		assertFalse(propertyIterator.hasNext());
 		joinedSubclassTarget.addProperty(propertyTarget);
 		propertyIterator = joinedSubclassFacade.getPropertyIterator();
 		assertTrue(propertyIterator.hasNext());
 		propertyFacade = propertyIterator.next();
-		assertSame(propertyTarget, ((IFacade)propertyFacade).getTarget());
+		assertSame(propertyTarget, ((Wrapper)((IFacade)propertyFacade).getTarget()).getWrappedObject());
 		propertyIterator = specialRootClassFacade.getPropertyIterator();
 		assertFalse(propertyIterator.hasNext());
 		specialRootClassTarget.addProperty(propertyTarget);
@@ -318,11 +318,11 @@ public class IPersistentClassTest {
 		propertyTarget.setName("foo");
 		rootClassTarget.addProperty(propertyTarget);
 		IProperty propertyFacade = rootClassFacade.getProperty("foo");
-		assertSame(propertyTarget, ((IFacade)propertyFacade).getTarget());
+		assertSame(propertyTarget, ((Wrapper)((IFacade)propertyFacade).getTarget()).getWrappedObject());
 		propertyFacade = singleTableSubclassFacade.getProperty("foo");
-		assertSame(propertyTarget, ((IFacade)propertyFacade).getTarget());
+		assertSame(propertyTarget, ((Wrapper)((IFacade)propertyFacade).getTarget()).getWrappedObject());
 		propertyFacade = joinedSubclassFacade.getProperty("foo");
-		assertSame(propertyTarget, ((IFacade)propertyFacade).getTarget());
+		assertSame(propertyTarget, ((Wrapper)((IFacade)propertyFacade).getTarget()).getWrappedObject());
 		try {
 			specialRootClassFacade.getProperty("foo");
 			fail();
@@ -333,7 +333,7 @@ public class IPersistentClassTest {
 		}
 		specialRootClassTarget.addProperty(propertyTarget);
 		propertyFacade = specialRootClassFacade.getProperty("foo");
-		assertSame(propertyTarget, ((IFacade)propertyFacade).getTarget());
+		assertSame(propertyTarget, ((Wrapper)((IFacade)propertyFacade).getTarget()).getWrappedObject());
 		try {
 			propertyFacade = rootClassFacade.getProperty();
 			fail();
@@ -369,17 +369,17 @@ public class IPersistentClassTest {
 		Table tableTarget = new Table("test");
 		((RootClass)rootClassTarget).setTable(tableTarget);
 		ITable tableFacade = rootClassFacade.getTable();
-		assertSame(tableTarget, ((IFacade)tableFacade).getTarget());
+		assertSame(tableTarget, ((Wrapper)((IFacade)tableFacade).getTarget()).getWrappedObject());
 		tableFacade = singleTableSubclassFacade.getTable();
-		assertSame(tableTarget, ((IFacade)tableFacade).getTarget());
+		assertSame(tableTarget, ((Wrapper)((IFacade)tableFacade).getTarget()).getWrappedObject());
 		assertNull(joinedSubclassFacade.getTable());
 		((JoinedSubclass)joinedSubclassTarget).setTable(tableTarget);
 		tableFacade = joinedSubclassFacade.getTable();
-		assertSame(tableTarget, ((IFacade)tableFacade).getTarget());
+		assertSame(tableTarget, ((Wrapper)((IFacade)tableFacade).getTarget()).getWrappedObject());
 		assertNull(specialRootClassFacade.getTable());
 		((RootClass)specialRootClassTarget).setTable(tableTarget);
 		tableFacade = specialRootClassFacade.getTable();
-		assertSame(tableTarget, ((IFacade)tableFacade).getTarget());
+		assertSame(tableTarget, ((Wrapper)((IFacade)tableFacade).getTarget()).getWrappedObject());
 	}
 	
 	@Test 
@@ -459,22 +459,22 @@ public class IPersistentClassTest {
 		rootClassTarget.addJoin(joinTarget);
 		Iterator<IJoin> joinIterator = rootClassFacade.getJoinIterator();
 		IJoin joinFacade = joinIterator.next();
-		assertSame(((IFacade)joinFacade).getTarget(), joinTarget);
+		assertSame(((Wrapper)((IFacade)joinFacade).getTarget()).getWrappedObject(), joinTarget);
 		assertFalse(singleTableSubclassFacade.getJoinIterator().hasNext());
 		singleTableSubclassTarget.addJoin(joinTarget);
 		joinIterator = singleTableSubclassFacade.getJoinIterator();
 		joinFacade = joinIterator.next();
-		assertSame(((IFacade)joinFacade).getTarget(), joinTarget);
+		assertSame(((Wrapper)((IFacade)joinFacade).getTarget()).getWrappedObject(), joinTarget);
 		assertFalse(joinedSubclassFacade.getJoinIterator().hasNext());
 		joinedSubclassTarget.addJoin(joinTarget);
 		joinIterator = joinedSubclassFacade.getJoinIterator();
 		joinFacade = joinIterator.next();
-		assertSame(((IFacade)joinFacade).getTarget(), joinTarget);
+		assertSame(((Wrapper)((IFacade)joinFacade).getTarget()).getWrappedObject(), joinTarget);
 		assertFalse(specialRootClassFacade.getJoinIterator().hasNext());
 		specialRootClassTarget.addJoin(joinTarget);
 		joinIterator = specialRootClassFacade.getJoinIterator();
 		joinFacade = joinIterator.next();
-		assertSame(((IFacade)joinFacade).getTarget(), joinTarget);
+		assertSame(((Wrapper)((IFacade)joinFacade).getTarget()).getWrappedObject(), joinTarget);
 	}
 	
 	@Test
@@ -485,15 +485,15 @@ public class IPersistentClassTest {
 		assertNull(joinedSubclassFacade.getVersion());
 		((RootClass)rootClassTarget).setVersion(versionTarget);
 		IProperty propertyFacade = rootClassFacade.getVersion();
-		assertSame(versionTarget, ((IFacade)propertyFacade).getTarget());
+		assertSame(versionTarget, ((Wrapper)((IFacade)propertyFacade).getTarget()).getWrappedObject());
 		propertyFacade = singleTableSubclassFacade.getVersion();
-		assertSame(versionTarget, ((IFacade)propertyFacade).getTarget());
+		assertSame(versionTarget, ((Wrapper)((IFacade)propertyFacade).getTarget()).getWrappedObject());
 		propertyFacade = joinedSubclassFacade.getVersion();
-		assertSame(versionTarget, ((IFacade)propertyFacade).getTarget());
+		assertSame(versionTarget, ((Wrapper)((IFacade)propertyFacade).getTarget()).getWrappedObject());
 		assertNull(specialRootClassFacade.getVersion());
 		((RootClass)specialRootClassTarget).setVersion(versionTarget);
 		propertyFacade = specialRootClassFacade.getVersion();
-		assertSame(versionTarget, ((IFacade)propertyFacade).getTarget());
+		assertSame(versionTarget, ((Wrapper)((IFacade)propertyFacade).getTarget()).getWrappedObject());
 	}
 	
 	@Test
@@ -573,12 +573,12 @@ public class IPersistentClassTest {
 		IProperty firstPropertyFacade = (IProperty)GenericFacadeFactory.createFacade(
 				IProperty.class, 
 				WrapperFactory.createPropertyWrapper());
-		Property firstPropertyTarget = (Property)((IFacade)firstPropertyFacade).getTarget();
+		Property firstPropertyTarget = (Property)((Wrapper)((IFacade)firstPropertyFacade).getTarget()).getWrappedObject();
 		firstPropertyTarget.setName("foo");
 		IProperty secondPropertyFacade = (IProperty)GenericFacadeFactory.createFacade(
 				IProperty.class, 
 				WrapperFactory.createPropertyWrapper());
-		Property secondPropertyTarget = (Property)((IFacade)secondPropertyFacade).getTarget();
+		Property secondPropertyTarget = (Property)((Wrapper)((IFacade)secondPropertyFacade).getTarget()).getWrappedObject();
 		secondPropertyTarget.setName("bar");
 		try {
 			rootClassTarget.getProperty("foo");
@@ -653,7 +653,7 @@ public class IPersistentClassTest {
 		ITable tableFacade = (ITable)GenericFacadeFactory.createFacade(
 				ITable.class, 
 				WrapperFactory.createTableWrapper(""));
-		Table tableTarget = (Table)((IFacade)tableFacade).getTarget();
+		Table tableTarget = (Table)((Wrapper)((IFacade)tableFacade).getTarget()).getWrappedObject();
 		assertNull(rootClassTarget.getTable());
 		assertNull(singleTableSubclassTarget.getTable());
 		rootClassFacade.setTable(tableFacade);
@@ -757,7 +757,7 @@ public class IPersistentClassTest {
 		IProperty propertyFacade = (IProperty)GenericFacadeFactory.createFacade(
 				IProperty.class, 
 				WrapperFactory.createPropertyWrapper());
-		Property propertyTarget = (Property)((IFacade)propertyFacade).getTarget();
+		Property propertyTarget = (Property)((Wrapper)((IFacade)propertyFacade).getTarget()).getWrappedObject();
 		assertNull(rootClassTarget.getIdentifierProperty());
 		rootClassFacade.setIdentifierProperty(propertyFacade);
 		assertSame(propertyTarget, rootClassTarget.getIdentifierProperty());
@@ -788,9 +788,9 @@ public class IPersistentClassTest {
 		assertNull(singleTableSubclassTarget.getIdentifier());
 		assertNull(joinedSubclassTarget.getIdentifier());
 		rootClassFacade.setIdentifier(valueFacade);
-		assertSame(valueTarget, ((Wrapper)rootClassTarget.getIdentifier()).getWrappedObject());
-		assertSame(valueTarget, ((Wrapper)singleTableSubclassTarget.getIdentifier()).getWrappedObject());
-		assertSame(valueTarget, ((Wrapper)joinedSubclassTarget.getIdentifier()).getWrappedObject());
+		assertSame(valueTarget, rootClassTarget.getIdentifier());
+		assertSame(valueTarget, singleTableSubclassTarget.getIdentifier());
+		assertSame(valueTarget, joinedSubclassTarget.getIdentifier());
 		try {
 			singleTableSubclassFacade.setIdentifier(valueFacade);
 			fail();
@@ -805,7 +805,7 @@ public class IPersistentClassTest {
 		}
 		assertNull(specialRootClassTarget.getIdentifier());
 		specialRootClassFacade.setIdentifier(valueFacade);
-		assertSame(valueTarget, ((Wrapper)specialRootClassTarget.getIdentifier()).getWrappedObject());
+		assertSame(valueTarget, specialRootClassTarget.getIdentifier());
 	}
 	
 	@Test
@@ -819,9 +819,9 @@ public class IPersistentClassTest {
 		assertNull(joinedSubclassTarget.getDiscriminator());
 		assertNull(specialRootClassTarget.getDiscriminator());
 		rootClassFacade.setDiscriminator(valueFacade);
-		assertSame(valueTarget, ((Wrapper)rootClassTarget.getDiscriminator()).getWrappedObject());
-		assertSame(valueTarget, ((Wrapper)singleTableSubclassTarget.getDiscriminator()).getWrappedObject());
-		assertSame(valueTarget, ((Wrapper)joinedSubclassTarget.getDiscriminator()).getWrappedObject());
+		assertSame(valueTarget, rootClassTarget.getDiscriminator());
+		assertSame(valueTarget, singleTableSubclassTarget.getDiscriminator());
+		assertSame(valueTarget, joinedSubclassTarget.getDiscriminator());
 		try {
 			singleTableSubclassFacade.setDiscriminator(valueFacade);
 			fail();
@@ -836,7 +836,7 @@ public class IPersistentClassTest {
 		}
 		assertNull(specialRootClassTarget.getDiscriminator());
 		specialRootClassFacade.setDiscriminator(valueFacade);
-		assertSame(valueTarget, ((Wrapper)specialRootClassTarget.getDiscriminator()).getWrappedObject());
+		assertSame(valueTarget, specialRootClassTarget.getDiscriminator());
 	}
 	
 	@Test
@@ -884,7 +884,7 @@ public class IPersistentClassTest {
 		rootClassTarget.addSubclass(firstSubclass);
 		subclassIterator = rootClassFacade.getSubclassIterator();
 		assertTrue(subclassIterator.hasNext());
-		assertSame(firstSubclass, ((IFacade)subclassIterator.next()).getTarget());
+		assertSame(firstSubclass, ((Wrapper)((IFacade)subclassIterator.next()).getTarget()).getWrappedObject());
 		subclassIterator = singleTableSubclassFacade.getSubclassIterator();
 		assertFalse(subclassIterator.hasNext());
 		Subclass secondSubclass = new Subclass(singleTableSubclassTarget, DummyMetadataBuildingContext.INSTANCE);
@@ -892,7 +892,7 @@ public class IPersistentClassTest {
 		singleTableSubclassTarget.addSubclass(secondSubclass);
 		subclassIterator = singleTableSubclassFacade.getSubclassIterator();
 		assertTrue(subclassIterator.hasNext());
-		assertSame(secondSubclass, ((IFacade)subclassIterator.next()).getTarget());
+		assertSame(secondSubclass, ((Wrapper)((IFacade)subclassIterator.next()).getTarget()).getWrappedObject());
 		subclassIterator = joinedSubclassFacade.getSubclassIterator();
 		assertFalse(subclassIterator.hasNext());
 		Subclass thirdSubclass = new Subclass(joinedSubclassTarget, DummyMetadataBuildingContext.INSTANCE);
@@ -900,7 +900,7 @@ public class IPersistentClassTest {
 		joinedSubclassTarget.addSubclass(thirdSubclass);
 		subclassIterator = joinedSubclassFacade.getSubclassIterator();
 		assertTrue(subclassIterator.hasNext());
-		assertSame(thirdSubclass, ((IFacade)subclassIterator.next()).getTarget());
+		assertSame(thirdSubclass, ((Wrapper)((IFacade)subclassIterator.next()).getTarget()).getWrappedObject());
 		subclassIterator = specialRootClassFacade.getSubclassIterator();
 		assertFalse(subclassIterator.hasNext());
 		Subclass fourthSubclass = new Subclass(joinedSubclassTarget, DummyMetadataBuildingContext.INSTANCE);
@@ -908,7 +908,7 @@ public class IPersistentClassTest {
 		specialRootClassTarget.addSubclass(fourthSubclass);
 		subclassIterator = specialRootClassFacade.getSubclassIterator();
 		assertTrue(subclassIterator.hasNext());
-		assertSame(fourthSubclass, ((IFacade)subclassIterator.next()).getTarget());
+		assertSame(fourthSubclass, ((Wrapper)((IFacade)subclassIterator.next()).getTarget()).getWrappedObject());
 	}
 	
 	@Test
@@ -1301,12 +1301,12 @@ public class IPersistentClassTest {
 		assertNull(singleTableSubclassFacade.getRootTable());
 		assertNull(joinedSubclassFacade.getRootTable());
 		((RootClass)rootClassTarget).setTable(tableTarget);
-		assertSame(tableTarget, ((IFacade)rootClassFacade.getRootTable()).getTarget());
-		assertSame(tableTarget, ((IFacade)singleTableSubclassFacade.getRootTable()).getTarget());
-		assertSame(tableTarget, ((IFacade)joinedSubclassFacade.getRootTable()).getTarget());
+		assertSame(tableTarget, ((Wrapper)((IFacade)rootClassFacade.getRootTable()).getTarget()).getWrappedObject());
+		assertSame(tableTarget, ((Wrapper)((IFacade)singleTableSubclassFacade.getRootTable()).getTarget()).getWrappedObject());
+		assertSame(tableTarget, ((Wrapper)((IFacade)joinedSubclassFacade.getRootTable()).getTarget()).getWrappedObject());
 		assertNull(specialRootClassFacade.getRootTable());
 		((RootClass)specialRootClassTarget).setTable(tableTarget);
-		assertSame(tableTarget, ((IFacade)specialRootClassFacade.getRootTable()).getTarget());
+		assertSame(tableTarget, ((Wrapper)((IFacade)specialRootClassFacade.getRootTable()).getTarget()).getWrappedObject());
 	}
 	
 	private KeyValue createValue() {

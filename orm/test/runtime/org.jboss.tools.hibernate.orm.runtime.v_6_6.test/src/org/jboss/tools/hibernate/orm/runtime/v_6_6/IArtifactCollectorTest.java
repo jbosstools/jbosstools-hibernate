@@ -14,8 +14,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.hibernate.tool.orm.jbt.wrp.Wrapper;
-import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
+import org.hibernate.tool.orm.jbt.api.factory.WrapperFactory;
+import org.hibernate.tool.orm.jbt.api.wrp.Wrapper;
 import org.jboss.tools.hibernate.orm.runtime.common.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;

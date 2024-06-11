@@ -14,7 +14,8 @@ import org.hibernate.mapping.Table;
 import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
-import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
+import org.hibernate.tool.orm.jbt.api.factory.WrapperFactory;
+import org.hibernate.tool.orm.jbt.api.wrp.Wrapper;
 import org.jboss.tools.hibernate.orm.runtime.common.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
@@ -42,7 +43,8 @@ public class IOverrideRepositoryTest {
 		overrideRepositoryFacade = (IOverrideRepository)GenericFacadeFactory.createFacade(
 				IOverrideRepository.class, 
 				WrapperFactory.createOverrideRepositoryWrapper());
-		overrideRepository = ((IFacade)overrideRepositoryFacade).getTarget();
+		Wrapper wrapper = (Wrapper)((IFacade)overrideRepositoryFacade).getTarget();
+		overrideRepository = (OverrideRepository)wrapper.getWrappedObject();
 	}
 	
 	@Test
@@ -67,10 +69,10 @@ public class IOverrideRepositoryTest {
 		IReverseEngineeringStrategy resFacade = (IReverseEngineeringStrategy)GenericFacadeFactory.createFacade(
 				IReverseEngineeringStrategy.class, 
 				WrapperFactory.createRevengStrategyWrapper());
-		Object res = ((IFacade)resFacade).getTarget();
+		Object res = ((Wrapper)((IFacade)resFacade).getTarget()).getWrappedObject();
 		IReverseEngineeringStrategy result = overrideRepositoryFacade.getReverseEngineeringStrategy(resFacade);
-		DelegatingStrategy resultTarget = 
-				(DelegatingStrategy)((IFacade)result).getTarget();
+		Wrapper wrapper = (Wrapper)((IFacade)result).getTarget();
+		DelegatingStrategy resultTarget = (DelegatingStrategy)wrapper.getWrappedObject();
 		Field delegateField = DelegatingStrategy.class.getDeclaredField("delegate");
 		delegateField.setAccessible(true);
 		assertSame(res, delegateField.get(resultTarget));
@@ -80,8 +82,8 @@ public class IOverrideRepositoryTest {
 	public void testAddTableFilter() throws Exception {
 		ITableFilter tableFilterFacade = (ITableFilter)GenericFacadeFactory.createFacade(
 				ITableFilter.class, 
-				(TableFilter)WrapperFactory.createTableFilterWrapper());
-		TableFilter tableFilterTarget = (TableFilter)((IFacade)tableFilterFacade).getTarget();
+				WrapperFactory.createTableFilterWrapper());
+		TableFilter tableFilterTarget = (TableFilter)((Wrapper)((IFacade)tableFilterFacade).getTarget()).getWrappedObject();
 		Field tableFiltersField = OverrideRepository.class.getDeclaredField("tableFilters");
 		tableFiltersField.setAccessible(true);
 		List<?> tableFilters = (List<?>)tableFiltersField.get(overrideRepository);

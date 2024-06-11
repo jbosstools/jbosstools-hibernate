@@ -10,8 +10,8 @@ import java.util.Iterator;
 import org.hibernate.mapping.Join;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
-import org.hibernate.tool.orm.jbt.wrp.Wrapper;
-import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
+import org.hibernate.tool.orm.jbt.api.factory.WrapperFactory;
+import org.hibernate.tool.orm.jbt.api.wrp.Wrapper;
 import org.jboss.tools.hibernate.orm.runtime.common.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
@@ -41,7 +41,7 @@ public class IJoinTest {
 	public void testConstruction() {
 		assertNotNull(joinFacade);
 		assertNotNull(joinTarget);
-		assertSame(((IFacade)joinFacade).getTarget(), joinTarget);
+		assertSame(((Wrapper)((IFacade)joinFacade).getTarget()).getWrappedObject(), joinTarget);
 	}
 	
 	@Test
@@ -53,7 +53,7 @@ public class IJoinTest {
 		propertyFacadeIterator = joinFacade.getPropertyIterator();
 		assertTrue(propertyFacadeIterator.hasNext());
 		IProperty propertyFacade = propertyFacadeIterator.next();
-		assertSame(((IFacade)propertyFacade).getTarget(), propertyTarget);
+		assertSame(((Wrapper)((IFacade)propertyFacade).getTarget()).getWrappedObject(), propertyTarget);
 	}
 
 }

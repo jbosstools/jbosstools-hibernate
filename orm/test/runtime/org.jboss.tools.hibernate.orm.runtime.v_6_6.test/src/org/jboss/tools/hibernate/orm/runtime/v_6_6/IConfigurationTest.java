@@ -34,13 +34,14 @@ import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.tool.api.reveng.RevengStrategy;
+import org.hibernate.tool.orm.jbt.api.factory.WrapperFactory;
+import org.hibernate.tool.orm.jbt.api.wrp.Wrapper;
 import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.util.MetadataHelper;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
-import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
@@ -272,7 +273,7 @@ public class IConfigurationTest {
 		// For native configuration
 		Field namingStrategyField = nativeConfigurationTarget.getClass().getDeclaredField("namingStrategy");
 		namingStrategyField.setAccessible(true);
-		NamingStrategy namingStrategyTarget = (NamingStrategy)((IFacade)namingStrategyFacade).getTarget();
+		NamingStrategy namingStrategyTarget = (NamingStrategy)((Wrapper)((IFacade)namingStrategyFacade).getTarget()).getWrappedObject();
 		assertNull(namingStrategyField.get(nativeConfigurationTarget));
 		nativeConfigurationFacade.setNamingStrategy(namingStrategyFacade);
 		assertNotNull(namingStrategyField.get(nativeConfigurationTarget));
@@ -555,6 +556,8 @@ public class IConfigurationTest {
 		assertNotNull(sessionFactoryFacade);
 		Object sessionFactory = ((IFacade)sessionFactoryFacade).getTarget();
 		assertNotNull(sessionFactory);
+		assertTrue(sessionFactory instanceof Wrapper);
+		sessionFactory = ((Wrapper)sessionFactory).getWrappedObject();
 		assertTrue(sessionFactory instanceof SessionFactory);
 		sessionFactoryFacade = null;
 		assertNull(sessionFactoryFacade);
@@ -574,6 +577,8 @@ public class IConfigurationTest {
 		assertNotNull(sessionFactoryFacade);
 		sessionFactory = ((IFacade)sessionFactoryFacade).getTarget();
 		assertNotNull(sessionFactory);
+		assertTrue(sessionFactory instanceof Wrapper);
+		sessionFactory = ((Wrapper)sessionFactory).getWrappedObject();
 		assertTrue(sessionFactory instanceof SessionFactory);
 	}
 	
@@ -660,7 +665,7 @@ public class IConfigurationTest {
 				(IReverseEngineeringStrategy)GenericFacadeFactory.createFacade(
 						IReverseEngineeringStrategy.class, 
 						WrapperFactory.createRevengStrategyWrapper());
-		RevengStrategy reverseEngineeringStrategy = (RevengStrategy)((IFacade)strategyFacade).getTarget();
+		RevengStrategy reverseEngineeringStrategy = (RevengStrategy)((Wrapper)((IFacade)strategyFacade).getTarget()).getWrappedObject();
 		// For native configuration 
 		try {
 			nativeConfigurationFacade.setReverseEngineeringStrategy(strategyFacade);
@@ -772,7 +777,7 @@ public class IConfigurationTest {
 		nativeConfigurationTarget.setNamingStrategy(namingStrategy);
 		INamingStrategy namingStrategyFacade = nativeConfigurationFacade.getNamingStrategy();
 		assertNotNull(namingStrategyFacade);
-		Object namingStrategyTarget = ((IFacade)namingStrategyFacade).getTarget();
+		Object namingStrategyTarget = ((Wrapper)((IFacade)namingStrategyFacade).getTarget()).getWrappedObject();
 		assertSame(namingStrategyTarget, namingStrategy);
 		// For reveng configuration 
 		try {
@@ -898,17 +903,20 @@ public class IConfigurationTest {
 		nativeConfigurationFacade = (IConfiguration)GenericFacadeFactory.createFacade(
 				IConfiguration.class, 
 				WrapperFactory.createNativeConfigurationWrapper());
-		nativeConfigurationTarget = (NativeConfiguration)((IFacade)nativeConfigurationFacade).getTarget();
+		Wrapper wrapper = (Wrapper)((IFacade)nativeConfigurationFacade).getTarget();
+		nativeConfigurationTarget = (NativeConfiguration)wrapper.getWrappedObject();
 		nativeConfigurationTarget.setProperty(AvailableSettings.DIALECT, MockDialect.class.getName());
 		nativeConfigurationTarget.setProperty(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
 		revengConfigurationFacade = (IConfiguration)GenericFacadeFactory.createFacade(
 				IConfiguration.class, 
 				WrapperFactory.createRevengConfigurationWrapper());
-		revengConfigurationTarget = (RevengConfiguration)((IFacade)revengConfigurationFacade).getTarget();
+		wrapper = (Wrapper)((IFacade)revengConfigurationFacade).getTarget();
+		revengConfigurationTarget = (RevengConfiguration)wrapper.getWrappedObject();
 		jpaConfigurationFacade = (IConfiguration)GenericFacadeFactory.createFacade(
 				IConfiguration.class, 
 				WrapperFactory.createJpaConfigurationWrapper("foobar", null));
-		jpaConfigurationTarget = (JpaConfiguration)((IFacade)jpaConfigurationFacade).getTarget();	
+		wrapper = (Wrapper)((IFacade)jpaConfigurationFacade).getTarget();
+		jpaConfigurationTarget = (JpaConfiguration)wrapper.getWrappedObject();	
 	}
 	
 }

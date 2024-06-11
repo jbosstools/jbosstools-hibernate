@@ -5,8 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
+import org.hibernate.tool.orm.jbt.api.factory.WrapperFactory;
+import org.hibernate.tool.orm.jbt.api.wrp.Wrapper;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
-import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
@@ -39,7 +40,8 @@ public class ICfg2HbmToolTest {
 		IProperty propertyFacade = (IProperty)GenericFacadeFactory.createFacade(
 				IProperty.class, 
 				WrapperFactory.createPropertyWrapper());
-		Property propertyTarget = (Property)((IFacade)propertyFacade).getTarget();
+		Wrapper wrapper = (Wrapper)((IFacade)propertyFacade).getTarget();
+		Property propertyTarget = (Property)wrapper.getWrappedObject();
 		RootClass rc = new RootClass(DummyMetadataBuildingContext.INSTANCE);
 		BasicValue basicValue = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
 		basicValue.setTypeName("foobar");

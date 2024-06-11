@@ -16,9 +16,9 @@ import org.hibernate.mapping.Column;
 import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
+import org.hibernate.tool.orm.jbt.api.factory.WrapperFactory;
+import org.hibernate.tool.orm.jbt.api.wrp.Wrapper;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
-import org.hibernate.tool.orm.jbt.wrp.Wrapper;
-import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
@@ -61,7 +61,7 @@ public class ITableTest {
 		IColumn columnFacade = (IColumn)GenericFacadeFactory.createFacade(
 				IColumn.class, 
 				WrapperFactory.createColumnWrapper("foo"));
-		Column columnTarget = (Column)((IFacade)columnFacade).getTarget();
+		Column columnTarget = (Column)((Wrapper)((IFacade)columnFacade).getTarget()).getWrappedObject();
 		assertNull(tableTarget.getColumn(columnTarget));
 		tableFacade.addColumn(columnFacade);
 		assertSame(columnTarget, tableTarget.getColumn(columnTarget));

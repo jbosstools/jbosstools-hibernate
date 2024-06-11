@@ -16,10 +16,10 @@ import java.util.Set;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.tool.orm.jbt.api.factory.WrapperFactory;
+import org.hibernate.tool.orm.jbt.api.wrp.Wrapper;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
-import org.hibernate.tool.orm.jbt.wrp.Wrapper;
-import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
@@ -80,7 +80,8 @@ public class ISessionFactoryTest {
 		configuration.addFile(hbmXmlFile);
 		configuration.configure(cfgXmlFile);
 		sessionFactoryFacade = configuration.buildSessionFactory();
-		sessionFactoryTarget = (SessionFactory)((IFacade)sessionFactoryFacade).getTarget();
+		Wrapper wrapper = (Wrapper)((IFacade)sessionFactoryFacade).getTarget();
+		sessionFactoryTarget = (SessionFactory)wrapper.getWrappedObject();
 	}
 	
 	@Test
