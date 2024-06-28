@@ -26,6 +26,7 @@ import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class ITableTest {
@@ -166,12 +167,14 @@ public class ITableTest {
 		assertTrue(tableFacade.isPhysicalTable());
 	}
 	
+	// TODO Disabled because of JBIDE-29200 (Remove method 'ITable#getIdentifierValue()' and find workaround)
+	@Disabled
 	@Test
 	public void testGetIdentifierValue() {
 		IValue valueFacade = tableFacade.getIdentifierValue();
 		assertNull(valueFacade);
 		KeyValue value = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
-		tableTarget.setIdentifierValue(value);
+		//tableTarget.setIdentifierValue(value);
 		valueFacade = tableFacade.getIdentifierValue();
 		assertSame(value, ((Wrapper)((IFacade)valueFacade).getTarget()).getWrappedObject());
 	}
