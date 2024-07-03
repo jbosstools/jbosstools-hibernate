@@ -14,6 +14,8 @@
 	<properties>
 		<hibernate.version>7.0.0.Alpha1</hibernate.version>
 		<hibernate.models.version>0.7.8</hibernate.models.version>
+		<bytebuddy.version>1.14.15</bytebuddy.version>
+		<jakarta-persistence-api.version>3.2.0</jakarta-persistence-api.version>
 	</properties>
 
 	<build>
@@ -61,6 +63,16 @@
 							<groupId>org.hibernate.orm</groupId>
 							<artifactId>hibernate-core</artifactId>
 							<version>${hibernate.version}</version>
+						</artifactItem>
+						<artifactItem>
+							<groupId>net.bytebuddy</groupId>
+							<artifactId>byte-buddy</artifactId>
+							<version>${bytebuddy.version}</version>
+						</artifactItem>
+						<artifactItem>
+							<groupId>jakarta.persistence</groupId>
+							<artifactId>jakarta.persistence-api</artifactId>
+							<version>${jakarta-persistence-api.version}</version>
 						</artifactItem>
 					</artifactItems>
 					<skip>false</skip>

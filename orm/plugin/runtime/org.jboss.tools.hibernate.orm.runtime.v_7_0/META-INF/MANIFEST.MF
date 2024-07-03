@@ -6,9 +6,11 @@ Bundle-SymbolicName: org.jboss.tools.hibernate.orm.runtime.v_7_0;singleton:=true
 Bundle-Version: 5.4.23.qualifier
 Require-Bundle: org.jboss.tools.hibernate.orm.runtime.common,
  org.jboss.tools.hibernate.runtime.spi,
+ org.jboss.tools.hibernate.libs.antlr4-runtime.v_4_10,
  org.jboss.tools.hibernate.libs.classmate.v_1_5,
- org.jboss.tools.hibernate.libs.jakarta-persistence-api.v_3_1,
  org.jboss.tools.hibernate.libs.jakarta-transaction-api.v_2_0,
+ org.jboss.tools.hibernate.libs.jakarta-xml-bind-api.v_3_0,
+ org.jboss.tools.hibernate.libs.jaxb.v_3_0,
  org.jboss.tools.hibernate.libs.jboss-logging.v_3_4
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-17
@@ -18,4 +20,6 @@ Bundle-ClassPath: .,
  lib/hibernate-tools-orm-7.0.0.Alpha1.jar,
  lib/hibernate-tools-orm-jbt-7.0.0.Alpha1.jar,
  lib/hibernate-tools-utils-7.0.0.Alpha1.jar,
- lib/hibernate-models-0.7.8.jar
+ lib/hibernate-models-0.7.8.jar,
+ lib/byte-buddy-1.14.15.jar,
+ lib/jakarta.persistence-api-3.2.0.jar
