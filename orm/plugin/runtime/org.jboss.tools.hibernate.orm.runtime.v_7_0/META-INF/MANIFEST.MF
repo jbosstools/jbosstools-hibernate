@@ -4,8 +4,12 @@ Bundle-Name: Hibernate ORM Runtime 7.0
 Bundle-Vendor: Red Hat
 Bundle-SymbolicName: org.jboss.tools.hibernate.orm.runtime.v_7_0;singleton:=true
 Bundle-Version: 5.4.23.qualifier
-Require-Bundle: org.jboss.tools.hibernate.orm.runtime.common;bundle-version="5.4.23",
- org.jboss.tools.hibernate.runtime.spi
+Require-Bundle: org.jboss.tools.hibernate.orm.runtime.common,
+ org.jboss.tools.hibernate.runtime.spi,
+ org.jboss.tools.hibernate.libs.classmate.v_1_5,
+ org.jboss.tools.hibernate.libs.jakarta-persistence-api.v_3_1,
+ org.jboss.tools.hibernate.libs.jakarta-transaction-api.v_2_0,
+ org.jboss.tools.hibernate.libs.jboss-logging.v_3_4
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-ClassPath: .,
@@ -13,4 +17,5 @@ Bundle-ClassPath: .,
  lib/hibernate-core-7.0.0.Alpha1.jar,
  lib/hibernate-tools-orm-7.0.0.Alpha1.jar,
  lib/hibernate-tools-orm-jbt-7.0.0.Alpha1.jar,
- lib/hibernate-tools-utils-7.0.0.Alpha1.jar
+ lib/hibernate-tools-utils-7.0.0.Alpha1.jar,
+ lib/hibernate-models-0.7.8.jar
