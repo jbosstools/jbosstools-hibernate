@@ -16,6 +16,7 @@ import org.hibernate.tool.orm.jbt.internal.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.internal.util.MetadataHelper;
 import org.hibernate.tool.orm.jbt.internal.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.internal.util.MockDialect;
+import org.hibernate.tool.orm.jbt.internal.util.RevengConfiguration;
 import org.jboss.tools.hibernate.orm.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
@@ -105,6 +106,17 @@ public class ServiceImplTest {
 		configuration.setProperty(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
 		IHQLCodeAssist hqlCodeAssist = service.newHQLCodeAssist(configuration);
 		assertNotNull(hqlCodeAssist);
+	}
+	
+	@Test
+	public void testNewJDBCMetaDataConfiguration() {
+		IConfiguration configuration = service.newJDBCMetaDataConfiguration();
+		assertNotNull(configuration);
+		Object target = ((IFacade)configuration).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof Wrapper);
+		target = ((Wrapper)target).getWrappedObject();
+		assertTrue(target instanceof RevengConfiguration);
 	}
 	
 }
