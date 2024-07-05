@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.export.cfg.CfgExporter;
 import org.hibernate.tool.orm.jbt.api.factory.WrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.GenericFacadeFactory;
@@ -178,13 +179,12 @@ public class ServiceImpl implements IService {
 	}
 
 	@Override
-	public IHQLQueryPlan newHQLQueryPlan(String query, boolean shallow, ISessionFactory sessionFactory) {
-		// TODO Auto-generated method stub
-		return null;
+	public String getReverseEngineeringStrategyClassName() {
+		return RevengStrategy.class.getName();
 	}
 
 	@Override
-	public String getReverseEngineeringStrategyClassName() {
+	public IHQLQueryPlan newHQLQueryPlan(String query, boolean shallow, ISessionFactory sessionFactory) {
 		// TODO Auto-generated method stub
 		return null;
 	}
