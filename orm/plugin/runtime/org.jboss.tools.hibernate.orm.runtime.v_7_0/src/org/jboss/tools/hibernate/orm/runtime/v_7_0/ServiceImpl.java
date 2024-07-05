@@ -48,10 +48,13 @@ public class ServiceImpl implements IService {
 	}
 
 	@Override
-	public IConfiguration newJpaConfiguration(String entityResolver, String persistenceUnit,
+	public IConfiguration newJpaConfiguration(
+			String entityResolver, 
+			String persistenceUnit,
 			Map<Object, Object> overrides) {
-		// TODO Auto-generated method stub
-		return null;
+		return (IConfiguration)GenericFacadeFactory.createFacade(
+				IConfiguration.class, 
+				WrapperFactory.createJpaConfigurationWrapper(persistenceUnit, overrides));
 	}
 
 	@Override
