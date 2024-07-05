@@ -7,6 +7,11 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+import java.util.List;
+import java.util.Properties;
 
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
@@ -37,9 +42,11 @@ import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
+import org.jboss.tools.hibernate.runtime.spi.IProgressListener;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
+import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -262,6 +269,32 @@ public class ServiceImplTest {
 		assertTrue(target instanceof Wrapper);
 		target = ((Wrapper)target).getWrappedObject();
 		assertTrue(target instanceof RevengSettings);
+	}
+	
+	@Test
+	public void testCollectDatabaseTables() throws Exception {
+		Connection connection = DriverManager.getConnection("jdbc:h2:mem:test");
+		Statement statement = connection.createStatement();
+		statement.execute("CREATE TABLE FOO(id int primary key, bar varchar(255))");
+		Properties properties = new Properties();
+		properties.put("hibernate.connection.url", "jdbc:h2:mem:test");
+		java.util.Map<String, List<ITable>> tableMap = service.collectDatabaseTables(
+				properties, 
+				service.newDefaultReverseEngineeringStrategy(),
+				new IProgressListener() {				
+					@Override public void startSubTask(String name) {}
+				});
+		assertEquals(1, tableMap.size());
+		List<ITable> tables = tableMap.get("TEST.PUBLIC");
+		assertEquals(1, tables.size());
+		ITable table = tables.get(0);
+		assertEquals("TEST", table.getCatalog());
+		assertEquals("PUBLIC", table.getSchema());
+		assertEquals("FOO", table.getName());
+		assertTrue(table.getColumnIterator().hasNext());
+		statement.execute("DROP TABLE FOO");
+		statement.close();
+		connection.close();
 	}
 	
 }
