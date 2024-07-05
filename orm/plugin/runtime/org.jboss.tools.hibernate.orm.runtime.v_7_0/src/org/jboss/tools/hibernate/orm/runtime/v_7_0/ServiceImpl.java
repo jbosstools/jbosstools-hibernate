@@ -44,8 +44,7 @@ public class ServiceImpl implements IService {
 
 	@Override
 	public IConfiguration newAnnotationConfiguration() {
-		// TODO Auto-generated method stub
-		return null;
+		return newDefaultConfiguration();
 	}
 
 	@Override

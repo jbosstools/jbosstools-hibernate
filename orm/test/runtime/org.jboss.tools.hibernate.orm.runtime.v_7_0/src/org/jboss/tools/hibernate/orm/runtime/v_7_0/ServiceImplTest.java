@@ -34,4 +34,16 @@ public class ServiceImplTest {
 		assertTrue( target instanceof Configuration);
 	}
 
+	@Test
+	public void testNewAnnotationConfiguration() {
+		IConfiguration annotationConfiguration = service.newAnnotationConfiguration();
+		assertNotNull(annotationConfiguration);
+		Object target = ((IFacade)annotationConfiguration).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof Wrapper);
+		target = ((Wrapper)target).getWrappedObject();
+		assertNotNull(target);
+		assertTrue(target instanceof Configuration);
+	}
+
 }
