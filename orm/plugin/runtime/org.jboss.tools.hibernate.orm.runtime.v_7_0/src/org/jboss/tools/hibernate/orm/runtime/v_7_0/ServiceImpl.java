@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.hibernate.tool.orm.jbt.api.factory.WrapperFactory;
+import org.jboss.tools.hibernate.orm.runtime.common.GenericFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
@@ -34,6 +36,13 @@ import org.xml.sax.EntityResolver;
 public class ServiceImpl implements IService {
 
 	@Override
+	public IConfiguration newDefaultConfiguration() {
+		return (IConfiguration)GenericFacadeFactory.createFacade(
+				IConfiguration.class, 
+				WrapperFactory.createNativeConfigurationWrapper());
+	}
+
+	@Override
 	public IConfiguration newAnnotationConfiguration() {
 		// TODO Auto-generated method stub
 		return null;
@@ -42,12 +51,6 @@ public class ServiceImpl implements IService {
 	@Override
 	public IConfiguration newJpaConfiguration(String entityResolver, String persistenceUnit,
 			Map<Object, Object> overrides) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public IConfiguration newDefaultConfiguration() {
 		// TODO Auto-generated method stub
 		return null;
 	}
