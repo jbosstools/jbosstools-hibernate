@@ -34,6 +34,7 @@ import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
+import org.hibernate.tool.orm.jbt.api.wrp.ColumnWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.Wrapper;
 import org.hibernate.tool.orm.jbt.internal.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.internal.util.MetadataHelper;
@@ -43,6 +44,7 @@ import org.hibernate.tool.orm.jbt.internal.util.RevengConfiguration;
 import org.jboss.tools.hibernate.orm.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
+import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
@@ -369,6 +371,16 @@ public class ServiceImplTest {
 		assertTrue(target instanceof Table);
 		assertEquals("foo", ((Table)target).getName());
 		assertNotNull(((Table)target).getPrimaryKey());
+	}
+	
+	@Test
+	public void testNewColumn() {
+		IColumn column = service.newColumn("foo");
+		assertNotNull(column);
+		Object target = ((IFacade)column).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof ColumnWrapper);
+		assertEquals("foo", ((ColumnWrapper)target).getName());
 	}
 	
 }

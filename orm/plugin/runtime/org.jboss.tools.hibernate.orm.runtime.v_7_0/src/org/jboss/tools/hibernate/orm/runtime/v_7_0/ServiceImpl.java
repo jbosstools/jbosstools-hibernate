@@ -205,13 +205,14 @@ public class ServiceImpl implements IService {
 	}
 
 	@Override
-	public IHQLQueryPlan newHQLQueryPlan(String query, boolean shallow, ISessionFactory sessionFactory) {
-		// TODO Auto-generated method stub
-		return null;
+	public IColumn newColumn(String name) {
+		return (IColumn)GenericFacadeFactory.createFacade(
+				IColumn.class, 
+				WrapperFactory.createColumnWrapper(name));
 	}
 
 	@Override
-	public IColumn newColumn(String string) {
+	public IHQLQueryPlan newHQLQueryPlan(String query, boolean shallow, ISessionFactory sessionFactory) {
 		// TODO Auto-generated method stub
 		return null;
 	}
