@@ -30,6 +30,7 @@ import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
+import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -172,6 +173,12 @@ public class ServiceImplTest {
 		assertTrue(target instanceof Wrapper);
 		Object wrappedObject = ((Wrapper)target).getWrappedObject();
 		assertTrue(wrappedObject instanceof ArtifactCollector);
+	}
+	
+	@Test 
+	public void testNewTypeFactory() {
+		ITypeFactory typeFactory = service.newTypeFactory();
+		assertNotNull(typeFactory);
 	}
 	
 }
