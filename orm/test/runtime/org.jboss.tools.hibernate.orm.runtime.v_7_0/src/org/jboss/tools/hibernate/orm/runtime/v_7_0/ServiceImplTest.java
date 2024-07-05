@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.orm.runtime.v_7_0;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -26,6 +27,7 @@ import org.hibernate.tool.internal.export.cfg.CfgExporter;
 import org.hibernate.tool.internal.export.hbm.HbmExporter;
 import org.hibernate.tool.internal.export.java.JavaExporter;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
+import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
 import org.hibernate.tool.orm.jbt.api.wrp.Wrapper;
@@ -295,6 +297,28 @@ public class ServiceImplTest {
 		statement.execute("DROP TABLE FOO");
 		statement.close();
 		connection.close();
+	}
+	
+	@Test
+	public void testNewReverseEngineeringStrategy() throws Exception {
+		IReverseEngineeringStrategy defaultStrategy = 
+				service.newDefaultReverseEngineeringStrategy();
+		IReverseEngineeringStrategy newStrategy = 
+				service.newReverseEngineeringStrategy(DefaultStrategy.class.getName(), 
+						defaultStrategy);
+		assertNotNull(newStrategy);
+		Object target = ((IFacade)newStrategy).getTarget();
+		assertNotNull(target);
+		assertFalse(target instanceof DelegatingStrategy);
+		newStrategy = service.newReverseEngineeringStrategy(
+				DelegatingStrategy.class.getName(), 
+				defaultStrategy);
+		assertNotNull(newStrategy);
+		target = ((IFacade)newStrategy).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof Wrapper);
+		target = ((Wrapper)target).getWrappedObject();
+		assertTrue(target instanceof DelegatingStrategy);
 	}
 	
 }

@@ -169,14 +169,16 @@ public class ServiceImpl implements IService {
 	}
 
 	@Override
-	public IHQLQueryPlan newHQLQueryPlan(String query, boolean shallow, ISessionFactory sessionFactory) {
-		// TODO Auto-generated method stub
-		return null;
+	public IReverseEngineeringStrategy newReverseEngineeringStrategy(
+			String strategyName,
+			IReverseEngineeringStrategy delegate) {
+		return (IReverseEngineeringStrategy)GenericFacadeFactory.createFacade(
+				IReverseEngineeringStrategy.class, 
+				WrapperFactory.createRevengStrategyWrapper(strategyName, ((IFacade)delegate).getTarget()));
 	}
 
 	@Override
-	public IReverseEngineeringStrategy newReverseEngineeringStrategy(String strategyName,
-			IReverseEngineeringStrategy delegate) {
+	public IHQLQueryPlan newHQLQueryPlan(String query, boolean shallow, ISessionFactory sessionFactory) {
 		// TODO Auto-generated method stub
 		return null;
 	}
