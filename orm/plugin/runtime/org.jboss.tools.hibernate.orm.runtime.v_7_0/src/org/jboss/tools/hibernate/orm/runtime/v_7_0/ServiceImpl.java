@@ -119,13 +119,14 @@ public class ServiceImpl implements IService {
 	}
 
 	@Override
-	public IHQLQueryPlan newHQLQueryPlan(String query, boolean shallow, ISessionFactory sessionFactory) {
-		// TODO Auto-generated method stub
-		return null;
+	public INamingStrategy newNamingStrategy(String strategyClassName) {
+		return (INamingStrategy)GenericFacadeFactory.createFacade(
+				INamingStrategy.class, 
+				WrapperFactory.createNamingStrategyWrapper(strategyClassName));
 	}
 
 	@Override
-	public INamingStrategy newNamingStrategy(String strategyClassName) {
+	public IHQLQueryPlan newHQLQueryPlan(String query, boolean shallow, ISessionFactory sessionFactory) {
 		// TODO Auto-generated method stub
 		return null;
 	}
