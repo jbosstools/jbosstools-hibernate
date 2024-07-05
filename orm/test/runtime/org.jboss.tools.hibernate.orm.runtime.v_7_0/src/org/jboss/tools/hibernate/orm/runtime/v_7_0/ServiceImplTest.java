@@ -20,6 +20,7 @@ import org.hibernate.tool.internal.export.cfg.CfgExporter;
 import org.hibernate.tool.internal.export.hbm.HbmExporter;
 import org.hibernate.tool.internal.export.java.JavaExporter;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
+import org.hibernate.tool.internal.reveng.strategy.TableFilter;
 import org.hibernate.tool.orm.jbt.api.wrp.Wrapper;
 import org.hibernate.tool.orm.jbt.internal.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.internal.util.MetadataHelper;
@@ -35,6 +36,7 @@ import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
+import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -218,6 +220,17 @@ public class ServiceImplTest {
 		target = ((Wrapper)target).getWrappedObject();
 		assertNotNull(target);
 		assertTrue(target instanceof OverrideRepository);
+	}
+	
+	@Test
+	public void testNewTableFilter() {
+		ITableFilter tableFilter = service.newTableFilter();
+		assertNotNull(tableFilter);
+		Object target = ((IFacade)tableFilter).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof Wrapper);
+		target = ((Wrapper)target).getWrappedObject();
+		assertTrue(target instanceof TableFilter);
 	}
 	
 }
