@@ -8,6 +8,7 @@ import java.util.Properties;
 
 import org.hibernate.tool.orm.jbt.api.factory.WrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.GenericFacadeFactory;
+import org.jboss.tools.hibernate.orm.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
@@ -58,9 +59,11 @@ public class ServiceImpl implements IService {
 	}
 
 	@Override
-	public IHibernateMappingExporter newHibernateMappingExporter(IConfiguration hcfg, File file) {
-		// TODO Auto-generated method stub
-		return null;
+	public IHibernateMappingExporter newHibernateMappingExporter(
+			IConfiguration configuration, File file) {
+		return (IHibernateMappingExporter)GenericFacadeFactory.createFacade(
+				IHibernateMappingExporter.class, 
+				WrapperFactory.createHbmExporterWrapper(((IFacade)configuration).getTarget(), file));
 	}
 
 	@Override
