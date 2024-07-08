@@ -266,6 +266,13 @@ public class ServiceImpl implements IService {
 	}
 
 	@Override
+	public IPersistentClass newRootClass() {
+		return (IPersistentClass)GenericFacadeFactory.createFacade(
+				IPersistentClass.class, 
+				WrapperFactory.createRootClassWrapper());
+	}
+
+	@Override
 	public IHQLQueryPlan newHQLQueryPlan(String query, boolean shallow, ISessionFactory sessionFactory) {
 		// TODO Auto-generated method stub
 		return null;
@@ -339,12 +346,6 @@ public class ServiceImpl implements IService {
 
 	@Override
 	public IPersistentClass newSpecialRootClass(IProperty ormElement) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public IPersistentClass newRootClass() {
 		// TODO Auto-generated method stub
 		return null;
 	}

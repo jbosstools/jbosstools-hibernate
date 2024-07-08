@@ -21,6 +21,7 @@ import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 import org.hibernate.mapping.Property;
+import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.export.ArtifactCollector;
@@ -55,6 +56,7 @@ import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
+import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProgressListener;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
@@ -419,6 +421,16 @@ public class ServiceImplTest {
 		assertNotNull(simpleValueWrapper);
 		assertTrue(simpleValueWrapper instanceof Wrapper);
 		assertTrue(((Wrapper)simpleValueWrapper).getWrappedObject() instanceof SimpleValue);
+	}
+	
+	@Test
+	public void testNewRootClass() {
+		IPersistentClass rootClass = service.newRootClass();
+		assertNotNull(rootClass);
+		Object target = ((IFacade)rootClass).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof Wrapper);
+		assertTrue(((Wrapper)target).getWrappedObject() instanceof RootClass);
 	}
 	
 }
