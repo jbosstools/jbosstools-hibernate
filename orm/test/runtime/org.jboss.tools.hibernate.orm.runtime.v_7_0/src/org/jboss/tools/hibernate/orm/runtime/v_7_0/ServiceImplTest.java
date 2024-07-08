@@ -22,6 +22,7 @@ import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
+import org.hibernate.mapping.Map;
 import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
@@ -478,6 +479,17 @@ public class ServiceImplTest {
 		assertNotNull(listWrapper);
 		assertTrue(listWrapper instanceof Wrapper);
 		assertTrue(((Wrapper)listWrapper).getWrappedObject() instanceof org.hibernate.mapping.List);
+	}
+	
+	@Test
+	public void testNewMap() {
+		IPersistentClass persistentClass = service.newRootClass();
+		IValue map = service.newMap(persistentClass);
+		assertNotNull(map);
+		Object mapWrapper = ((IFacade)map).getTarget();
+		assertNotNull(mapWrapper);
+		assertTrue(mapWrapper instanceof Wrapper);
+		assertTrue(((Wrapper)mapWrapper).getWrappedObject() instanceof Map);
 	}
 	
 }

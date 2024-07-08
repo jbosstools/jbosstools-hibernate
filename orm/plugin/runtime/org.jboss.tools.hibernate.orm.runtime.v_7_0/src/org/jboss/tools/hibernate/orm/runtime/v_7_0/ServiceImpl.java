@@ -301,17 +301,18 @@ public class ServiceImpl implements IService {
 	}
 
 	@Override
+	public IValue newMap(IPersistentClass persistentClass) {
+		return (IValue)GenericFacadeFactory.createFacade(
+				IValue.class, 
+				WrapperFactory.createMapWrapper(((IFacade)persistentClass).getTarget()));
+	}
+
+	@Override
 	public IHQLQueryPlan newHQLQueryPlan(String query, boolean shallow, ISessionFactory sessionFactory) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-
-	@Override
-	public IValue newMap(IPersistentClass persistentClass) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public IValue newSet(IPersistentClass persistentClass) {
