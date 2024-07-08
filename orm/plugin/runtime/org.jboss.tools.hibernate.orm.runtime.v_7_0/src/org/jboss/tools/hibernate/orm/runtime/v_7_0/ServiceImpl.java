@@ -294,17 +294,18 @@ public class ServiceImpl implements IService {
 	}
 
 	@Override
+	public IValue newList(IPersistentClass persistentClass) {
+		return (IValue)GenericFacadeFactory.createFacade(
+				IValue.class, 
+				WrapperFactory.createListWrapper(((IFacade)persistentClass).getTarget()));
+	}
+
+	@Override
 	public IHQLQueryPlan newHQLQueryPlan(String query, boolean shallow, ISessionFactory sessionFactory) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-
-	@Override
-	public IValue newList(IPersistentClass persistentClass) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public IValue newMap(IPersistentClass persistentClass) {
