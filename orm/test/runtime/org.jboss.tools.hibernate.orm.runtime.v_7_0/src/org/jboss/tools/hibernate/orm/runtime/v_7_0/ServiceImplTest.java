@@ -31,6 +31,7 @@ import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SimpleValue;
+import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.export.ArtifactCollector;
 import org.hibernate.tool.api.export.Exporter;
@@ -46,6 +47,7 @@ import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
+import org.hibernate.tool.orm.jbt.api.factory.WrapperFactory;
 import org.hibernate.tool.orm.jbt.api.wrp.ColumnWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.Wrapper;
 import org.hibernate.tool.orm.jbt.internal.util.JpaConfiguration;
@@ -53,6 +55,7 @@ import org.hibernate.tool.orm.jbt.internal.util.MetadataHelper;
 import org.hibernate.tool.orm.jbt.internal.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.internal.util.MockDialect;
 import org.hibernate.tool.orm.jbt.internal.util.RevengConfiguration;
+import org.jboss.tools.hibernate.orm.runtime.common.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
@@ -538,6 +541,23 @@ public class ServiceImplTest {
 		assertNotNull(oneToOneWrapper);
 		assertTrue(oneToOneWrapper instanceof Wrapper);
 		assertTrue(((Wrapper)oneToOneWrapper).getWrappedObject() instanceof OneToOne);
+	}
+	
+	@Test
+	public void testNewSingleTableSubclass() {
+		IPersistentClass persistentClass =(IPersistentClass)GenericFacadeFactory.createFacade(
+				IPersistentClass.class, 
+				WrapperFactory.createRootClassWrapper());
+		IPersistentClass singleTableSublass = service.newSingleTableSubclass(persistentClass);
+		assertNotNull(singleTableSublass);
+		Object target = ((IFacade)singleTableSublass).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof Wrapper);
+		assertTrue(((Wrapper)target).getWrappedObject() instanceof SingleTableSubclass);
+		assertEquals(persistentClass, singleTableSublass.getSuperclass());
+		assertSame(
+				((Wrapper)((IFacade)persistentClass).getTarget()).getWrappedObject(), 
+				((SingleTableSubclass)((Wrapper)target).getWrappedObject()).getSuperclass());
 	}
 	
 }

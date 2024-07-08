@@ -336,13 +336,14 @@ public class ServiceImpl implements IService {
 	}
 
 	@Override
-	public IHQLQueryPlan newHQLQueryPlan(String query, boolean shallow, ISessionFactory sessionFactory) {
-		// TODO Auto-generated method stub
-		return null;
+	public IPersistentClass newSingleTableSubclass(IPersistentClass persistentClass) {
+		return (IPersistentClass)GenericFacadeFactory.createFacade(
+				IPersistentClass.class, 
+				WrapperFactory.createSingleTableSubClassWrapper(((IFacade)persistentClass).getTarget()));
 	}
 
 	@Override
-	public IPersistentClass newSingleTableSubclass(IPersistentClass persistentClass) {
+	public IHQLQueryPlan newHQLQueryPlan(String query, boolean shallow, ISessionFactory sessionFactory) {
 		// TODO Auto-generated method stub
 		return null;
 	}
