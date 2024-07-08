@@ -26,6 +26,7 @@ import org.hibernate.mapping.Map;
 import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
+import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.export.ArtifactCollector;
@@ -490,6 +491,17 @@ public class ServiceImplTest {
 		assertNotNull(mapWrapper);
 		assertTrue(mapWrapper instanceof Wrapper);
 		assertTrue(((Wrapper)mapWrapper).getWrappedObject() instanceof Map);
+	}
+	
+ 	@Test
+	public void testNewSet() {
+		IPersistentClass persistentClass = service.newRootClass();
+		IValue set = service.newSet(persistentClass);
+		assertNotNull(set);
+		Object setWrapper = ((IFacade)set).getTarget();
+		assertNotNull(setWrapper);
+		assertTrue(setWrapper instanceof Wrapper);
+		assertTrue(((Wrapper)setWrapper).getWrappedObject() instanceof Set);
 	}
 	
 }
