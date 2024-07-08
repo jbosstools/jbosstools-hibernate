@@ -280,16 +280,18 @@ public class ServiceImpl implements IService {
 	}
 
 	@Override
+	public IValue newArray(IPersistentClass persistentClass) {
+		return (IValue)GenericFacadeFactory.createFacade(
+				IValue.class, 
+				WrapperFactory.createArrayWrapper(((IFacade)persistentClass).getTarget()));
+	}
+
+	@Override
 	public IHQLQueryPlan newHQLQueryPlan(String query, boolean shallow, ISessionFactory sessionFactory) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	public IValue newArray(IPersistentClass persistentClass) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public IValue newBag(IPersistentClass persistentClass) {
