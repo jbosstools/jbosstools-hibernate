@@ -2,16 +2,26 @@ package org.jboss.tools.hibernate.orm.runtime.v_7_0;
 
 import java.io.File;
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.dialect.Dialect;
+import org.hibernate.engine.jdbc.dialect.spi.DatabaseMetaDataDialectResolutionInfoAdapter;
+import org.hibernate.engine.jdbc.dialect.spi.DialectFactory;
+import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfo;
+import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfoSource;
+import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.export.cfg.CfgExporter;
 import org.hibernate.tool.orm.jbt.api.factory.WrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.IDatabaseReader;
 import org.jboss.tools.hibernate.orm.runtime.common.IFacade;
+import org.jboss.tools.hibernate.runtime.spi.HibernateException;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
@@ -212,13 +222,31 @@ public class ServiceImpl implements IService {
 	}
 
 	@Override
-	public IHQLQueryPlan newHQLQueryPlan(String query, boolean shallow, ISessionFactory sessionFactory) {
-		// TODO Auto-generated method stub
-		return null;
+	public String newDialect(Properties properties, final Connection connection) {
+		ServiceRegistry serviceRegistry = buildServiceRegistry(properties);
+		DialectFactory dialectFactory = serviceRegistry.getService(DialectFactory.class);
+		Dialect dialect = dialectFactory.buildDialect(
+				transform(properties), 
+				new DialectResolutionInfoSource() {
+					@Override
+					public DialectResolutionInfo getDialectResolutionInfo() {
+						try {
+							return new DatabaseMetaDataDialectResolutionInfoAdapter( connection.getMetaData() );
+						}
+						catch ( SQLException sqlException ) {
+							throw new HibernateException(
+									"Unable to access java.sql.DatabaseMetaData to determine appropriate Dialect to use",
+									sqlException
+							);
+						}
+					}
+				}
+		);
+		return dialect != null ? dialect.toString() : null;
 	}
 
 	@Override
-	public String newDialect(Properties properties, Connection connection) {
+	public IHQLQueryPlan newHQLQueryPlan(String query, boolean shallow, ISessionFactory sessionFactory) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -341,6 +369,20 @@ public class ServiceImpl implements IService {
 	public ClassLoader getClassLoader() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	private ServiceRegistry buildServiceRegistry(Properties properties) {
+		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
+		builder.applySettings(properties);
+		return builder.build();
+	}
+
+	private Map<String, Object> transform(Properties properties) {
+		Map<String, Object> result = new HashMap<String, Object>(properties.size());
+		for (Object key : properties.keySet()) {
+			result.put((String)key, properties.get(key));
+		}
+		return result;
 	}
 
 }
