@@ -201,4 +201,20 @@
          fragment="true"
          unpack="false"/>
 
+   <plugin
+         id="org.jboss.tools.hibernate.orm.runtime.v_7_0.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.jboss.tools.hibernate.orm.runtime.v_6_6.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
 </feature>
