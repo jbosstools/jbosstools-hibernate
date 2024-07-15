@@ -71,7 +71,7 @@ public class OrmEditPart extends AbstractGraphicalEditPart implements PropertyCh
 		Object model;
 
 		Map<Object, ConnectionEditPart> modelToEditPart = new HashMap<Object, ConnectionEditPart>();
-		List<ConnectionEditPart> editParts = getSourceConnections();
+		List<? extends ConnectionEditPart> editParts = getSourceConnections();
 
 		for (i = 0; i < editParts.size(); i++) {
 			editPart = editParts.get(i);
@@ -121,7 +121,7 @@ public class OrmEditPart extends AbstractGraphicalEditPart implements PropertyCh
 		Object model;
 
 		Map<Object, ConnectionEditPart> mapModelToEditPart = new HashMap<Object, ConnectionEditPart>();
-		List<ConnectionEditPart> connections = getTargetConnections();
+		List<? extends ConnectionEditPart> connections = getTargetConnections();
 
 		for (i = 0; i < connections.size(); i++) {
 			editPart = connections.get(i);

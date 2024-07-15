@@ -39,7 +39,8 @@ import org.eclipse.draw2d.graph.DirectedGraph;
 import org.eclipse.draw2d.graph.Edge;
 import org.eclipse.draw2d.graph.Node;
 import org.eclipse.draw2d.graph.NodeList;
-import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
+import org.eclipse.gef.ConnectionEditPart;
+import org.eclipse.gef.EditPart;
 import org.hibernate.eclipse.graph.parts.AssociationEditPart;
 import org.hibernate.eclipse.graph.parts.ConfigurationEditPart;
 import org.hibernate.eclipse.graph.parts.PersistentClassEditPart;
@@ -47,7 +48,7 @@ import org.hibernate.eclipse.graph.parts.PersistentClassEditPart;
 public class DirectedGraphLayoutVisitor
 {
 
-	Map<AbstractGraphicalEditPart, Object> partToNodesMap;
+	Map<EditPart, Object> partToNodesMap;
 	Set<AssociationEditPart> addedAssociations;
 	
 	DirectedGraph graph;
@@ -58,7 +59,7 @@ public class DirectedGraphLayoutVisitor
 	public void layoutDiagram(ConfigurationEditPart diagram)
 	{
 
-		partToNodesMap = new HashMap<AbstractGraphicalEditPart, Object>();
+		partToNodesMap = new HashMap<EditPart, Object>();
 		addedAssociations = new HashSet<AssociationEditPart>();
 		graph = new DirectedGraph();
 		addNodes(diagram);
@@ -111,8 +112,8 @@ public class DirectedGraphLayoutVisitor
 	@SuppressWarnings("unchecked")
 	protected void addEdges(PersistentClassEditPart classPart)
 	{
-		List<AssociationEditPart> outgoing = classPart.getSourceConnections();
-		for (AssociationEditPart relationshipPart : outgoing) {
+		List<? extends ConnectionEditPart> outgoing = classPart.getSourceConnections();
+		for (ConnectionEditPart relationshipPart : outgoing) {
 			addEdges(relationshipPart);
 		}
 	}
@@ -120,7 +121,7 @@ public class DirectedGraphLayoutVisitor
 	//******************* RelationshipPart contribution methods **********/
 
 	@SuppressWarnings("unchecked")
-	protected void addEdges(AssociationEditPart relationshipPart)
+	protected void addEdges(ConnectionEditPart relationshipPart)
 	{
 		GraphAnimation.recordInitialState((Connection) relationshipPart.getFigure());
 		Node source = (Node) partToNodesMap.get(relationshipPart.getSource());
