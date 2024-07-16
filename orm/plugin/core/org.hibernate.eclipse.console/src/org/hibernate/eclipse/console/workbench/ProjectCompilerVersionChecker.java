@@ -12,7 +12,6 @@ package org.hibernate.eclipse.console.workbench;
 
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.internal.compiler.classfmt.ClassFileConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Display;
@@ -23,7 +22,6 @@ import org.hibernate.eclipse.console.utils.ProjectUtils;
  * @author Dmitry Geraskov (geraskov@gmail.com)
  *
  */
-@SuppressWarnings("restriction")
 public class ProjectCompilerVersionChecker {
 	
 	/**
@@ -38,8 +36,8 @@ public class ProjectCompilerVersionChecker {
 				if (iJavaProject.exists()) {
 					String projectTarget = iJavaProject.getOption(JavaCore.COMPILER_CODEGEN_TARGET_PLATFORM, true);
 					String eclipseCompilerVersion = System.getProperty("java.specification.version"); //$NON-NLS-1$
-					long projectJdkLevel = versionToJdkLevel(projectTarget);
-					long eclipseJdkLevel = versionToJdkLevel(eclipseCompilerVersion);
+					long projectJdkLevel = decodeJdkVersion(projectTarget);
+					long eclipseJdkLevel = decodeJdkVersion(eclipseCompilerVersion);
 					if (eclipseJdkLevel < projectJdkLevel){
 						Display.getDefault().syncExec(new Runnable(){
 							@Override
@@ -56,73 +54,15 @@ public class ProjectCompilerVersionChecker {
 		return true;
 	}
 	
-	private static final String VERSION_JSR14 = "jsr14"; //$NON-NLS-1$
-	private static final String VERSION_CLDC1_1 = "cldc1.1"; //$NON-NLS-1$
-
-	private static long versionToJdkLevel(Object versionID) {
-		if (versionID instanceof String) {
-			String version = (String) versionID;
-			// verification is optimized for all versions with same length and same "1." prefix
-			if (version.length() == 1) {
-				switch (version.charAt(0)) {
-					case '9':
-						return ClassFileConstants.JDK9;
-					default:
-						return 0;
-				}
-			}
-			if (version.length() == 2 && version.charAt(0) == '1') {
-				switch (version.charAt(1)) {
-					case '0': 
-						return ClassFileConstants.JDK10;
-					case '1':
-						return ClassFileConstants.JDK11;
-					case '2':
-						return ClassFileConstants.JDK12;
-					case '3':
-						return ClassFileConstants.JDK13;
-					case '4':
-						return ClassFileConstants.JDK14;
-					case '5':
-						return ClassFileConstants.JDK15;
-					case '6':
-						return ClassFileConstants.JDK16;
-					case '7':
-						return ClassFileConstants.JDK17;
-					default:
-						return 0;
-				}
-			}
-			if (version.length() == 3 && version.charAt(0) == '1' && version.charAt(1) == '.') {
-				switch (version.charAt(2)) {
-					case '1':
-						return ClassFileConstants.JDK1_1;
-					case '2':
-						return ClassFileConstants.JDK1_2;
-					case '3':
-						return ClassFileConstants.JDK1_3;
-					case '4':
-						return ClassFileConstants.JDK1_4;
-					case '5':
-						return ClassFileConstants.JDK1_5;
-					case '6':
-						return ClassFileConstants.JDK1_6;
-					case '7':
-						return ClassFileConstants.JDK1_7;
-					case '8':
-						return ClassFileConstants.JDK1_8;
-					default:
-						return 0; // unknown
-				}
-			}
-			if (VERSION_JSR14.equals(versionID)) {
-				return ClassFileConstants.JDK1_4;
-			}
-			if (VERSION_CLDC1_1.equals(versionID)) {
-				return ClassFileConstants.CLDC_1_1;
-			}
+	private static long decodeJdkVersion(String versionString) {
+		long result = 0;
+		int length = versionString.length();
+		if (length == 1 || length == 2) {
+			result = Long.parseLong(versionString);
+		} else if (length == 3 && versionString.charAt(0) == '1' && versionString.charAt(1) == '.') {
+			result = Long.parseLong(versionString.substring(2));
 		}
-		return 0; // unknown
+		return result;
 	}
 
 	
