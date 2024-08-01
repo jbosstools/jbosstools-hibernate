@@ -34,7 +34,7 @@ public class IEnvironmentTest {
 	
 	@Test
 	public void testGetDriver() {
-		assertEquals("hibernate.connection.driver_class", environmentFacade.getDriver());
+		assertEquals("jakarta.persistence.jdbc.driver", environmentFacade.getDriver());
 	}
 	
 	@Test
@@ -49,7 +49,7 @@ public class IEnvironmentTest {
 	
 	@Test
 	public void testGetDataSource() {
-		assertEquals("hibernate.connection.datasource", environmentFacade.getDataSource());
+		assertEquals("jakarta.persistence.jtaDataSource", environmentFacade.getDataSource());
 	}
 	
 	@Test
@@ -59,17 +59,17 @@ public class IEnvironmentTest {
 	
 	@Test
 	public void testGetURL() {
-		assertEquals("hibernate.connection.url", environmentFacade.getURL());
+		assertEquals("jakarta.persistence.jdbc.url", environmentFacade.getURL());
 	}
 	
 	@Test
 	public void testGetUser() {
-		assertEquals("hibernate.connection.username", environmentFacade.getUser());
+		assertEquals("jakarta.persistence.jdbc.user", environmentFacade.getUser());
 	}
 	
 	@Test
 	public void testGetPass() {
-		assertEquals("hibernate.connection.password", environmentFacade.getPass());
+		assertEquals("jakarta.persistence.jdbc.password", environmentFacade.getPass());
 	}
 	
 	@Test

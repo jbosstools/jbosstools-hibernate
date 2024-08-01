@@ -14,11 +14,11 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.Properties;
 
+import org.hibernate.boot.model.naming.ImplicitNamingStrategy;
+import org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.Environment;
-import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
@@ -231,7 +231,7 @@ public class ServiceImplTest {
 	
 	@Test
 	public void testNewNamingStrategy() {
-		String strategyClassName = DefaultNamingStrategy.class.getName();
+		String strategyClassName = ImplicitNamingStrategyJpaCompliantImpl.class.getName();
 		INamingStrategy namingStrategy = service.newNamingStrategy(strategyClassName);
 		assertNotNull(namingStrategy);
 		Object target = ((IFacade)namingStrategy).getTarget();
@@ -239,7 +239,7 @@ public class ServiceImplTest {
 		assertTrue(target instanceof Wrapper);
 		target = ((Wrapper)target).getWrappedObject();
 		assertNotNull(target);
-		assertTrue(NamingStrategy.class.isAssignableFrom(target.getClass()));
+		assertTrue(ImplicitNamingStrategy.class.isAssignableFrom(target.getClass()));
 		namingStrategy = null;
 		assertNull(namingStrategy);
 		try {

@@ -2,7 +2,12 @@ package org.jboss.tools.hibernate.orm.runtime.v_7_0;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.hibernate.cfg.DefaultNamingStrategy;
+import org.hibernate.boot.model.naming.Identifier;
+import org.hibernate.boot.model.naming.ImplicitBasicColumnNameSource;
+import org.hibernate.boot.model.naming.ImplicitCollectionTableNameSource;
+import org.hibernate.boot.model.naming.ImplicitEntityNameSource;
+import org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl;
+import org.hibernate.boot.model.naming.ImplicitPrimaryKeyJoinColumnNameSource;
 import org.hibernate.tool.orm.jbt.api.factory.WrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.GenericFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
@@ -38,7 +43,7 @@ public class INamingStrategyTest {
 	
 	@Test
 	public void testPropertyToColumnName() {
-		assertEquals("BarFooPropertyColumn", namingStrategyFacade.propertyToColumnName("bar"));
+		assertEquals("FooBarColumnName", namingStrategyFacade.propertyToColumnName("bar"));
 	}
 	
 	@Test
@@ -53,7 +58,7 @@ public class INamingStrategyTest {
 	
 	@Test
 	public void testClassToTableName() {
-		assertEquals("FooBarClassTable", namingStrategyFacade.classToTableName("foobar"));
+		assertEquals("BarFooTable", namingStrategyFacade.classToTableName("foobar"));
 	}
 	
 	@Test
@@ -61,37 +66,24 @@ public class INamingStrategyTest {
 		assertEquals(TestNamingStrategy.class.getName(), namingStrategyFacade.getStrategyClassName());
 	}
 	
-	public static class TestNamingStrategy extends DefaultNamingStrategy {
-		private static final long serialVersionUID = 1L;
-		@Override
-		public String collectionTableName(
-				String ownerEntity, 
-				String ownerEntityTable, 
-				String associatedEntity, 
-				String associatedEntityTable,
-				String propertyName) {
-			return "FooBarCollectionTableName";
+	@SuppressWarnings("serial")
+	public static class TestNamingStrategy extends ImplicitNamingStrategyJpaCompliantImpl {
+		@Override 
+		public Identifier determineCollectionTableName(ImplicitCollectionTableNameSource source) {
+			return Identifier.toIdentifier("FooBarCollectionTableName");
 		}
 		@Override
-		public String columnName(String columnName) {
-			return "FooBarColumnName";
+		public Identifier determineBasicColumnName(ImplicitBasicColumnNameSource source) {
+			return Identifier.toIdentifier("FooBarColumnName");
 		}
 		@Override
-		public String propertyToColumnName(String propertyName) {
-			return "BarFooPropertyColumn";
+		public Identifier determinePrimaryTableName(ImplicitEntityNameSource source) {
+			return Identifier.toIdentifier("BarFooTable");
 		}
 		@Override
-		public String tableName(String tableName) {
-			return "BarFooTable";
-		}
-		@Override
-		public String joinKeyColumnName(String joinedColumn, String joinedTable) {
-			return "FooBarJoinKeyColumnName";
-		}
-		@Override
-		public String classToTableName(String className) {
-			return "FooBarClassTable";
+		public Identifier determinePrimaryKeyJoinColumnName(ImplicitPrimaryKeyJoinColumnNameSource source) {
+			return Identifier.toIdentifier("FooBarJoinKeyColumnName");
 		}
 	}
-
+	
 }

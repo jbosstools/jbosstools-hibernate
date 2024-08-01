@@ -164,7 +164,7 @@ public class ITypeTest {
 		component.setComponentClassName("java.lang.Object");
 		IType componentTypeFacade = (IType)GenericFacadeFactory.createFacade(
 				IType.class, 
-				TypeWrapperFactory.createTypeWrapper(new ComponentType(component, null, null)));
+				TypeWrapperFactory.createTypeWrapper(new ComponentType(component, null)));
 		assertTrue(componentTypeFacade.isComponentType());
 	}
 	

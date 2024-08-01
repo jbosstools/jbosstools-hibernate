@@ -29,9 +29,9 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.jaxb.spi.Binding;
+import org.hibernate.boot.model.naming.ImplicitNamingStrategy;
+import org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl;
 import org.hibernate.cfg.AvailableSettings;
-import org.hibernate.cfg.DefaultNamingStrategy;
-import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.orm.jbt.api.factory.WrapperFactory;
@@ -269,11 +269,11 @@ public class IConfigurationTest {
 	public void testSetNamingStrategy() throws Exception {
 		INamingStrategy namingStrategyFacade = (INamingStrategy)GenericFacadeFactory.createFacade(
 				INamingStrategy.class, 
-				WrapperFactory.createNamingStrategyWrapper(DefaultNamingStrategy.class.getName()));
+				WrapperFactory.createNamingStrategyWrapper(ImplicitNamingStrategyJpaCompliantImpl.class.getName()));
 		// For native configuration
 		Field namingStrategyField = nativeConfigurationTarget.getClass().getDeclaredField("namingStrategy");
 		namingStrategyField.setAccessible(true);
-		NamingStrategy namingStrategyTarget = (NamingStrategy)((Wrapper)((IFacade)namingStrategyFacade).getTarget()).getWrappedObject();
+		ImplicitNamingStrategy namingStrategyTarget = (ImplicitNamingStrategy)((Wrapper)((IFacade)namingStrategyFacade).getTarget()).getWrappedObject();
 		assertNull(namingStrategyField.get(nativeConfigurationTarget));
 		nativeConfigurationFacade.setNamingStrategy(namingStrategyFacade);
 		assertNotNull(namingStrategyField.get(nativeConfigurationTarget));
@@ -772,7 +772,7 @@ public class IConfigurationTest {
 	@Test
 	public void testGetNamingStrategy() {
 		// For native configuration 
-		NamingStrategy namingStrategy = new DefaultNamingStrategy();
+		ImplicitNamingStrategy namingStrategy = new ImplicitNamingStrategyJpaCompliantImpl();
 		assertNull(nativeConfigurationFacade.getNamingStrategy());
 		nativeConfigurationTarget.setNamingStrategy(namingStrategy);
 		INamingStrategy namingStrategyFacade = nativeConfigurationFacade.getNamingStrategy();
