@@ -22,7 +22,7 @@ import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.export.cfg.CfgExporter;
 import org.hibernate.tool.orm.jbt.api.factory.WrapperFactory;
-import org.hibernate.tool.orm.jbt.util.JpaMappingFileHelper;
+import org.hibernate.tool.orm.jbt.internal.util.JpaMappingFileHelper;
 import org.jboss.tools.hibernate.orm.runtime.common.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.IDatabaseReader;
 import org.jboss.tools.hibernate.orm.runtime.common.IFacade;
