@@ -14,7 +14,7 @@ import org.hibernate.tool.orm.jbt.api.factory.WrapperFactory;
 import org.hibernate.tool.orm.jbt.api.wrp.ConfigurationWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.Wrapper;
 import org.hibernate.tool.orm.jbt.internal.factory.ConfigurationWrapperFactory;
-import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
+import org.hibernate.tool.orm.jbt.internal.util.NativeConfiguration;
 import org.jboss.tools.hibernate.orm.runtime.common.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
