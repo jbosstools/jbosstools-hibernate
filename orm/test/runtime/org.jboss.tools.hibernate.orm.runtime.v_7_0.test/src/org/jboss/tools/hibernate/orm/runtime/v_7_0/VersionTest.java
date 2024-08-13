@@ -11,12 +11,12 @@ public class VersionTest {
 	
 	@Test 
 	public void testCoreVersion() {
-		assertEquals("7.0.0.Alpha3", org.hibernate.Version.getVersionString());
+		assertEquals("7.0.0.Beta1", org.hibernate.Version.getVersionString());
 	}
 
 	@Test
 	public void testToolsVersion() {
-		assertEquals("7.0.0.Alpha3", org.hibernate.tool.api.version.Version.CURRENT_VERSION);
+		assertEquals("7.0.0.Beta1", org.hibernate.tool.api.version.Version.CURRENT_VERSION);
 	}
 	
 	@Test 

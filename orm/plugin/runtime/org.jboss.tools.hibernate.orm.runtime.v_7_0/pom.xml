@@ -12,9 +12,9 @@
 	<packaging>eclipse-plugin</packaging>
 
 	<properties>
-		<hibernate.version>7.0.0.Alpha3</hibernate.version>
-		<hibernate.models.version>0.8.5</hibernate.models.version>
-		<bytebuddy.version>1.14.15</bytebuddy.version>
+		<hibernate.version>7.0.0.Beta1</hibernate.version>
+		<hibernate.models.version>0.8.6</hibernate.models.version>
+		<bytebuddy.version>1.14.18</bytebuddy.version>
 		<jakarta-persistence-api.version>3.2.0</jakarta-persistence-api.version>
 	</properties>
 

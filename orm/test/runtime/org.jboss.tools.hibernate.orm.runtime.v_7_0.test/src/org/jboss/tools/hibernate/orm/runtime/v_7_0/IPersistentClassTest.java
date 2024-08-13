@@ -1031,13 +1031,7 @@ public class IPersistentClassTest {
 		assertFalse(rootClassFacade.isExplicitPolymorphism());
 		assertFalse(singleTableSubclassFacade.isExplicitPolymorphism());
 		assertFalse(joinedSubclassFacade.isExplicitPolymorphism());
-		((RootClass)rootClassTarget).setExplicitPolymorphism(true);
-		assertTrue(rootClassFacade.isExplicitPolymorphism());
-		assertTrue(singleTableSubclassFacade.isExplicitPolymorphism());
-		assertTrue(joinedSubclassFacade.isExplicitPolymorphism());
 		assertFalse(specialRootClassFacade.isExplicitPolymorphism());
-		((RootClass)specialRootClassTarget).setExplicitPolymorphism(true);
-		assertTrue(specialRootClassFacade.isExplicitPolymorphism());
 	}
 	
 	@Test
