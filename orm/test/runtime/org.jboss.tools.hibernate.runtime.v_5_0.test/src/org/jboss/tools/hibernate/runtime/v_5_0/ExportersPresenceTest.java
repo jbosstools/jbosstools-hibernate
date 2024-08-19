@@ -18,4 +18,15 @@ public class ExportersPresenceTest {
 		}
 	}
 
+	@Test
+	public void testPojoExporter() {
+		try {
+			ClassLoader cl = getClass().getClassLoader();
+			Class<?> pojoExporterClass = cl.loadClass("org.hibernate.tool.hbm2x.POJOExporter");
+			assertNotNull(pojoExporterClass);
+		} catch (Throwable t) {
+			fail(t);
+		}
+	}
+
 }
