@@ -29,4 +29,15 @@ public class ExportersPresenceTest {
 		}
 	}
 
+	@Test
+	public void testHibernateMappingExporter() {
+		try {
+			ClassLoader cl = getClass().getClassLoader();
+			Class<?> pojoExporterClass = cl.loadClass("org.hibernate.tool.hbm2x.HibernateMappingExporter");
+			assertNotNull(pojoExporterClass);
+		} catch (Throwable t) {
+			fail(t);
+		}
+	}
+
 }
