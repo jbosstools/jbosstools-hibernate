@@ -33,8 +33,19 @@ public class ExportersPresenceTest {
 	public void testHibernateMappingExporter() {
 		try {
 			ClassLoader cl = getClass().getClassLoader();
-			Class<?> pojoExporterClass = cl.loadClass("org.hibernate.tool.hbm2x.HibernateMappingExporter");
-			assertNotNull(pojoExporterClass);
+			Class<?> hibernateMappingExporterClass = cl.loadClass("org.hibernate.tool.hbm2x.HibernateMappingExporter");
+			assertNotNull(hibernateMappingExporterClass);
+		} catch (Throwable t) {
+			fail(t);
+		}
+	}
+
+	@Test
+	public void testDAOExporter() {
+		try {
+			ClassLoader cl = getClass().getClassLoader();
+			Class<?> daoExporterClass = cl.loadClass("org.hibernate.tool.hbm2x.DAOExporter");
+			assertNotNull(daoExporterClass);
 		} catch (Throwable t) {
 			fail(t);
 		}
