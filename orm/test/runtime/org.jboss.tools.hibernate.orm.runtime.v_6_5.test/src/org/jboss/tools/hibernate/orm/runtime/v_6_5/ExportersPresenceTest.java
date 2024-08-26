@@ -62,4 +62,15 @@ public class ExportersPresenceTest {
 		}
 	}
 
+	@Test
+	public void testHibernateConfigurationExporter() {
+		try {
+			ClassLoader cl = getClass().getClassLoader();
+			Class<?> hibernateConfigurationExporterClass = cl.loadClass("org.hibernate.tool.hbm2x.HibernateConfigurationExporter");
+			assertNotNull(hibernateConfigurationExporterClass);
+		} catch (Throwable t) {
+			fail(t);
+		}
+	}
+
 }
