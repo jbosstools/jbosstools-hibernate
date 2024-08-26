@@ -51,4 +51,15 @@ public class ExportersPresenceTest {
 		}
 	}
 
+	@Test
+	public void testGenericExporter() {
+		try {
+			ClassLoader cl = getClass().getClassLoader();
+			Class<?> genericExporterClass = cl.loadClass("org.hibernate.tool.hbm2x.GenericExporter");
+			assertNotNull(genericExporterClass);
+		} catch (Throwable t) {
+			fail(t);
+		}
+	}
+
 }
