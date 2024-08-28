@@ -84,4 +84,15 @@ public class ExportersPresenceTest {
 		}
 	}
 
+	@Test
+	public void testHibernateHbm2DDLExporter() {
+		try {
+			ClassLoader cl = getClass().getClassLoader();
+			Class<?> hbm2DDLExporterClass = cl.loadClass("org.hibernate.tool.hbm2x.Hbm2DDLExporter");
+			assertNotNull(hbm2DDLExporterClass);
+		} catch (Throwable t) {
+			fail(t);
+		}
+	}
+
 }
