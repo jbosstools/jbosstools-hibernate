@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 public class ExportersPresenceTest {
 	
 	@Test
-	public void testDdlExporter() {
+	public void testHbm2DDLExporter() {
 		try {
 			ClassLoader cl = getClass().getClassLoader();
 			Class<?> ddlExporterClass = cl.loadClass("org.hibernate.tool.hbm2x.Hbm2DDLExporter");
@@ -19,7 +19,7 @@ public class ExportersPresenceTest {
 	}
 
 	@Test
-	public void testPojoExporter() {
+	public void testPOJOExporter() {
 		try {
 			ClassLoader cl = getClass().getClassLoader();
 			Class<?> pojoExporterClass = cl.loadClass("org.hibernate.tool.hbm2x.POJOExporter");
@@ -74,22 +74,11 @@ public class ExportersPresenceTest {
 	}
 
 	@Test
-	public void testDocExporter() {
+	public void testQueryExporter() {
 		try {
 			ClassLoader cl = getClass().getClassLoader();
-			Class<?> docExporterClass = cl.loadClass("org.hibernate.tool.hbm2x.DocExporter");
-			assertNotNull(docExporterClass);
-		} catch (Throwable t) {
-			fail(t);
-		}
-	}
-
-	@Test
-	public void testHibernateHbm2DDLExporter() {
-		try {
-			ClassLoader cl = getClass().getClassLoader();
-			Class<?> hbm2DDLExporterClass = cl.loadClass("org.hibernate.tool.hbm2x.Hbm2DDLExporter");
-			assertNotNull(hbm2DDLExporterClass);
+			Class<?> queryExporterClass = cl.loadClass("org.hibernate.tool.hbm2x.QueryExporter");
+			assertNotNull(queryExporterClass);
 		} catch (Throwable t) {
 			fail(t);
 		}
