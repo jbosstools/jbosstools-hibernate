@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.hibernate.boot.Metadata;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.Column;
@@ -39,9 +38,11 @@ import org.hibernate.tool.internal.export.hbm.HbmExporter;
 import org.hibernate.tool.internal.export.java.Cfg2JavaTool;
 import org.hibernate.tool.internal.export.java.EntityPOJOClass;
 import org.hibernate.tool.internal.export.java.POJOClass;
-import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
-import org.hibernate.tool.orm.jbt.wrp.HbmExporterWrapper;
-import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
+import org.hibernate.tool.orm.jbt.api.factory.WrapperFactory;
+import org.hibernate.tool.orm.jbt.api.wrp.ConfigurationWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.Wrapper;
+import org.hibernate.tool.orm.jbt.internal.factory.ConfigurationWrapperFactory;
+import org.hibernate.tool.orm.jbt.internal.util.DummyMetadataBuildingContext;
 import org.jboss.tools.hibernate.orm.runtime.common.GenericFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IExportPOJODelegate;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
@@ -63,11 +64,12 @@ public class IHibernateMappingExporterTest {
 	@BeforeEach
 	public void beforeEach() throws Exception {
 		outputDir = Files.createTempDirectory("output").toFile();
-		Configuration configuration = new Configuration();
+		ConfigurationWrapper configuration = ConfigurationWrapperFactory.createNativeConfigurationWrapper();
 		File file = new File(outputDir, "foo");
-		hbmExporterTarget = (HbmExporter)WrapperFactory.createHbmExporterWrapper(configuration, file);
+		Wrapper wrapper = (Wrapper)WrapperFactory.createHbmExporterWrapper(configuration, file);
+		hbmExporterTarget = (HbmExporter)wrapper.getWrappedObject();
 		hbmExporterFacade = (IHibernateMappingExporter)GenericFacadeFactory
-				.createFacade(IHibernateMappingExporter.class, hbmExporterTarget);
+				.createFacade(IHibernateMappingExporter.class, wrapper);
 	}
 	
 	@Test
@@ -102,7 +104,7 @@ public class IHibernateMappingExporterTest {
 				}
 			}
 		};
-		Field delegateField = HbmExporterWrapper.class.getDeclaredField("delegateExporter");
+		Field delegateField = hbmExporterTarget.getClass().getDeclaredField("delegateExporter");
 		delegateField.setAccessible(true);
 		delegateField.set(hbmExporterTarget, delegate);
 		assertFalse(delegateHasExported);
@@ -132,7 +134,7 @@ public class IHibernateMappingExporterTest {
 			@Override
 			public void exportPojo(Map<Object, Object> map, Object pojoClass, String qualifiedDeclarationName) { }
 		};
-		Field delegateField = HbmExporterWrapper.class.getDeclaredField("delegateExporter");
+		Field delegateField = hbmExporterTarget.getClass().getDeclaredField("delegateExporter");
 		delegateField.setAccessible(true);
 		assertNull(delegateField.get(hbmExporterTarget));
 		hbmExporterFacade.setExportPOJODelegate(delegate);
@@ -172,7 +174,7 @@ public class IHibernateMappingExporterTest {
 				delegateHasExported = true;
 			}
 		};
-		Field delegateField = HbmExporterWrapper.class.getDeclaredField("delegateExporter");
+		Field delegateField = hbmExporterTarget.getClass().getDeclaredField("delegateExporter");
 		delegateField.setAccessible(true);
 		delegateField.set(hbmExporterTarget, delegate);
 		assertFalse(templateProcessed);

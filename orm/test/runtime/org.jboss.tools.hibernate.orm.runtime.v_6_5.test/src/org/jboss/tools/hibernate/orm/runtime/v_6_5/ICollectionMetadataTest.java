@@ -11,9 +11,10 @@ import java.util.Set;
 
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.persister.collection.CollectionPersister;
-import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
-import org.hibernate.tool.orm.jbt.util.MockDialect;
-import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
+import org.hibernate.tool.orm.jbt.api.factory.WrapperFactory;
+import org.hibernate.tool.orm.jbt.api.wrp.Wrapper;
+import org.hibernate.tool.orm.jbt.internal.util.MockConnectionProvider;
+import org.hibernate.tool.orm.jbt.internal.util.MockDialect;
 import org.jboss.tools.hibernate.orm.runtime.common.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
@@ -75,7 +76,8 @@ public class ICollectionMetadataTest {
 		configuration.configure(cfgXmlFile);
 		sessionFactoryFacade = configuration.buildSessionFactory();
 		collectionMetadataFacade = sessionFactoryFacade.getCollectionMetadata(Foo.class.getName() + ".bars");
-		collectionMetadataTarget = (CollectionPersister)((IFacade)collectionMetadataFacade).getTarget();
+		Wrapper wrapper = (Wrapper)((IFacade)collectionMetadataFacade).getTarget();
+		collectionMetadataTarget = (CollectionPersister)wrapper.getWrappedObject();
 	}
 	
 	@Test

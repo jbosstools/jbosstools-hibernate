@@ -49,15 +49,15 @@ import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
-import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
-import org.hibernate.tool.orm.jbt.util.MetadataHelper;
-import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
-import org.hibernate.tool.orm.jbt.util.MockDialect;
-import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
-import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
-import org.hibernate.tool.orm.jbt.wrp.ColumnWrapper;
-import org.hibernate.tool.orm.jbt.wrp.Wrapper;
-import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
+import org.hibernate.tool.orm.jbt.api.factory.WrapperFactory;
+import org.hibernate.tool.orm.jbt.api.wrp.ColumnWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.Wrapper;
+import org.hibernate.tool.orm.jbt.internal.util.JpaConfiguration;
+import org.hibernate.tool.orm.jbt.internal.util.MetadataHelper;
+import org.hibernate.tool.orm.jbt.internal.util.MockConnectionProvider;
+import org.hibernate.tool.orm.jbt.internal.util.MockDialect;
+import org.hibernate.tool.orm.jbt.internal.util.RevengConfiguration;
+import org.hibernate.tool.orm.jbt.internal.util.SpecialRootClass;
 import org.jboss.tools.hibernate.orm.runtime.common.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
@@ -107,22 +107,32 @@ public class ServiceImplTest {
 	public void testNewDefaultConfiguration() {
 		IConfiguration defaultConfiguration = service.newDefaultConfiguration();
 		assertNotNull(defaultConfiguration);
-		assertTrue(((IFacade)defaultConfiguration).getTarget() instanceof Configuration);
+		Object target = ((IFacade)defaultConfiguration).getTarget();
+		assertTrue(target instanceof Wrapper);
+		target = ((Wrapper)target).getWrappedObject();
+		assertTrue( target instanceof Configuration);
 	}
 
 	@Test
 	public void testNewAnnotationConfiguration() {
 		IConfiguration annotationConfiguration = service.newAnnotationConfiguration();
 		assertNotNull(annotationConfiguration);
-		assertTrue(((IFacade)annotationConfiguration).getTarget() instanceof Configuration);
+		Object target = ((IFacade)annotationConfiguration).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof Wrapper);
+		target = ((Wrapper)target).getWrappedObject();
+		assertNotNull(target);
+		assertTrue(target instanceof Configuration);
 	}
 
 	@Test
 	public void testNewJpaConfiguration() {
 		IConfiguration jpaConfiguration = service.newJpaConfiguration(null, "test", null);
 		assertNotNull(jpaConfiguration);
-		Object target = ((IFacade)jpaConfiguration).getTarget();
-		assertNotNull(target);
+		Object wrapper = ((IFacade)jpaConfiguration).getTarget();
+		assertNotNull(wrapper);
+		assertTrue(wrapper instanceof Wrapper);
+		Object target = ((Wrapper)wrapper).getWrappedObject();
 		assertTrue(target instanceof JpaConfiguration);
 		assertEquals("test", ((JpaConfiguration)target).getPersistenceUnit());
 		
@@ -137,10 +147,10 @@ public class ServiceImplTest {
 		IHibernateMappingExporter hibernateMappingExporter = 
 				service.newHibernateMappingExporter(configuration, file);
 		HbmExporter hmee = 
-				(HbmExporter)((IFacade)hibernateMappingExporter).getTarget();
+				(HbmExporter)((Wrapper)((IFacade)hibernateMappingExporter).getTarget()).getWrappedObject();
 		assertSame(file, hmee.getProperties().get(ExporterConstants.OUTPUT_FILE_NAME));
 		assertSame(
-				MetadataHelper.getMetadata((Configuration)((IFacade)configuration).getTarget()),
+				MetadataHelper.getMetadata((Configuration)((Wrapper)((IFacade)configuration).getTarget()).getWrappedObject()),
 				hmee.getMetadata());
 	}
 	
@@ -168,6 +178,8 @@ public class ServiceImplTest {
 		assertNotNull(configuration);
 		Object target = ((IFacade)configuration).getTarget();
 		assertNotNull(target);
+		assertTrue(target instanceof Wrapper);
+		target = ((Wrapper)target).getWrappedObject();
 		assertTrue(target instanceof RevengConfiguration);
 	}
 	
@@ -231,6 +243,9 @@ public class ServiceImplTest {
 		assertNotNull(namingStrategy);
 		Object target = ((IFacade)namingStrategy).getTarget();
 		assertNotNull(target);
+		assertTrue(target instanceof Wrapper);
+		target = ((Wrapper)target).getWrappedObject();
+		assertNotNull(target);
 		assertTrue(NamingStrategy.class.isAssignableFrom(target.getClass()));
 		namingStrategy = null;
 		assertNull(namingStrategy);
@@ -249,6 +264,9 @@ public class ServiceImplTest {
 		assertNotNull(overrideRepository);
 		Object target = ((IFacade)overrideRepository).getTarget();
 		assertNotNull(target);
+		assertTrue(target instanceof Wrapper);
+		target = ((Wrapper)target).getWrappedObject();
+		assertNotNull(target);
 		assertTrue(target instanceof OverrideRepository);
 	}
 	
@@ -258,6 +276,8 @@ public class ServiceImplTest {
 		assertNotNull(tableFilter);
 		Object target = ((IFacade)tableFilter).getTarget();
 		assertNotNull(target);
+		assertTrue(target instanceof Wrapper);
+		target = ((Wrapper)target).getWrappedObject();
 		assertTrue(target instanceof TableFilter);
 	}
 	
@@ -267,6 +287,9 @@ public class ServiceImplTest {
 				service.newDefaultReverseEngineeringStrategy();
 		assertNotNull(reverseEngineeringStrategy);
 		Object target = ((IFacade)reverseEngineeringStrategy).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof Wrapper);
+		target = ((Wrapper)target).getWrappedObject();
 		assertNotNull(target);
 		assertTrue(target instanceof DefaultStrategy);
 	}
@@ -280,6 +303,8 @@ public class ServiceImplTest {
 		assertNotNull(reverseEngineeringSettings);
 		Object target = ((IFacade)reverseEngineeringSettings).getTarget();
 		assertNotNull(target);
+		assertTrue(target instanceof Wrapper);
+		target = ((Wrapper)target).getWrappedObject();
 		assertTrue(target instanceof RevengSettings);
 	}
 	
@@ -326,6 +351,8 @@ public class ServiceImplTest {
 		assertNotNull(newStrategy);
 		target = ((IFacade)newStrategy).getTarget();
 		assertNotNull(target);
+		assertTrue(target instanceof Wrapper);
+		target = ((Wrapper)target).getWrappedObject();
 		assertTrue(target instanceof DelegatingStrategy);
 	}
 	
@@ -364,6 +391,9 @@ public class ServiceImplTest {
 		ITable table = service.newTable("foo");
 		assertNotNull(table);
 		Object target = ((IFacade)table).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof Wrapper);
+		target = ((Wrapper)target).getWrappedObject();
 		assertNotNull(target);
 		assertTrue(target instanceof Table);
 		assertEquals("foo", ((Table)target).getName());

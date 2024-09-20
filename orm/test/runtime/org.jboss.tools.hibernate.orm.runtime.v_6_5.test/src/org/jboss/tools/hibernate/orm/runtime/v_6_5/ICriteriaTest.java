@@ -18,9 +18,11 @@ import java.util.List;
 import java.util.Set;
 
 import org.hibernate.cfg.AvailableSettings;
-import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
-import org.hibernate.tool.orm.jbt.util.MockDialect;
-import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
+import org.hibernate.query.Query;
+import org.hibernate.tool.orm.jbt.api.factory.WrapperFactory;
+import org.hibernate.tool.orm.jbt.api.wrp.Wrapper;
+import org.hibernate.tool.orm.jbt.internal.util.MockConnectionProvider;
+import org.hibernate.tool.orm.jbt.internal.util.MockDialect;
 import org.jboss.tools.hibernate.orm.runtime.common.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
@@ -30,8 +32,6 @@ import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
-
-import jakarta.persistence.Query;
 
 public class ICriteriaTest {
 
@@ -63,7 +63,8 @@ public class ICriteriaTest {
 	public File tempDir;
 	
 	private ICriteria criteriaFacade = null;
-	private Query criteriaTarget = null;
+	private Wrapper criteriaWrapper = null;
+	private Query<?> criteriaTarget = null;
 		
 	@BeforeEach
 	public void beforeEach() throws Exception {
@@ -84,7 +85,8 @@ public class ICriteriaTest {
 		ISessionFactory sessionFactoryFacade = configuration.buildSessionFactory();
 		ISession sessionFacade = sessionFactoryFacade.openSession();
 		criteriaFacade = sessionFacade.createCriteria(Foo.class);
-		criteriaTarget = (Query)((IFacade)criteriaFacade).getTarget();
+		criteriaWrapper = (Wrapper)((IFacade)criteriaFacade).getTarget();
+		criteriaTarget = (Query<?>)criteriaWrapper.getWrappedObject();
 	}
 	
 	@Test
@@ -103,25 +105,22 @@ public class ICriteriaTest {
 	@Test
 	public void testList() throws Exception {
 		final List<String> list = Arrays.asList("foo", "bar");
-		Class<?> criteriaExtensionClass = Class.forName(
-				"org.hibernate.tool.orm.jbt.wrp.CriteriaWrapperFactory$CriteriaExtension");
-		Query query = (Query)Proxy.newProxyInstance(
+		Query<?> query = (Query<?>)Proxy.newProxyInstance(
 				getClass().getClassLoader(),
-				new Class[] { criteriaExtensionClass }, 
+				new Class[] { Query.class }, 
 				new InvocationHandler() {					
 					@Override
 					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-						if ("getResultList".equals(method.getName())) {
+						if ("list".equals(method.getName())) {
 							return list;
 						}
 						return null;
 					}
-				});
-		InvocationHandler invocationHandler = Proxy.getInvocationHandler(criteriaTarget);
-		Field targetField = invocationHandler.getClass().getDeclaredField("target");
-		targetField.setAccessible(true);
-		targetField.set(invocationHandler, query);
-		List<?> l1 = criteriaTarget.getResultList();
+				});		
+		Field queryField = criteriaWrapper.getClass().getDeclaredField("query");
+		queryField.setAccessible(true);
+		queryField.set(criteriaWrapper, query);
+		List<?> l1 = query.list();
 		assertSame(l1, list);
 		List<?> l2 = criteriaFacade.list();
 		assertSame(l1, l2);

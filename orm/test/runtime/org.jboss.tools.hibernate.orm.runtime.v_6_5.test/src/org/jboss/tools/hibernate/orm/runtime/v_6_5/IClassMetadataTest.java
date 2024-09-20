@@ -15,10 +15,10 @@ import java.util.Set;
 
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.persister.entity.EntityPersister;
-import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
-import org.hibernate.tool.orm.jbt.util.MockDialect;
-import org.hibernate.tool.orm.jbt.wrp.Wrapper;
-import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
+import org.hibernate.tool.orm.jbt.api.factory.WrapperFactory;
+import org.hibernate.tool.orm.jbt.api.wrp.Wrapper;
+import org.hibernate.tool.orm.jbt.internal.util.MockConnectionProvider;
+import org.hibernate.tool.orm.jbt.internal.util.MockDialect;
 import org.hibernate.type.CollectionType;
 import org.hibernate.type.Type;
 import org.hibernate.type.internal.NamedBasicTypeImpl;
@@ -85,7 +85,8 @@ public class IClassMetadataTest {
 		configuration.configure(cfgXmlFile);
 		sessionFactoryFacade = configuration.buildSessionFactory();
 		classMetadataFacade = sessionFactoryFacade.getClassMetadata(Foo.class.getName());
-		classMetadataTarget = (EntityPersister)((IFacade)classMetadataFacade).getTarget();
+		Wrapper wrapper = (Wrapper)((IFacade)classMetadataFacade).getTarget();
+		classMetadataTarget = (EntityPersister)wrapper.getWrappedObject();
 	}
 	
 	@Test

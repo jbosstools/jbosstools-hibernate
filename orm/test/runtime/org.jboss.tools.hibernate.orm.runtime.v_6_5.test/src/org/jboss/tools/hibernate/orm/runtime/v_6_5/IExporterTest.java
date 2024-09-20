@@ -20,10 +20,10 @@ import org.hibernate.tool.internal.export.common.AbstractExporter;
 import org.hibernate.tool.internal.export.common.GenericExporter;
 import org.hibernate.tool.internal.export.ddl.DdlExporter;
 import org.hibernate.tool.internal.export.query.QueryExporter;
-import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
-import org.hibernate.tool.orm.jbt.util.DummyMetadataDescriptor;
-import org.hibernate.tool.orm.jbt.wrp.Wrapper;
-import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
+import org.hibernate.tool.orm.jbt.api.factory.WrapperFactory;
+import org.hibernate.tool.orm.jbt.api.wrp.Wrapper;
+import org.hibernate.tool.orm.jbt.internal.util.ConfigurationMetadataDescriptor;
+import org.hibernate.tool.orm.jbt.internal.util.DummyMetadataDescriptor;
 import org.jboss.tools.hibernate.orm.runtime.common.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
@@ -81,7 +81,7 @@ public class IExporterTest {
 		configuration = field.get(metadataDescriptor);
 		assertNotNull(configuration);
 		assertTrue(configuration instanceof Configuration);
-		assertSame(configuration, ((IFacade)configurationFacade).getTarget());
+		assertSame(configuration, ((Wrapper)((IFacade)configurationFacade).getTarget()).getWrappedObject());
 		// Now test with a CfgExporter
 		exporterFacade = (IExporter)GenericFacadeFactory.createFacade(
 				IExporter.class, 
@@ -100,7 +100,7 @@ public class IExporterTest {
 		configuration = field.get(metadataDescriptor);
 		assertNotNull(configuration);
 		assertTrue(configuration instanceof Configuration);
-		assertSame(configuration, ((IFacade)configurationFacade).getTarget());
+		assertSame(configuration, ((Wrapper)((IFacade)configurationFacade).getTarget()).getWrappedObject());
 }
 	
 	@Test

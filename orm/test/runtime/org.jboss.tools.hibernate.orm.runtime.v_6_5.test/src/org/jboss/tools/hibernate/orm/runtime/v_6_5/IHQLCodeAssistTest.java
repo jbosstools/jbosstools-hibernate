@@ -10,8 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
-import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
-import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
+import org.hibernate.tool.orm.jbt.api.factory.WrapperFactory;
+import org.hibernate.tool.orm.jbt.api.wrp.ConfigurationWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.Wrapper;
+import org.hibernate.tool.orm.jbt.internal.factory.ConfigurationWrapperFactory;
+import org.hibernate.tool.orm.jbt.internal.util.NativeConfiguration;
 import org.jboss.tools.hibernate.orm.runtime.common.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
@@ -27,12 +30,13 @@ public class IHQLCodeAssistTest {
 	
 	@BeforeEach
 	public void beforeEach() {
-		NativeConfiguration configuration = new NativeConfiguration();
+		ConfigurationWrapper configuration = ConfigurationWrapperFactory.createNativeConfigurationWrapper();
 		configuration.setProperty("hibernate.connection.url", "jdbc:h2:mem:test");
 		hqlCodeAssistFacade = (IHQLCodeAssist)GenericFacadeFactory.createFacade(
 				IHQLCodeAssist.class, 
 				WrapperFactory.createHqlCodeAssistWrapper(configuration));
-		hqlCodeAssistTarget = (HQLCodeAssist)((IFacade)hqlCodeAssistFacade).getTarget();
+		Wrapper wrapper = (Wrapper)((IFacade)hqlCodeAssistFacade).getTarget();
+		hqlCodeAssistTarget = (HQLCodeAssist)wrapper.getWrappedObject();
 	}
 	
 	@Test

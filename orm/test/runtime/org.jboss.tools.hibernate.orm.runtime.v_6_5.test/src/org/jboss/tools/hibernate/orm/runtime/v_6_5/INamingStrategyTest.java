@@ -3,7 +3,7 @@ package org.jboss.tools.hibernate.orm.runtime.v_6_5;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.hibernate.cfg.DefaultNamingStrategy;
-import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
+import org.hibernate.tool.orm.jbt.api.factory.WrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.GenericFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.junit.jupiter.api.BeforeEach;

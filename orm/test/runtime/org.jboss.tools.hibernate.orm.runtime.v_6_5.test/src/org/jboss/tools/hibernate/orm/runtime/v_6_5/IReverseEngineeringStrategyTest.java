@@ -6,7 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import java.lang.reflect.Field;
 
 import org.hibernate.tool.internal.reveng.strategy.AbstractStrategy;
-import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
+import org.hibernate.tool.orm.jbt.api.factory.WrapperFactory;
+import org.hibernate.tool.orm.jbt.api.wrp.Wrapper;
 import org.jboss.tools.hibernate.orm.runtime.common.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
@@ -20,12 +21,14 @@ public class IReverseEngineeringStrategyTest {
 		IReverseEngineeringStrategy revengStrategyFacade = (IReverseEngineeringStrategy)GenericFacadeFactory.createFacade(
 				IReverseEngineeringStrategy.class, 
 				WrapperFactory.createRevengStrategyWrapper());
-		Object revengStrategyTarget = ((IFacade)revengStrategyFacade).getTarget();
+		Wrapper revengStrategyWrapper = (Wrapper)((IFacade)revengStrategyFacade).getTarget();
+		Object revengStrategyTarget = revengStrategyWrapper.getWrappedObject();
 		IReverseEngineeringSettings revengSettingsFacade = 
 				(IReverseEngineeringSettings)GenericFacadeFactory.createFacade(
 						IReverseEngineeringSettings.class, 
-						WrapperFactory.createRevengSettingsWrapper(revengStrategyTarget));
-		Object revengSettingsTarget = ((IFacade)revengSettingsFacade).getTarget();
+						WrapperFactory.createRevengSettingsWrapper(revengStrategyWrapper));
+		Wrapper revengSettingsWrapper = (Wrapper)((IFacade)revengSettingsFacade).getTarget();
+		Object revengSettingsTarget = revengSettingsWrapper.getWrappedObject();
 		Field field = AbstractStrategy.class.getDeclaredField("settings");
 		field.setAccessible(true);
 		assertNotSame(field.get(revengStrategyTarget), revengSettingsTarget);

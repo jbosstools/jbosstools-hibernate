@@ -7,7 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
-import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
+import org.hibernate.tool.orm.jbt.api.factory.WrapperFactory;
+import org.hibernate.tool.orm.jbt.api.wrp.Wrapper;
 import org.jboss.tools.hibernate.orm.runtime.common.GenericFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,10 +21,11 @@ public class ITableFilterTest {
 	
 	@BeforeEach
 	public void beforeEach() {
-		tableFilterTarget = (TableFilter)WrapperFactory.createTableFilterWrapper();
+		Wrapper wrapper = (Wrapper)WrapperFactory.createTableFilterWrapper();
+		tableFilterTarget = (TableFilter)wrapper.getWrappedObject();
 		tableFilterFacade = (ITableFilter)GenericFacadeFactory.createFacade(
 				ITableFilter.class, 
-				tableFilterTarget);
+				wrapper);
 	}
 	
 	@Test

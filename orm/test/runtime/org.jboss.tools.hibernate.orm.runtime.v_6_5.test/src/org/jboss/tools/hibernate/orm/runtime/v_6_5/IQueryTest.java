@@ -21,8 +21,8 @@ import org.h2.Driver;
 import org.hibernate.query.Query;
 import org.hibernate.query.spi.QueryParameterBinding;
 import org.hibernate.query.sqm.internal.QuerySqmImpl;
-import org.hibernate.tool.orm.jbt.wrp.Wrapper;
-import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
+import org.hibernate.tool.orm.jbt.api.factory.WrapperFactory;
+import org.hibernate.tool.orm.jbt.api.wrp.Wrapper;
 import org.jboss.tools.hibernate.orm.runtime.common.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
@@ -99,16 +99,20 @@ public class IQueryTest {
 		createSessionFactoryFacade();
 		ISession sessionFacade = sessionFactoryFacade.openSession();
 		simpleQueryFacade = sessionFacade.createQuery("from " + Foo.class.getName());
-		simpleQueryTarget = (Query<?>)((IFacade)simpleQueryFacade).getTarget();
+		Wrapper wrapper = (Wrapper)((IFacade)simpleQueryFacade).getTarget();
+		simpleQueryTarget = (Query<?>)wrapper.getWrappedObject();
 		namedParameterizedQueryFacade = sessionFacade.createQuery(
 				"from " + Foo.class.getName() + " where id = :foo");
-		namedParameterizedQueryTarget = (Query<?>)((IFacade)namedParameterizedQueryFacade).getTarget();
+		wrapper = (Wrapper)((IFacade)namedParameterizedQueryFacade).getTarget();
+		namedParameterizedQueryTarget = (Query<?>)wrapper.getWrappedObject();
 		positionalParameterizedQueryFacade = sessionFacade.createQuery(
 				"from " + Foo.class.getName() + " where id = ?1");
-		positionalParameterizedQueryTarget = (Query<?>)((IFacade)positionalParameterizedQueryFacade).getTarget();
+		wrapper = (Wrapper)((IFacade)positionalParameterizedQueryFacade).getTarget();
+		positionalParameterizedQueryTarget = (Query<?>)wrapper.getWrappedObject();
 		collectionParameterizedQueryFacade = sessionFacade.createQuery(
 				"from " + Foo.class.getName() + " where id in :foo");
-		collectionParameterizedQueryTarget = (Query<?>)((IFacade)collectionParameterizedQueryFacade).getTarget();
+		wrapper = (Wrapper)((IFacade)collectionParameterizedQueryFacade).getTarget();
+		collectionParameterizedQueryTarget = (Query<?>)wrapper.getWrappedObject();
 	}
 	
 	@AfterEach
@@ -120,15 +124,12 @@ public class IQueryTest {
 	public void testConstruction() {
 		assertNotNull(simpleQueryFacade);
 		assertNotNull(simpleQueryTarget);
-		assertTrue(simpleQueryTarget instanceof Wrapper);
 		assertNotNull(namedParameterizedQueryFacade);
 		assertNotNull(namedParameterizedQueryTarget);
-		assertTrue(namedParameterizedQueryTarget instanceof Wrapper);
 		assertNotNull(positionalParameterizedQueryFacade);
 		assertNotNull(positionalParameterizedQueryTarget);
-		assertTrue(positionalParameterizedQueryTarget instanceof Wrapper);
+		assertNotNull(collectionParameterizedQueryFacade);
 		assertNotNull(collectionParameterizedQueryTarget);
-		assertTrue(collectionParameterizedQueryTarget instanceof Wrapper);
 	}
 	
 	@Test
@@ -156,7 +157,7 @@ public class IQueryTest {
 	@Test
 	public void testSetParameterList() {
 		QueryParameterBinding<?> binding = 
-				((QuerySqmImpl<?>)((Wrapper)collectionParameterizedQueryTarget).getWrappedObject())
+				((QuerySqmImpl<?>)collectionParameterizedQueryTarget)
 				.getParameterBindings()
 				.getBinding("foo");
 		assertFalse(binding.isBound());
@@ -167,7 +168,7 @@ public class IQueryTest {
 	@Test
 	public void testSetNamedParameter() {
 		QueryParameterBinding<?> binding = 
-				((QuerySqmImpl<?>)((Wrapper)namedParameterizedQueryTarget).getWrappedObject())
+				((QuerySqmImpl<?>)namedParameterizedQueryTarget)
 				.getParameterBindings()
 				.getBinding("foo");
 		assertFalse(binding.isBound());
@@ -179,7 +180,7 @@ public class IQueryTest {
 	@Test
 	public void testSetPositionalParameter() {
 		QueryParameterBinding<?> binding = 
-				((QuerySqmImpl<?>)((Wrapper)positionalParameterizedQueryTarget).getWrappedObject())
+				((QuerySqmImpl<?>)positionalParameterizedQueryTarget)
 				.getParameterBindings()
 				.getBinding(1);
 		assertFalse(binding.isBound());

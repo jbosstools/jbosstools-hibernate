@@ -5,7 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.hibernate.tool.api.reveng.RevengSettings;
-import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
+import org.hibernate.tool.orm.jbt.api.factory.WrapperFactory;
+import org.hibernate.tool.orm.jbt.api.wrp.Wrapper;
 import org.jboss.tools.hibernate.orm.runtime.common.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
@@ -27,7 +28,8 @@ public class IReverseEngineeringSettingsTest {
 		revengSettingsFacade = (IReverseEngineeringSettings)GenericFacadeFactory.createFacade(
 				IReverseEngineeringSettings.class, 
 				WrapperFactory.createRevengSettingsWrapper(((IFacade)revengStrategyFacade).getTarget()));
-		revengSettingsTarget = (RevengSettings)((IFacade)revengSettingsFacade).getTarget();	
+		Wrapper wrapper = (Wrapper)((IFacade)revengSettingsFacade).getTarget();
+		revengSettingsTarget = (RevengSettings)wrapper.getWrappedObject();	
 	}
 	
 	@Test

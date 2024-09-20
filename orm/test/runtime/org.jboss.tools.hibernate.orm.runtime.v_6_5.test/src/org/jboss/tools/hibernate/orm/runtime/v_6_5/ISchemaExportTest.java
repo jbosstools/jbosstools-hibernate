@@ -13,9 +13,12 @@ import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
-import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
-import org.hibernate.tool.orm.jbt.util.MockDialect;
-import org.hibernate.tool.orm.jbt.wrp.SchemaExportWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.ConfigurationWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.SchemaExportWrapper;
+import org.hibernate.tool.orm.jbt.internal.factory.ConfigurationWrapperFactory;
+import org.hibernate.tool.orm.jbt.internal.factory.SchemaExportWrapperFactory;
+import org.hibernate.tool.orm.jbt.internal.util.MockConnectionProvider;
+import org.hibernate.tool.orm.jbt.internal.util.MockDialect;
 import org.hibernate.tool.schema.TargetType;
 import org.jboss.tools.hibernate.orm.runtime.common.GenericFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
@@ -28,14 +31,18 @@ public class ISchemaExportTest {
 	private TestSchemaExport schemaExportTarget = null;
 	
 	@BeforeEach
-	public void beforeEach() {
-		Configuration configuration = new Configuration();
+	public void beforeEach() throws Exception {
+		ConfigurationWrapper configuration = ConfigurationWrapperFactory.createNativeConfigurationWrapper();
 		configuration.setProperty(Environment.DIALECT, MockDialect.class.getName());
 		configuration.setProperty(Environment.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
-		schemaExportTarget = new TestSchemaExport(configuration);
+		SchemaExportWrapper wrapper = SchemaExportWrapperFactory.createSchemaExportWrapper(configuration);
 		schemaExportFacade = (ISchemaExport)GenericFacadeFactory.createFacade(
 				ISchemaExport.class, 
-				schemaExportTarget);
+				wrapper);
+		schemaExportTarget = new TestSchemaExport();
+		Field f = wrapper.getClass().getDeclaredField("schemaExport");
+		f.setAccessible(true);
+		f.set(wrapper, schemaExportTarget);
 	}
 	
 	@Test
@@ -65,12 +72,12 @@ public class ISchemaExportTest {
 		assertTrue(list.contains(t));
 	}
 	
-	private class TestSchemaExport extends SchemaExportWrapper {
+	private class TestSchemaExport extends SchemaExport {
 		
 		private boolean created = false;
 
-		public TestSchemaExport(Configuration configuration) {
-			super(configuration);
+		public TestSchemaExport() {
+			super();
 		}
 		
 		@Override 

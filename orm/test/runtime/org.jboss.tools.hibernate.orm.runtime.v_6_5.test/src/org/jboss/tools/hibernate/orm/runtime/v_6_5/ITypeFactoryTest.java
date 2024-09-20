@@ -2,7 +2,6 @@ package org.jboss.tools.hibernate.orm.runtime.v_6_5;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.text.SimpleDateFormat;
 import java.util.Currency;
@@ -11,9 +10,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
-import org.hibernate.tool.orm.jbt.wrp.TypeFactoryWrapper;
-import org.hibernate.tool.orm.jbt.wrp.Wrapper;
-import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
+import org.hibernate.tool.orm.jbt.api.factory.WrapperFactory;
+import org.hibernate.tool.orm.jbt.api.wrp.Wrapper;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.orm.runtime.common.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.common.IFacade;
@@ -36,7 +34,6 @@ public class ITypeFactoryTest {
 	@Test
 	public void testConstruction() {
 		assertNotNull(typeFactoryFacade);
-		assertSame(TypeFactoryWrapper.INSTANCE, ((IFacade)typeFactoryFacade).getTarget());
 	}
 	
 	@Test
