@@ -53,14 +53,14 @@ public class RenameAction extends SelectionListenerAction {
 			if (!(node instanceof ConsoleConfiguration)) {
 				continue;
 			}
-			if (renameConsoleConfiuration((ConsoleConfiguration) node)){
+			if (renameConsoleConfiguration((ConsoleConfiguration) node)){
 				viewer.refresh(node);
 			}
 			break;
 		}
 	}
 	
-	public boolean renameConsoleConfiuration(ConsoleConfiguration config){
+	public boolean renameConsoleConfiguration(ConsoleConfiguration config){
 		ILaunchConfiguration launchConfiguration = null;;
 		try {
 			launchConfiguration = LaunchHelper.findHibernateLaunchConfig(config.getName());
