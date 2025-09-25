@@ -101,7 +101,7 @@ We are using [Tycho](https://projects.eclipse.org/projects/technology) and [Mave
 
 <img src="images/mvn-version.png" width="600" />
 
-Building the project is as simple as issuing `mvn clean install` or `mvn clean verify`. This will include running all the tests of the project. Because this takes a while, you might want to skip this step. Do this by adding the 'skipTests' parameter: `mvn clean install -DskipTests=true`.
+Building the project is as simple as issuing `mvn clean install` or `mvn clean verify`. This will include running all the tests of the project. Because this takes a while, you might want to skip this step. Do this by adding the 'skipTests' parameter: `mvn clean install -DskipTests`.
 
 <img src="images/mvn-clean-install.png" width="600" />
 
