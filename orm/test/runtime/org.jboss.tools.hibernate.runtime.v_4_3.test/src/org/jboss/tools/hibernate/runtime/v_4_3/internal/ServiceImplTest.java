@@ -123,8 +123,6 @@ public class ServiceImplTest {
 		assertTrue(((IFacade)annotationConfiguration).getTarget() instanceof Configuration);
 	}
 
-	// TODO JBIDE-28358: reenable this test
-	@Disabled
 	@Test
 	public void testNewJpaConfiguration() throws Exception {
 		URL url = getClass().getProtectionDomain().getCodeSource().getLocation();

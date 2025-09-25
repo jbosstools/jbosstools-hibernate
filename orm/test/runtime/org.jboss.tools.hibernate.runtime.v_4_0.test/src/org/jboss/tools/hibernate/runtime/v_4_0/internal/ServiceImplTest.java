@@ -550,9 +550,7 @@ public class ServiceImplTest {
 	public void testIsInitialized() {
 		assertTrue(service.isInitialized(new Object()));
 	}
-	
-	// TODO JBIDE-28358: reenable this test
-	@Disabled
+
 	@Test
 	public void testGetJPAMappingFilePaths() {
 		List<String> result = service.getJPAMappingFilePaths("test", null);
