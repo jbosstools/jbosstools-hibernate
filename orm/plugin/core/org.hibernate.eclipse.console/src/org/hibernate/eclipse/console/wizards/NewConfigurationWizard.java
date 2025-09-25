@@ -322,7 +322,7 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
 			if (selection.getFirstElement() instanceof IProject){
 				try {
 					if (((IProject)selection.getFirstElement()).getNature(JavaCore.NATURE_ID) != null) {
-						jproj =  (IJavaProject)((IProject)selection.getFirstElement()).getNature(JavaCore.NATURE_ID);
+						jproj = JavaCore.create((IProject)selection.getFirstElement());
 					}
 				} catch (CoreException e) {
 					HibernateConsolePlugin.getDefault().log(e);
